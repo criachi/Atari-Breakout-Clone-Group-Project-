@@ -10,10 +10,12 @@ class User {
 class Player {
   password;
   int currentLevel;
+  1 -- * Game;
 }
 
 class Admin {
   password;
+  1 -- * Game;
 }
 
 class Game {
