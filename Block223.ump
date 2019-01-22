@@ -1,0 +1,57 @@
+class User {
+  autounique id;
+  unique name;
+  1 -- 1 Player;
+  1 -- 0..1 Admin;
+}
+
+class Player {
+  password;
+  int currentLevel;
+}
+
+class Admin {
+  password;
+}
+
+class Game {
+  unique name;
+  1 -- * Level;
+  int playAreaSize;
+  1 <@>- 1 HallOfFame;
+}
+
+class HallOfFame {
+  1 -- * User 
+}
+
+class Level {
+  int levelNumber;
+  1 -- * Block;
+  1 -- 1 Ball;
+  1 -- 1 Paddle;
+}
+
+class Ball {
+  int speed;
+  int diameter;
+}
+
+class Paddle {
+  int length;
+  int width;
+}
+
+class Block {
+  int size;
+  1 -- 1 GridPosition;
+}
+
+class GridSystem {
+  * -- 1 GridPosition;
+}
+
+class GridPosition {
+  int row;
+  int col;
+}
