@@ -2,27 +2,32 @@ namespace model;
 
 class User {
   autounique id;
-  unique name;
+  unique String name;
   1 -- 1 Player;
   1 -- 0..1 Admin;
 }
 
 class Player {
-  password;
-  int currentLevel;
+  String password;
+  Integer currentLevel;
   1 -- * Game;
 }
 
 class Admin {
-  password;
+  String password;
   1 -- * Game;
 }
 
 class Game {
-  unique name;
-  1 -- * Level;
-  int playAreaSize;
+  unique String name;
+  1 <@>- * Level;
+  Integer playAreaSize;
   1 <@>- 1 HallOfFame;
+  Double speedIncreaseFactor;
+  Integer minBallSpeed;
+  Integer maxBallSpeed;
+  Integer minPaddleLength;
+  Integer maxPaddleLength;
 }
 
 class HallOfFame {
@@ -30,32 +35,38 @@ class HallOfFame {
 }
 
 class Level {
-  int levelNumber;
-  1 -- * Block;
-  1 -- 1 Ball;
-  1 -- 1 Paddle;
+  Integer levelNumber;
+  1 <@>- * Block;
+  1 <@>- 1 Ball;
+  1 <@>- 1 Paddle;
 }
 
 class Ball {
-  int speed;
-  int diameter;
+  Integer speed;
+  const DIAMETER = 10;
 }
 
 class Paddle {
-  int length;
-  int width;
+  Integer length;
+  const WIDTH = 5;
 }
 
 class Block {
-  int size;
-  1 -- 1 GridPosition;
+  Integer size;
+  Integer points;
+  const SIDE = 20;
+  enum Color { Blue, Red, Yellow, Green, Orange, Black, White };
+  Color color;
+  1 -- 1 GridCell;
 }
 
 class GridSystem {
-  * -- 1 GridPosition;
+  1 -- * GridCell;
+  Integer gridLength;
+  Integer gridWidth;
 }
 
-class GridPosition {
-  int row;
-  int col;
+class GridCell {
+  Integer row;
+  Integer col;
 }
