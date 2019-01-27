@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
-package model;
+package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 3 "../Block223.ump"
+// line 3 "../../../../../Block223.ump"
 public class User
 {
 
@@ -12,7 +12,6 @@ public class User
   // STATIC VARIABLES
   //------------------------
 
-  private static int nextId = 1;
   private static Map<String, User> usersByName = new HashMap<String, User>();
 
   //------------------------
@@ -21,9 +20,6 @@ public class User
 
   //User Attributes
   private String name;
-
-  //Autounique Attributes
-  private int id;
 
   //User Associations
   private Player player;
@@ -36,7 +32,6 @@ public class User
 
   public User(String aName, Player aPlayer, HallOfFame aHallOfFame)
   {
-    id = nextId++;
     if (!setName(aName))
     {
       throw new RuntimeException("Cannot create due to duplicate name");
@@ -53,11 +48,10 @@ public class User
     }
   }
 
-  public User(String aName, String aPasswordForPlayer, int aCurrentLevelForPlayer, HallOfFame aHallOfFame)
+  public User(String aName, String aPasswordForPlayer, HallOfFame aHallOfFame)
   {
     name = aName;
-    id = nextId++;
-    player = new Player(aPasswordForPlayer, aCurrentLevelForPlayer, this);
+    player = new Player(aPasswordForPlayer, this);
     boolean didAddHallOfFame = setHallOfFame(aHallOfFame);
     if (!didAddHallOfFame)
     {
@@ -98,11 +92,6 @@ public class User
   public static boolean hasWithName(String aName)
   {
     return getWithName(aName) != null;
-  }
-
-  public int getId()
-  {
-    return id;
   }
   /* Code from template association_GetOne */
   public Player getPlayer()
@@ -199,7 +188,6 @@ public class User
   public String toString()
   {
     return super.toString() + "["+
-            "id" + ":" + getId()+ "," +
             "name" + ":" + getName()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "admin = "+(getAdmin()!=null?Integer.toHexString(System.identityHashCode(getAdmin())):"null") + System.getProperties().getProperty("line.separator") +

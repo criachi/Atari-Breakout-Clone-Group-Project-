@@ -1,35 +1,31 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
-package model;
+package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 21 "../Block223.ump"
-public class Game
+// line 19 "../../../../../Block223.ump"
+public class BlockGame
 {
 
   //------------------------
   // STATIC VARIABLES
   //------------------------
 
-  private static Map<String, Game> gamesByName = new HashMap<String, Game>();
+  private static Map<String, BlockGame> blockgamesByName = new HashMap<String, BlockGame>();
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
-  //Game Attributes
+  //BlockGame Attributes
   private String name;
-  private int playAreaSize;
-  private double speedIncreaseFactor;
-  private int minBallSpeed;
-  private int maxBallSpeed;
-  private int minPaddleLength;
-  private int maxPaddleLength;
+  private int numLevels;
 
-  //Game Associations
+  //BlockGame Associations
   private List<Level> levels;
   private HallOfFame hallOfFame;
+  private PlayArea playArea;
   private Player player;
   private Admin admin;
 
@@ -37,56 +33,52 @@ public class Game
   // CONSTRUCTOR
   //------------------------
 
-  public Game(String aName, int aPlayAreaSize, double aSpeedIncreaseFactor, int aMinBallSpeed, int aMaxBallSpeed, int aMinPaddleLength, int aMaxPaddleLength, HallOfFame aHallOfFame, Player aPlayer, Admin aAdmin)
+  public BlockGame(String aName, int aNumLevels, HallOfFame aHallOfFame, PlayArea aPlayArea, Player aPlayer, Admin aAdmin)
   {
-    playAreaSize = aPlayAreaSize;
-    speedIncreaseFactor = aSpeedIncreaseFactor;
-    minBallSpeed = aMinBallSpeed;
-    maxBallSpeed = aMaxBallSpeed;
-    minPaddleLength = aMinPaddleLength;
-    maxPaddleLength = aMaxPaddleLength;
+    numLevels = aNumLevels;
     if (!setName(aName))
     {
       throw new RuntimeException("Cannot create due to duplicate name");
     }
     levels = new ArrayList<Level>();
-    if (aHallOfFame == null || aHallOfFame.getGame() != null)
+    if (aHallOfFame == null || aHallOfFame.getBlockGame() != null)
     {
-      throw new RuntimeException("Unable to create Game due to aHallOfFame");
+      throw new RuntimeException("Unable to create BlockGame due to aHallOfFame");
     }
     hallOfFame = aHallOfFame;
+    if (aPlayArea == null || aPlayArea.getBlockGame() != null)
+    {
+      throw new RuntimeException("Unable to create BlockGame due to aPlayArea");
+    }
+    playArea = aPlayArea;
     boolean didAddPlayer = setPlayer(aPlayer);
     if (!didAddPlayer)
     {
-      throw new RuntimeException("Unable to create game due to player");
+      throw new RuntimeException("Unable to create blockGame due to player");
     }
     boolean didAddAdmin = setAdmin(aAdmin);
     if (!didAddAdmin)
     {
-      throw new RuntimeException("Unable to create game due to admin");
+      throw new RuntimeException("Unable to create blockGame due to admin");
     }
   }
 
-  public Game(String aName, int aPlayAreaSize, double aSpeedIncreaseFactor, int aMinBallSpeed, int aMaxBallSpeed, int aMinPaddleLength, int aMaxPaddleLength, Player aPlayer, Admin aAdmin)
+  public BlockGame(String aName, int aNumLevels, int aWidthForPlayArea, int aLengthForPlayArea, Player aPlayer, Admin aAdmin)
   {
     name = aName;
-    playAreaSize = aPlayAreaSize;
-    speedIncreaseFactor = aSpeedIncreaseFactor;
-    minBallSpeed = aMinBallSpeed;
-    maxBallSpeed = aMaxBallSpeed;
-    minPaddleLength = aMinPaddleLength;
-    maxPaddleLength = aMaxPaddleLength;
+    numLevels = aNumLevels;
     levels = new ArrayList<Level>();
     hallOfFame = new HallOfFame(this);
+    playArea = new PlayArea(aWidthForPlayArea, aLengthForPlayArea, this);
     boolean didAddPlayer = setPlayer(aPlayer);
     if (!didAddPlayer)
     {
-      throw new RuntimeException("Unable to create game due to player");
+      throw new RuntimeException("Unable to create blockGame due to player");
     }
     boolean didAddAdmin = setAdmin(aAdmin);
     if (!didAddAdmin)
     {
-      throw new RuntimeException("Unable to create game due to admin");
+      throw new RuntimeException("Unable to create blockGame due to admin");
     }
   }
 
@@ -104,56 +96,16 @@ public class Game
     name = aName;
     wasSet = true;
     if (anOldName != null) {
-      gamesByName.remove(anOldName);
+      blockgamesByName.remove(anOldName);
     }
-    gamesByName.put(aName, this);
+    blockgamesByName.put(aName, this);
     return wasSet;
   }
 
-  public boolean setPlayAreaSize(int aPlayAreaSize)
+  public boolean setNumLevels(int aNumLevels)
   {
     boolean wasSet = false;
-    playAreaSize = aPlayAreaSize;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean setSpeedIncreaseFactor(double aSpeedIncreaseFactor)
-  {
-    boolean wasSet = false;
-    speedIncreaseFactor = aSpeedIncreaseFactor;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean setMinBallSpeed(int aMinBallSpeed)
-  {
-    boolean wasSet = false;
-    minBallSpeed = aMinBallSpeed;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean setMaxBallSpeed(int aMaxBallSpeed)
-  {
-    boolean wasSet = false;
-    maxBallSpeed = aMaxBallSpeed;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean setMinPaddleLength(int aMinPaddleLength)
-  {
-    boolean wasSet = false;
-    minPaddleLength = aMinPaddleLength;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean setMaxPaddleLength(int aMaxPaddleLength)
-  {
-    boolean wasSet = false;
-    maxPaddleLength = aMaxPaddleLength;
+    numLevels = aNumLevels;
     wasSet = true;
     return wasSet;
   }
@@ -163,9 +115,9 @@ public class Game
     return name;
   }
   /* Code from template attribute_GetUnique */
-  public static Game getWithName(String aName)
+  public static BlockGame getWithName(String aName)
   {
-    return gamesByName.get(aName);
+    return blockgamesByName.get(aName);
   }
   /* Code from template attribute_HasUnique */
   public static boolean hasWithName(String aName)
@@ -173,34 +125,9 @@ public class Game
     return getWithName(aName) != null;
   }
 
-  public int getPlayAreaSize()
+  public int getNumLevels()
   {
-    return playAreaSize;
-  }
-
-  public double getSpeedIncreaseFactor()
-  {
-    return speedIncreaseFactor;
-  }
-
-  public int getMinBallSpeed()
-  {
-    return minBallSpeed;
-  }
-
-  public int getMaxBallSpeed()
-  {
-    return maxBallSpeed;
-  }
-
-  public int getMinPaddleLength()
-  {
-    return minPaddleLength;
-  }
-
-  public int getMaxPaddleLength()
-  {
-    return maxPaddleLength;
+    return numLevels;
   }
   /* Code from template association_GetMany */
   public Level getLevel(int index)
@@ -238,6 +165,11 @@ public class Game
     return hallOfFame;
   }
   /* Code from template association_GetOne */
+  public PlayArea getPlayArea()
+  {
+    return playArea;
+  }
+  /* Code from template association_GetOne */
   public Player getPlayer()
   {
     return player;
@@ -262,11 +194,11 @@ public class Game
   {
     boolean wasAdded = false;
     if (levels.contains(aLevel)) { return false; }
-    Game existingGame = aLevel.getGame();
-    boolean isNewGame = existingGame != null && !this.equals(existingGame);
-    if (isNewGame)
+    BlockGame existingBlockGame = aLevel.getBlockGame();
+    boolean isNewBlockGame = existingBlockGame != null && !this.equals(existingBlockGame);
+    if (isNewBlockGame)
     {
-      aLevel.setGame(this);
+      aLevel.setBlockGame(this);
     }
     else
     {
@@ -279,8 +211,8 @@ public class Game
   public boolean removeLevel(Level aLevel)
   {
     boolean wasRemoved = false;
-    //Unable to remove aLevel, as it must always have a game
-    if (!this.equals(aLevel.getGame()))
+    //Unable to remove aLevel, as it must always have a blockGame
+    if (!this.equals(aLevel.getBlockGame()))
     {
       levels.remove(aLevel);
       wasRemoved = true;
@@ -332,9 +264,9 @@ public class Game
     player = aPlayer;
     if (existingPlayer != null && !existingPlayer.equals(aPlayer))
     {
-      existingPlayer.removeGame(this);
+      existingPlayer.removeBlockGame(this);
     }
-    player.addGame(this);
+    player.addBlockGame(this);
     wasSet = true;
     return wasSet;
   }
@@ -351,16 +283,16 @@ public class Game
     admin = aAdmin;
     if (existingAdmin != null && !existingAdmin.equals(aAdmin))
     {
-      existingAdmin.removeGame(this);
+      existingAdmin.removeBlockGame(this);
     }
-    admin.addGame(this);
+    admin.addBlockGame(this);
     wasSet = true;
     return wasSet;
   }
 
   public void delete()
   {
-    gamesByName.remove(getName());
+    blockgamesByName.remove(getName());
     while (levels.size() > 0)
     {
       Level aLevel = levels.get(levels.size() - 1);
@@ -374,17 +306,23 @@ public class Game
     {
       existingHallOfFame.delete();
     }
+    PlayArea existingPlayArea = playArea;
+    playArea = null;
+    if (existingPlayArea != null)
+    {
+      existingPlayArea.delete();
+    }
     Player placeholderPlayer = player;
     this.player = null;
     if(placeholderPlayer != null)
     {
-      placeholderPlayer.removeGame(this);
+      placeholderPlayer.removeBlockGame(this);
     }
     Admin placeholderAdmin = admin;
     this.admin = null;
     if(placeholderAdmin != null)
     {
-      placeholderAdmin.removeGame(this);
+      placeholderAdmin.removeBlockGame(this);
     }
   }
 
@@ -393,13 +331,9 @@ public class Game
   {
     return super.toString() + "["+
             "name" + ":" + getName()+ "," +
-            "playAreaSize" + ":" + getPlayAreaSize()+ "," +
-            "speedIncreaseFactor" + ":" + getSpeedIncreaseFactor()+ "," +
-            "minBallSpeed" + ":" + getMinBallSpeed()+ "," +
-            "maxBallSpeed" + ":" + getMaxBallSpeed()+ "," +
-            "minPaddleLength" + ":" + getMinPaddleLength()+ "," +
-            "maxPaddleLength" + ":" + getMaxPaddleLength()+ "]" + System.getProperties().getProperty("line.separator") +
+            "numLevels" + ":" + getNumLevels()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "hallOfFame = "+(getHallOfFame()!=null?Integer.toHexString(System.identityHashCode(getHallOfFame())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "playArea = "+(getPlayArea()!=null?Integer.toHexString(System.identityHashCode(getPlayArea())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "admin = "+(getAdmin()!=null?Integer.toHexString(System.identityHashCode(getAdmin())):"null");
   }

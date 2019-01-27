@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
-package model;
+package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 33 "../Block223.ump"
+// line 27 "../../../../../Block223.ump"
 public class HallOfFame
 {
 
@@ -14,26 +14,26 @@ public class HallOfFame
 
   //HallOfFame Associations
   private List<User> users;
-  private Game game;
+  private BlockGame blockGame;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public HallOfFame(Game aGame)
+  public HallOfFame(BlockGame aBlockGame)
   {
     users = new ArrayList<User>();
-    if (aGame == null || aGame.getHallOfFame() != null)
+    if (aBlockGame == null || aBlockGame.getHallOfFame() != null)
     {
-      throw new RuntimeException("Unable to create HallOfFame due to aGame");
+      throw new RuntimeException("Unable to create HallOfFame due to aBlockGame");
     }
-    game = aGame;
+    blockGame = aBlockGame;
   }
 
-  public HallOfFame(String aNameForGame, int aPlayAreaSizeForGame, double aSpeedIncreaseFactorForGame, int aMinBallSpeedForGame, int aMaxBallSpeedForGame, int aMinPaddleLengthForGame, int aMaxPaddleLengthForGame, Player aPlayerForGame, Admin aAdminForGame)
+  public HallOfFame(String aNameForBlockGame, int aNumLevelsForBlockGame, PlayArea aPlayAreaForBlockGame, Player aPlayerForBlockGame, Admin aAdminForBlockGame)
   {
     users = new ArrayList<User>();
-    game = new Game(aNameForGame, aPlayAreaSizeForGame, aSpeedIncreaseFactorForGame, aMinBallSpeedForGame, aMaxBallSpeedForGame, aMinPaddleLengthForGame, aMaxPaddleLengthForGame, this, aPlayerForGame, aAdminForGame);
+    blockGame = new BlockGame(aNameForBlockGame, aNumLevelsForBlockGame, this, aPlayAreaForBlockGame, aPlayerForBlockGame, aAdminForBlockGame);
   }
 
   //------------------------
@@ -70,9 +70,9 @@ public class HallOfFame
     return index;
   }
   /* Code from template association_GetOne */
-  public Game getGame()
+  public BlockGame getBlockGame()
   {
-    return game;
+    return blockGame;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfUsers()
@@ -154,11 +154,11 @@ public class HallOfFame
       User aUser = users.get(i - 1);
       aUser.delete();
     }
-    Game existingGame = game;
-    game = null;
-    if (existingGame != null)
+    BlockGame existingBlockGame = blockGame;
+    blockGame = null;
+    if (existingBlockGame != null)
     {
-      existingGame.delete();
+      existingBlockGame.delete();
     }
   }
 

@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
-package model;
+package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 16 "../Block223.ump"
+// line 14 "../../../../../Block223.ump"
 public class Admin
 {
 
@@ -16,7 +16,7 @@ public class Admin
   private String password;
 
   //Admin Associations
-  private List<Game> games;
+  private List<BlockGame> blockGames;
   private User user;
 
   //------------------------
@@ -26,7 +26,7 @@ public class Admin
   public Admin(String aPassword, User aUser)
   {
     password = aPassword;
-    games = new ArrayList<Game>();
+    blockGames = new ArrayList<BlockGame>();
     boolean didAddUser = setUser(aUser);
     if (!didAddUser)
     {
@@ -51,33 +51,33 @@ public class Admin
     return password;
   }
   /* Code from template association_GetMany */
-  public Game getGame(int index)
+  public BlockGame getBlockGame(int index)
   {
-    Game aGame = games.get(index);
-    return aGame;
+    BlockGame aBlockGame = blockGames.get(index);
+    return aBlockGame;
   }
 
-  public List<Game> getGames()
+  public List<BlockGame> getBlockGames()
   {
-    List<Game> newGames = Collections.unmodifiableList(games);
-    return newGames;
+    List<BlockGame> newBlockGames = Collections.unmodifiableList(blockGames);
+    return newBlockGames;
   }
 
-  public int numberOfGames()
+  public int numberOfBlockGames()
   {
-    int number = games.size();
+    int number = blockGames.size();
     return number;
   }
 
-  public boolean hasGames()
+  public boolean hasBlockGames()
   {
-    boolean has = games.size() > 0;
+    boolean has = blockGames.size() > 0;
     return has;
   }
 
-  public int indexOfGame(Game aGame)
+  public int indexOfBlockGame(BlockGame aBlockGame)
   {
-    int index = games.indexOf(aGame);
+    int index = blockGames.indexOf(aBlockGame);
     return index;
   }
   /* Code from template association_GetOne */
@@ -86,74 +86,74 @@ public class Admin
     return user;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfGames()
+  public static int minimumNumberOfBlockGames()
   {
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Game addGame(String aName, int aPlayAreaSize, double aSpeedIncreaseFactor, int aMinBallSpeed, int aMaxBallSpeed, int aMinPaddleLength, int aMaxPaddleLength, HallOfFame aHallOfFame, Player aPlayer)
+  public BlockGame addBlockGame(String aName, int aNumLevels, HallOfFame aHallOfFame, PlayArea aPlayArea, Player aPlayer)
   {
-    return new Game(aName, aPlayAreaSize, aSpeedIncreaseFactor, aMinBallSpeed, aMaxBallSpeed, aMinPaddleLength, aMaxPaddleLength, aHallOfFame, aPlayer, this);
+    return new BlockGame(aName, aNumLevels, aHallOfFame, aPlayArea, aPlayer, this);
   }
 
-  public boolean addGame(Game aGame)
+  public boolean addBlockGame(BlockGame aBlockGame)
   {
     boolean wasAdded = false;
-    if (games.contains(aGame)) { return false; }
-    Admin existingAdmin = aGame.getAdmin();
+    if (blockGames.contains(aBlockGame)) { return false; }
+    Admin existingAdmin = aBlockGame.getAdmin();
     boolean isNewAdmin = existingAdmin != null && !this.equals(existingAdmin);
     if (isNewAdmin)
     {
-      aGame.setAdmin(this);
+      aBlockGame.setAdmin(this);
     }
     else
     {
-      games.add(aGame);
+      blockGames.add(aBlockGame);
     }
     wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeGame(Game aGame)
+  public boolean removeBlockGame(BlockGame aBlockGame)
   {
     boolean wasRemoved = false;
-    //Unable to remove aGame, as it must always have a admin
-    if (!this.equals(aGame.getAdmin()))
+    //Unable to remove aBlockGame, as it must always have a admin
+    if (!this.equals(aBlockGame.getAdmin()))
     {
-      games.remove(aGame);
+      blockGames.remove(aBlockGame);
       wasRemoved = true;
     }
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addGameAt(Game aGame, int index)
+  public boolean addBlockGameAt(BlockGame aBlockGame, int index)
   {  
     boolean wasAdded = false;
-    if(addGame(aGame))
+    if(addBlockGame(aBlockGame))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfGames()) { index = numberOfGames() - 1; }
-      games.remove(aGame);
-      games.add(index, aGame);
+      if(index > numberOfBlockGames()) { index = numberOfBlockGames() - 1; }
+      blockGames.remove(aBlockGame);
+      blockGames.add(index, aBlockGame);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveGameAt(Game aGame, int index)
+  public boolean addOrMoveBlockGameAt(BlockGame aBlockGame, int index)
   {
     boolean wasAdded = false;
-    if(games.contains(aGame))
+    if(blockGames.contains(aBlockGame))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfGames()) { index = numberOfGames() - 1; }
-      games.remove(aGame);
-      games.add(index, aGame);
+      if(index > numberOfBlockGames()) { index = numberOfBlockGames() - 1; }
+      blockGames.remove(aBlockGame);
+      blockGames.add(index, aBlockGame);
       wasAdded = true;
     } 
     else 
     {
-      wasAdded = addGameAt(aGame, index);
+      wasAdded = addBlockGameAt(aBlockGame, index);
     }
     return wasAdded;
   }
@@ -188,10 +188,10 @@ public class Admin
 
   public void delete()
   {
-    for(int i=games.size(); i > 0; i--)
+    for(int i=blockGames.size(); i > 0; i--)
     {
-      Game aGame = games.get(i - 1);
-      aGame.delete();
+      BlockGame aBlockGame = blockGames.get(i - 1);
+      aBlockGame.delete();
     }
     User existingUser = user;
     user = null;
