@@ -1,10 +1,10 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
-package model;
+package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 37 "../Block223.ump"
+// line 31 "../../../../../Block223.ump"
 public class Level
 {
 
@@ -19,13 +19,13 @@ public class Level
   private List<Block> blocks;
   private Ball ball;
   private Paddle paddle;
-  private Game game;
+  private BlockGame blockGame;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Level(int aLevelNumber, Ball aBall, Paddle aPaddle, Game aGame)
+  public Level(int aLevelNumber, Ball aBall, Paddle aPaddle, BlockGame aBlockGame)
   {
     levelNumber = aLevelNumber;
     blocks = new ArrayList<Block>();
@@ -39,23 +39,23 @@ public class Level
       throw new RuntimeException("Unable to create Level due to aPaddle");
     }
     paddle = aPaddle;
-    boolean didAddGame = setGame(aGame);
-    if (!didAddGame)
+    boolean didAddBlockGame = setBlockGame(aBlockGame);
+    if (!didAddBlockGame)
     {
-      throw new RuntimeException("Unable to create level due to game");
+      throw new RuntimeException("Unable to create level due to blockGame");
     }
   }
 
-  public Level(int aLevelNumber, int aSpeedForBall, int aLengthForPaddle, Game aGame)
+  public Level(int aLevelNumber, int aSpeedForBall, int aMinSpeedForBall, int aMaxSpeedForBall, double aSpeedIncreaseFactorForBall, double aLengthForPaddle, int aMinLengthForPaddle, int aMaxLengthForPaddle, BlockGame aBlockGame)
   {
     levelNumber = aLevelNumber;
     blocks = new ArrayList<Block>();
-    ball = new Ball(aSpeedForBall, this);
-    paddle = new Paddle(aLengthForPaddle, this);
-    boolean didAddGame = setGame(aGame);
-    if (!didAddGame)
+    ball = new Ball(aSpeedForBall, aMinSpeedForBall, aMaxSpeedForBall, aSpeedIncreaseFactorForBall, this);
+    paddle = new Paddle(aLengthForPaddle, aMinLengthForPaddle, aMaxLengthForPaddle, this);
+    boolean didAddBlockGame = setBlockGame(aBlockGame);
+    if (!didAddBlockGame)
     {
-      throw new RuntimeException("Unable to create level due to game");
+      throw new RuntimeException("Unable to create level due to blockGame");
     }
   }
 
@@ -116,9 +116,9 @@ public class Level
     return paddle;
   }
   /* Code from template association_GetOne */
-  public Game getGame()
+  public BlockGame getBlockGame()
   {
-    return game;
+    return blockGame;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfBlocks()
@@ -126,9 +126,9 @@ public class Level
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public Block addBlock(int aSize, int aPoints, Block.Color aColor, GridCell aGridCell)
+  public Block addBlock(BlockType aBlockType, GridCell aGridCell)
   {
-    return new Block(aSize, aPoints, aColor, aGridCell, this);
+    return new Block(aBlockType, aGridCell, this);
   }
 
   public boolean addBlock(Block aBlock)
@@ -193,21 +193,21 @@ public class Level
     return wasAdded;
   }
   /* Code from template association_SetOneToMany */
-  public boolean setGame(Game aGame)
+  public boolean setBlockGame(BlockGame aBlockGame)
   {
     boolean wasSet = false;
-    if (aGame == null)
+    if (aBlockGame == null)
     {
       return wasSet;
     }
 
-    Game existingGame = game;
-    game = aGame;
-    if (existingGame != null && !existingGame.equals(aGame))
+    BlockGame existingBlockGame = blockGame;
+    blockGame = aBlockGame;
+    if (existingBlockGame != null && !existingBlockGame.equals(aBlockGame))
     {
-      existingGame.removeLevel(this);
+      existingBlockGame.removeLevel(this);
     }
-    game.addLevel(this);
+    blockGame.addLevel(this);
     wasSet = true;
     return wasSet;
   }
@@ -233,11 +233,11 @@ public class Level
     {
       existingPaddle.delete();
     }
-    Game placeholderGame = game;
-    this.game = null;
-    if(placeholderGame != null)
+    BlockGame placeholderBlockGame = blockGame;
+    this.blockGame = null;
+    if(placeholderBlockGame != null)
     {
-      placeholderGame.removeLevel(this);
+      placeholderBlockGame.removeLevel(this);
     }
   }
 
@@ -248,6 +248,6 @@ public class Level
             "levelNumber" + ":" + getLevelNumber()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "ball = "+(getBall()!=null?Integer.toHexString(System.identityHashCode(getBall())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "paddle = "+(getPaddle()!=null?Integer.toHexString(System.identityHashCode(getPaddle())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null");
+            "  " + "blockGame = "+(getBlockGame()!=null?Integer.toHexString(System.identityHashCode(getBlockGame())):"null");
   }
 }

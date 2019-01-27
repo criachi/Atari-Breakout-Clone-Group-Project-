@@ -1,7 +1,6 @@
-namespace model;
+namespace ca.mcgill.ecse223.block.model;
 
 class User {
-  autounique id;
   unique String name;
   1 -- 1 Player;
   1 -- 0..1 Admin;
@@ -9,25 +8,20 @@ class User {
 
 class Player {
   String password;
-  Integer currentLevel;
-  1 -- * Game;
+  1 -- * BlockGame;
 }
 
 class Admin {
   String password;
-  1 -- * Game;
+  1 -- * BlockGame;
 }
 
-class Game {
+class BlockGame {
   unique String name;
   1 <@>- * Level;
-  Integer playAreaSize;
+  Integer numLevels;
   1 <@>- 1 HallOfFame;
-  Double speedIncreaseFactor;
-  Integer minBallSpeed;
-  Integer maxBallSpeed;
-  Integer minPaddleLength;
-  Integer maxPaddleLength;
+  1 <@>- 1 PlayArea;
 }
 
 class HallOfFame {
@@ -44,26 +38,38 @@ class Level {
 class Ball {
   Integer speed;
   const DIAMETER = 10;
+  Integer minSpeed;
+  Integer maxSpeed;
+  Double speedIncreaseFactor;
+  lazy Double x;
+  lazy Double y;
 }
 
 class Paddle {
-  Integer length;
+  Double length;
   const WIDTH = 5;
+  Integer minLength;
+  Integer maxLength;
+  lazy Double x;
+  lazy Double y;
 }
 
-class Block {
+class PlayArea { 
+  Integer width;
+  Integer length;
+}
+
+class BlockType {
   Integer size;
   Integer points;
   const SIDE = 20;
   enum Color { Blue, Red, Yellow, Green, Orange, Black, White };
   Color color;
-  1 -- 1 GridCell;
 }
 
-class GridSystem {
-  1 -- * GridCell;
-  Integer gridLength;
-  Integer gridWidth;
+class Block {
+  * -- 1 BlockType;
+  1 -- 1 GridCell;
 }
 
 class GridCell {
