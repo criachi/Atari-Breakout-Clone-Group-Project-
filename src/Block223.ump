@@ -1,4 +1,4 @@
-namespace model;
+namespace ca.mcgill.ecse223.block.model;
 
 class User {
   autounique id;
@@ -21,13 +21,11 @@ class Admin {
 class Game {
   unique String name;
   1 <@>- * Level;
-  Integer playAreaSize;
+  immutable Integer numLevels;
+  immutable Integer numLives = 3;
+  Integer totalScore = 0;
+  immutable Integer playAreaSize;
   1 <@>- 1 HallOfFame;
-  Double speedIncreaseFactor;
-  Integer minBallSpeed;
-  Integer maxBallSpeed;
-  Integer minPaddleLength;
-  Integer maxPaddleLength;
 }
 
 class HallOfFame {
@@ -44,26 +42,40 @@ class Level {
 class Ball {
   Integer speed;
   const DIAMETER = 10;
+  immutable minSpeed = 0;
+  immutable maxSpeed = 0;
+  immutable speedIncreaseFactor = 0;
+  Double x;
+  Double y;
 }
 
 class Paddle {
-  Integer length;
+  Double length;
   const WIDTH = 5;
+  immutable minLength = 0;
+  immutable maxLength = 0;
+  Double x;
+  immutable Double y;
 }
 
-class Block {
+class BlockType {
   Integer size;
   Integer points;
   const SIDE = 20;
   enum Color { Blue, Red, Yellow, Green, Orange, Black, White };
   Color color;
+}
+
+class Block {
+  Boolean isHit = false;
+  * -- 1 BlockType;
   1 -- 1 GridCell;
 }
 
 class GridSystem {
   1 -- * GridCell;
-  Integer gridLength;
   Integer gridWidth;
+  Integer gridLength;
 }
 
 class GridCell {
