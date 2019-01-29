@@ -4,7 +4,7 @@
 package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 14 "../../../../../Block223.ump"
+// line 21 "../../../../../Block223.ump"
 public class Admin
 {
 
@@ -17,16 +17,22 @@ public class Admin
 
   //Admin Associations
   private List<BlockGame> blockGames;
+  private BlockApplication blockApplication;
   private User user;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Admin(String aPassword, User aUser)
+  public Admin(String aPassword, BlockApplication aBlockApplication, User aUser)
   {
     password = aPassword;
     blockGames = new ArrayList<BlockGame>();
+    boolean didAddBlockApplication = setBlockApplication(aBlockApplication);
+    if (!didAddBlockApplication)
+    {
+      throw new RuntimeException("Unable to create admin due to blockApplication");
+    }
     boolean didAddUser = setUser(aUser);
     if (!didAddUser)
     {
@@ -81,6 +87,11 @@ public class Admin
     return index;
   }
   /* Code from template association_GetOne */
+  public BlockApplication getBlockApplication()
+  {
+    return blockApplication;
+  }
+  /* Code from template association_GetOne */
   public User getUser()
   {
     return user;
@@ -91,9 +102,9 @@ public class Admin
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public BlockGame addBlockGame(String aName, int aNumLevels, HallOfFame aHallOfFame, PlayArea aPlayArea, Player aPlayer)
+  public BlockGame addBlockGame(String aName, int aNumLevels, HallOfFame aHallOfFame, PlayArea aPlayArea, BlockApplication aBlockApplication, Player aPlayer)
   {
-    return new BlockGame(aName, aNumLevels, aHallOfFame, aPlayArea, aPlayer, this);
+    return new BlockGame(aName, aNumLevels, aHallOfFame, aPlayArea, aBlockApplication, aPlayer, this);
   }
 
   public boolean addBlockGame(BlockGame aBlockGame)
@@ -157,6 +168,25 @@ public class Admin
     }
     return wasAdded;
   }
+  /* Code from template association_SetOneToMany */
+  public boolean setBlockApplication(BlockApplication aBlockApplication)
+  {
+    boolean wasSet = false;
+    if (aBlockApplication == null)
+    {
+      return wasSet;
+    }
+
+    BlockApplication existingBlockApplication = blockApplication;
+    blockApplication = aBlockApplication;
+    if (existingBlockApplication != null && !existingBlockApplication.equals(aBlockApplication))
+    {
+      existingBlockApplication.removeAdmin(this);
+    }
+    blockApplication.addAdmin(this);
+    wasSet = true;
+    return wasSet;
+  }
   /* Code from template association_SetOneToOptionalOne */
   public boolean setUser(User aNewUser)
   {
@@ -193,6 +223,12 @@ public class Admin
       BlockGame aBlockGame = blockGames.get(i - 1);
       aBlockGame.delete();
     }
+    BlockApplication placeholderBlockApplication = blockApplication;
+    this.blockApplication = null;
+    if(placeholderBlockApplication != null)
+    {
+      placeholderBlockApplication.removeAdmin(this);
+    }
     User existingUser = user;
     user = null;
     if (existingUser != null)
@@ -206,6 +242,7 @@ public class Admin
   {
     return super.toString() + "["+
             "password" + ":" + getPassword()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "blockApplication = "+(getBlockApplication()!=null?Integer.toHexString(System.identityHashCode(getBlockApplication())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "user = "+(getUser()!=null?Integer.toHexString(System.identityHashCode(getUser())):"null");
   }
 }

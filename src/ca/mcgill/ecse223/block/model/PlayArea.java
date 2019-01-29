@@ -4,7 +4,7 @@
 package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 57 "../../../../../Block223.ump"
+// line 65 "../../../../../Block223.ump"
 public class PlayArea
 {
 
@@ -34,11 +34,11 @@ public class PlayArea
     blockGame = aBlockGame;
   }
 
-  public PlayArea(int aWidth, int aLength, String aNameForBlockGame, int aNumLevelsForBlockGame, HallOfFame aHallOfFameForBlockGame, Player aPlayerForBlockGame, Admin aAdminForBlockGame)
+  public PlayArea(int aWidth, int aLength, String aNameForBlockGame, int aNumLevelsForBlockGame, HallOfFame aHallOfFameForBlockGame, BlockApplication aBlockApplicationForBlockGame, Player aPlayerForBlockGame, Admin aAdminForBlockGame)
   {
     width = aWidth;
     length = aLength;
-    blockGame = new BlockGame(aNameForBlockGame, aNumLevelsForBlockGame, aHallOfFameForBlockGame, this, aPlayerForBlockGame, aAdminForBlockGame);
+    blockGame = new BlockGame(aNameForBlockGame, aNumLevelsForBlockGame, aHallOfFameForBlockGame, this, aBlockApplicationForBlockGame, aPlayerForBlockGame, aAdminForBlockGame);
   }
 
   //------------------------

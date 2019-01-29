@@ -4,7 +4,7 @@
 package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 27 "../../../../../Block223.ump"
+// line 35 "../../../../../Block223.ump"
 public class HallOfFame
 {
 
@@ -30,10 +30,10 @@ public class HallOfFame
     blockGame = aBlockGame;
   }
 
-  public HallOfFame(String aNameForBlockGame, int aNumLevelsForBlockGame, PlayArea aPlayAreaForBlockGame, Player aPlayerForBlockGame, Admin aAdminForBlockGame)
+  public HallOfFame(String aNameForBlockGame, int aNumLevelsForBlockGame, PlayArea aPlayAreaForBlockGame, BlockApplication aBlockApplicationForBlockGame, Player aPlayerForBlockGame, Admin aAdminForBlockGame)
   {
     users = new ArrayList<User>();
-    blockGame = new BlockGame(aNameForBlockGame, aNumLevelsForBlockGame, this, aPlayAreaForBlockGame, aPlayerForBlockGame, aAdminForBlockGame);
+    blockGame = new BlockGame(aNameForBlockGame, aNumLevelsForBlockGame, this, aPlayAreaForBlockGame, aBlockApplicationForBlockGame, aPlayerForBlockGame, aAdminForBlockGame);
   }
 
   //------------------------
@@ -80,9 +80,9 @@ public class HallOfFame
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public User addUser(String aName, Player aPlayer)
+  public User addUser(String aName, Player aPlayer, BlockApplication aBlockApplication)
   {
-    return new User(aName, aPlayer, this);
+    return new User(aName, aPlayer, aBlockApplication, this);
   }
 
   public boolean addUser(User aUser)

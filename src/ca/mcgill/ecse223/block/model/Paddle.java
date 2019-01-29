@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse223.block.model;
 
-// line 48 "../../../../../Block223.ump"
+// line 56 "../../../../../Block223.ump"
 public class Paddle
 {
 

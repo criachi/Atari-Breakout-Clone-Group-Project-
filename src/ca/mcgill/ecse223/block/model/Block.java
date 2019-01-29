@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse223.block.model;
 
-// line 70 "../../../../../Block223.ump"
+// line 78 "../../../../../Block223.ump"
 public class Block
 {
 
@@ -39,14 +39,14 @@ public class Block
     }
   }
 
-  public Block(BlockType aBlockType, int aRowForGridCell, int aColForGridCell, Level aLevel)
+  public Block(BlockType aBlockType, int aRowForGridCell, int aColForGridCell, BlockApplication aBlockApplicationForGridCell, Level aLevel)
   {
     boolean didAddBlockType = setBlockType(aBlockType);
     if (!didAddBlockType)
     {
       throw new RuntimeException("Unable to create block due to blockType");
     }
-    gridCell = new GridCell(aRowForGridCell, aColForGridCell, this);
+    gridCell = new GridCell(aRowForGridCell, aColForGridCell, aBlockApplicationForGridCell, this);
     boolean didAddLevel = setLevel(aLevel);
     if (!didAddLevel)
     {

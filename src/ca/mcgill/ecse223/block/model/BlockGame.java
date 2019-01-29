@@ -4,7 +4,7 @@
 package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 19 "../../../../../Block223.ump"
+// line 26 "../../../../../Block223.ump"
 public class BlockGame
 {
 
@@ -26,6 +26,8 @@ public class BlockGame
   private List<Level> levels;
   private HallOfFame hallOfFame;
   private PlayArea playArea;
+  private List<BlockType> blockTypes;
+  private BlockApplication blockApplication;
   private Player player;
   private Admin admin;
 
@@ -33,7 +35,7 @@ public class BlockGame
   // CONSTRUCTOR
   //------------------------
 
-  public BlockGame(String aName, int aNumLevels, HallOfFame aHallOfFame, PlayArea aPlayArea, Player aPlayer, Admin aAdmin)
+  public BlockGame(String aName, int aNumLevels, HallOfFame aHallOfFame, PlayArea aPlayArea, BlockApplication aBlockApplication, Player aPlayer, Admin aAdmin)
   {
     numLevels = aNumLevels;
     if (!setName(aName))
@@ -51,6 +53,12 @@ public class BlockGame
       throw new RuntimeException("Unable to create BlockGame due to aPlayArea");
     }
     playArea = aPlayArea;
+    blockTypes = new ArrayList<BlockType>();
+    boolean didAddBlockApplication = setBlockApplication(aBlockApplication);
+    if (!didAddBlockApplication)
+    {
+      throw new RuntimeException("Unable to create blockGame due to blockApplication");
+    }
     boolean didAddPlayer = setPlayer(aPlayer);
     if (!didAddPlayer)
     {
@@ -63,13 +71,19 @@ public class BlockGame
     }
   }
 
-  public BlockGame(String aName, int aNumLevels, int aWidthForPlayArea, int aLengthForPlayArea, Player aPlayer, Admin aAdmin)
+  public BlockGame(String aName, int aNumLevels, int aWidthForPlayArea, int aLengthForPlayArea, BlockApplication aBlockApplication, Player aPlayer, Admin aAdmin)
   {
     name = aName;
     numLevels = aNumLevels;
     levels = new ArrayList<Level>();
     hallOfFame = new HallOfFame(this);
     playArea = new PlayArea(aWidthForPlayArea, aLengthForPlayArea, this);
+    blockTypes = new ArrayList<BlockType>();
+    boolean didAddBlockApplication = setBlockApplication(aBlockApplication);
+    if (!didAddBlockApplication)
+    {
+      throw new RuntimeException("Unable to create blockGame due to blockApplication");
+    }
     boolean didAddPlayer = setPlayer(aPlayer);
     if (!didAddPlayer)
     {
@@ -169,6 +183,41 @@ public class BlockGame
   {
     return playArea;
   }
+  /* Code from template association_GetMany */
+  public BlockType getBlockType(int index)
+  {
+    BlockType aBlockType = blockTypes.get(index);
+    return aBlockType;
+  }
+
+  public List<BlockType> getBlockTypes()
+  {
+    List<BlockType> newBlockTypes = Collections.unmodifiableList(blockTypes);
+    return newBlockTypes;
+  }
+
+  public int numberOfBlockTypes()
+  {
+    int number = blockTypes.size();
+    return number;
+  }
+
+  public boolean hasBlockTypes()
+  {
+    boolean has = blockTypes.size() > 0;
+    return has;
+  }
+
+  public int indexOfBlockType(BlockType aBlockType)
+  {
+    int index = blockTypes.indexOf(aBlockType);
+    return index;
+  }
+  /* Code from template association_GetOne */
+  public BlockApplication getBlockApplication()
+  {
+    return blockApplication;
+  }
   /* Code from template association_GetOne */
   public Player getPlayer()
   {
@@ -251,6 +300,97 @@ public class BlockGame
     }
     return wasAdded;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfBlockTypes()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public BlockType addBlockType(int aSize, int aPoints, BlockType.Color aColor)
+  {
+    return new BlockType(aSize, aPoints, aColor, this);
+  }
+
+  public boolean addBlockType(BlockType aBlockType)
+  {
+    boolean wasAdded = false;
+    if (blockTypes.contains(aBlockType)) { return false; }
+    BlockGame existingBlockGame = aBlockType.getBlockGame();
+    boolean isNewBlockGame = existingBlockGame != null && !this.equals(existingBlockGame);
+    if (isNewBlockGame)
+    {
+      aBlockType.setBlockGame(this);
+    }
+    else
+    {
+      blockTypes.add(aBlockType);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeBlockType(BlockType aBlockType)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aBlockType, as it must always have a blockGame
+    if (!this.equals(aBlockType.getBlockGame()))
+    {
+      blockTypes.remove(aBlockType);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addBlockTypeAt(BlockType aBlockType, int index)
+  {  
+    boolean wasAdded = false;
+    if(addBlockType(aBlockType))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfBlockTypes()) { index = numberOfBlockTypes() - 1; }
+      blockTypes.remove(aBlockType);
+      blockTypes.add(index, aBlockType);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveBlockTypeAt(BlockType aBlockType, int index)
+  {
+    boolean wasAdded = false;
+    if(blockTypes.contains(aBlockType))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfBlockTypes()) { index = numberOfBlockTypes() - 1; }
+      blockTypes.remove(aBlockType);
+      blockTypes.add(index, aBlockType);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addBlockTypeAt(aBlockType, index);
+    }
+    return wasAdded;
+  }
+  /* Code from template association_SetOneToMany */
+  public boolean setBlockApplication(BlockApplication aBlockApplication)
+  {
+    boolean wasSet = false;
+    if (aBlockApplication == null)
+    {
+      return wasSet;
+    }
+
+    BlockApplication existingBlockApplication = blockApplication;
+    blockApplication = aBlockApplication;
+    if (existingBlockApplication != null && !existingBlockApplication.equals(aBlockApplication))
+    {
+      existingBlockApplication.removeBlockGame(this);
+    }
+    blockApplication.addBlockGame(this);
+    wasSet = true;
+    return wasSet;
+  }
   /* Code from template association_SetOneToMany */
   public boolean setPlayer(Player aPlayer)
   {
@@ -312,6 +452,19 @@ public class BlockGame
     {
       existingPlayArea.delete();
     }
+    while (blockTypes.size() > 0)
+    {
+      BlockType aBlockType = blockTypes.get(blockTypes.size() - 1);
+      aBlockType.delete();
+      blockTypes.remove(aBlockType);
+    }
+    
+    BlockApplication placeholderBlockApplication = blockApplication;
+    this.blockApplication = null;
+    if(placeholderBlockApplication != null)
+    {
+      placeholderBlockApplication.removeBlockGame(this);
+    }
     Player placeholderPlayer = player;
     this.player = null;
     if(placeholderPlayer != null)
@@ -334,6 +487,7 @@ public class BlockGame
             "numLevels" + ":" + getNumLevels()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "hallOfFame = "+(getHallOfFame()!=null?Integer.toHexString(System.identityHashCode(getHallOfFame())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "playArea = "+(getPlayArea()!=null?Integer.toHexString(System.identityHashCode(getPlayArea())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "blockApplication = "+(getBlockApplication()!=null?Integer.toHexString(System.identityHashCode(getBlockApplication())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "admin = "+(getAdmin()!=null?Integer.toHexString(System.identityHashCode(getAdmin())):"null");
   }

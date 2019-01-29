@@ -4,7 +4,7 @@
 package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 9 "../../../../../Block223.ump"
+// line 16 "../../../../../Block223.ump"
 public class Player
 {
 
@@ -17,16 +17,22 @@ public class Player
 
   //Player Associations
   private List<BlockGame> blockGames;
+  private BlockApplication blockApplication;
   private User user;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Player(String aPassword, User aUser)
+  public Player(String aPassword, BlockApplication aBlockApplication, User aUser)
   {
     password = aPassword;
     blockGames = new ArrayList<BlockGame>();
+    boolean didAddBlockApplication = setBlockApplication(aBlockApplication);
+    if (!didAddBlockApplication)
+    {
+      throw new RuntimeException("Unable to create player due to blockApplication");
+    }
     if (aUser == null || aUser.getPlayer() != null)
     {
       throw new RuntimeException("Unable to create Player due to aUser");
@@ -34,11 +40,16 @@ public class Player
     user = aUser;
   }
 
-  public Player(String aPassword, String aNameForUser, HallOfFame aHallOfFameForUser)
+  public Player(String aPassword, BlockApplication aBlockApplication, String aNameForUser, BlockApplication aBlockApplicationForUser, HallOfFame aHallOfFameForUser)
   {
     password = aPassword;
     blockGames = new ArrayList<BlockGame>();
-    user = new User(aNameForUser, this, aHallOfFameForUser);
+    boolean didAddBlockApplication = setBlockApplication(aBlockApplication);
+    if (!didAddBlockApplication)
+    {
+      throw new RuntimeException("Unable to create player due to blockApplication");
+    }
+    user = new User(aNameForUser, this, aBlockApplicationForUser, aHallOfFameForUser);
   }
 
   //------------------------
@@ -88,6 +99,11 @@ public class Player
     return index;
   }
   /* Code from template association_GetOne */
+  public BlockApplication getBlockApplication()
+  {
+    return blockApplication;
+  }
+  /* Code from template association_GetOne */
   public User getUser()
   {
     return user;
@@ -98,9 +114,9 @@ public class Player
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public BlockGame addBlockGame(String aName, int aNumLevels, HallOfFame aHallOfFame, PlayArea aPlayArea, Admin aAdmin)
+  public BlockGame addBlockGame(String aName, int aNumLevels, HallOfFame aHallOfFame, PlayArea aPlayArea, BlockApplication aBlockApplication, Admin aAdmin)
   {
-    return new BlockGame(aName, aNumLevels, aHallOfFame, aPlayArea, this, aAdmin);
+    return new BlockGame(aName, aNumLevels, aHallOfFame, aPlayArea, aBlockApplication, this, aAdmin);
   }
 
   public boolean addBlockGame(BlockGame aBlockGame)
@@ -164,6 +180,25 @@ public class Player
     }
     return wasAdded;
   }
+  /* Code from template association_SetOneToMany */
+  public boolean setBlockApplication(BlockApplication aBlockApplication)
+  {
+    boolean wasSet = false;
+    if (aBlockApplication == null)
+    {
+      return wasSet;
+    }
+
+    BlockApplication existingBlockApplication = blockApplication;
+    blockApplication = aBlockApplication;
+    if (existingBlockApplication != null && !existingBlockApplication.equals(aBlockApplication))
+    {
+      existingBlockApplication.removePlayer(this);
+    }
+    blockApplication.addPlayer(this);
+    wasSet = true;
+    return wasSet;
+  }
 
   public void delete()
   {
@@ -171,6 +206,12 @@ public class Player
     {
       BlockGame aBlockGame = blockGames.get(i - 1);
       aBlockGame.delete();
+    }
+    BlockApplication placeholderBlockApplication = blockApplication;
+    this.blockApplication = null;
+    if(placeholderBlockApplication != null)
+    {
+      placeholderBlockApplication.removePlayer(this);
     }
     User existingUser = user;
     user = null;
@@ -185,6 +226,7 @@ public class Player
   {
     return super.toString() + "["+
             "password" + ":" + getPassword()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "blockApplication = "+(getBlockApplication()!=null?Integer.toHexString(System.identityHashCode(getBlockApplication())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "user = "+(getUser()!=null?Integer.toHexString(System.identityHashCode(getUser())):"null");
   }
 }

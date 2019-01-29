@@ -1,5 +1,12 @@
 namespace ca.mcgill.ecse223.block.model;
 
+class BlockApplication {
+1 <@>- * User;
+1 <@>- * BlockGame;
+1 <@>- * Player;
+1 <@>- *Admin;
+1 <@>- *GridCell; 
+}
 class User {
   unique String name;
   1 -- 1 Player;
@@ -22,6 +29,7 @@ class BlockGame {
   Integer numLevels;
   1 <@>- 1 HallOfFame;
   1 <@>- 1 PlayArea;
+  1 <@>- * BlockType; 
 }
 
 class HallOfFame {

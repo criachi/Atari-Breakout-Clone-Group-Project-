@@ -4,7 +4,7 @@
 package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 62 "../../../../../Block223.ump"
+// line 70 "../../../../../Block223.ump"
 public class BlockType
 {
 
@@ -30,17 +30,23 @@ public class BlockType
   private Color color;
 
   //BlockType Associations
+  private BlockGame blockGame;
   private List<Block> blocks;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public BlockType(int aSize, int aPoints, Color aColor)
+  public BlockType(int aSize, int aPoints, Color aColor, BlockGame aBlockGame)
   {
     size = aSize;
     points = aPoints;
     color = aColor;
+    boolean didAddBlockGame = setBlockGame(aBlockGame);
+    if (!didAddBlockGame)
+    {
+      throw new RuntimeException("Unable to create blockType due to blockGame");
+    }
     blocks = new ArrayList<Block>();
   }
 
@@ -86,6 +92,11 @@ public class BlockType
   {
     return color;
   }
+  /* Code from template association_GetOne */
+  public BlockGame getBlockGame()
+  {
+    return blockGame;
+  }
   /* Code from template association_GetMany */
   public Block getBlock(int index)
   {
@@ -115,6 +126,25 @@ public class BlockType
   {
     int index = blocks.indexOf(aBlock);
     return index;
+  }
+  /* Code from template association_SetOneToMany */
+  public boolean setBlockGame(BlockGame aBlockGame)
+  {
+    boolean wasSet = false;
+    if (aBlockGame == null)
+    {
+      return wasSet;
+    }
+
+    BlockGame existingBlockGame = blockGame;
+    blockGame = aBlockGame;
+    if (existingBlockGame != null && !existingBlockGame.equals(aBlockGame))
+    {
+      existingBlockGame.removeBlockType(this);
+    }
+    blockGame.addBlockType(this);
+    wasSet = true;
+    return wasSet;
   }
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfBlocks()
@@ -191,6 +221,12 @@ public class BlockType
 
   public void delete()
   {
+    BlockGame placeholderBlockGame = blockGame;
+    this.blockGame = null;
+    if(placeholderBlockGame != null)
+    {
+      placeholderBlockGame.removeBlockType(this);
+    }
     for(int i=blocks.size(); i > 0; i--)
     {
       Block aBlock = blocks.get(i - 1);
@@ -204,6 +240,7 @@ public class BlockType
     return super.toString() + "["+
             "size" + ":" + getSize()+ "," +
             "points" + ":" + getPoints()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "color" + "=" + (getColor() != null ? !getColor().equals(this)  ? getColor().toString().replaceAll("  ","    ") : "this" : "null");
+            "  " + "color" + "=" + (getColor() != null ? !getColor().equals(this)  ? getColor().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "blockGame = "+(getBlockGame()!=null?Integer.toHexString(System.identityHashCode(getBlockGame())):"null");
   }
 }

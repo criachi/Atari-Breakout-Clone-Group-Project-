@@ -4,7 +4,7 @@
 package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 3 "../../../../../Block223.ump"
+// line 10 "../../../../../Block223.ump"
 public class User
 {
 
@@ -24,13 +24,14 @@ public class User
   //User Associations
   private Player player;
   private Admin admin;
+  private BlockApplication blockApplication;
   private HallOfFame hallOfFame;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public User(String aName, Player aPlayer, HallOfFame aHallOfFame)
+  public User(String aName, Player aPlayer, BlockApplication aBlockApplication, HallOfFame aHallOfFame)
   {
     if (!setName(aName))
     {
@@ -41,6 +42,11 @@ public class User
       throw new RuntimeException("Unable to create User due to aPlayer");
     }
     player = aPlayer;
+    boolean didAddBlockApplication = setBlockApplication(aBlockApplication);
+    if (!didAddBlockApplication)
+    {
+      throw new RuntimeException("Unable to create user due to blockApplication");
+    }
     boolean didAddHallOfFame = setHallOfFame(aHallOfFame);
     if (!didAddHallOfFame)
     {
@@ -48,10 +54,15 @@ public class User
     }
   }
 
-  public User(String aName, String aPasswordForPlayer, HallOfFame aHallOfFame)
+  public User(String aName, String aPasswordForPlayer, BlockApplication aBlockApplicationForPlayer, BlockApplication aBlockApplication, HallOfFame aHallOfFame)
   {
     name = aName;
-    player = new Player(aPasswordForPlayer, this);
+    player = new Player(aPasswordForPlayer, aBlockApplicationForPlayer, this);
+    boolean didAddBlockApplication = setBlockApplication(aBlockApplication);
+    if (!didAddBlockApplication)
+    {
+      throw new RuntimeException("Unable to create user due to blockApplication");
+    }
     boolean didAddHallOfFame = setHallOfFame(aHallOfFame);
     if (!didAddHallOfFame)
     {
@@ -110,6 +121,11 @@ public class User
     return has;
   }
   /* Code from template association_GetOne */
+  public BlockApplication getBlockApplication()
+  {
+    return blockApplication;
+  }
+  /* Code from template association_GetOne */
   public HallOfFame getHallOfFame()
   {
     return hallOfFame;
@@ -138,6 +154,25 @@ public class User
         admin.setUser(this);
       }
     }
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template association_SetOneToMany */
+  public boolean setBlockApplication(BlockApplication aBlockApplication)
+  {
+    boolean wasSet = false;
+    if (aBlockApplication == null)
+    {
+      return wasSet;
+    }
+
+    BlockApplication existingBlockApplication = blockApplication;
+    blockApplication = aBlockApplication;
+    if (existingBlockApplication != null && !existingBlockApplication.equals(aBlockApplication))
+    {
+      existingBlockApplication.removeUser(this);
+    }
+    blockApplication.addUser(this);
     wasSet = true;
     return wasSet;
   }
@@ -176,6 +211,12 @@ public class User
     {
       existingAdmin.delete();
     }
+    BlockApplication placeholderBlockApplication = blockApplication;
+    this.blockApplication = null;
+    if(placeholderBlockApplication != null)
+    {
+      placeholderBlockApplication.removeUser(this);
+    }
     HallOfFame placeholderHallOfFame = hallOfFame;
     this.hallOfFame = null;
     if(placeholderHallOfFame != null)
@@ -191,6 +232,7 @@ public class User
             "name" + ":" + getName()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "admin = "+(getAdmin()!=null?Integer.toHexString(System.identityHashCode(getAdmin())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "blockApplication = "+(getBlockApplication()!=null?Integer.toHexString(System.identityHashCode(getBlockApplication())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "hallOfFame = "+(getHallOfFame()!=null?Integer.toHexString(System.identityHashCode(getHallOfFame())):"null");
   }
 }
