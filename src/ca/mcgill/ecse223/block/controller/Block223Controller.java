@@ -62,21 +62,27 @@ public class Block223Controller {
 	// Query methods
 	// ****************************
 	public static List<TOGame> getDesignableGames() {
+		return null;
 	}
 
 	public static TOGame getCurrentDesignableGame() {
+		return null;
 	}
 
 	public static List<TOBlock> getBlocksOfCurrentDesignableGame() {
+		return null;
 	}
 
 	public static TOBlock getBlockOfCurrentDesignableGame(int id) throws InvalidInputException {
+		return null;
 	}
 
 	public List<TOGridCell> getBlocksAtLevelOfCurrentDesignableGame(int level) throws InvalidInputException {
+		return null;
 	}
 
 	public static TOUserMode getUserMode() {
+		return null;
 	}
 
 }
