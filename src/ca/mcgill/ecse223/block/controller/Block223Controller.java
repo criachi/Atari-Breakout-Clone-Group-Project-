@@ -118,7 +118,7 @@ public class Block223Controller {
 			error = error + "Only the admin who created the game can define its game settings.";
 		}
 				
-		Game game = findGame(name);
+		Game game = Block223Application.getBlock223().findGame(name);
 		if(game == null) {
 			error = error + "A game with name "+ name +" does not exist.";
 		}
@@ -243,15 +243,5 @@ public class Block223Controller {
 	return null;
 	}
 
-	private static Game findGame(String name) {
-		Game foundGame = null;
-		for (Game game : Block223Application.getBlock223().getGames()) {
-			if (game.getName() == name) {
-				foundGame = game;
-				break;
-			}
-		}
-		return foundGame;
-	}
 
 }
