@@ -11,7 +11,6 @@ class Block223 {
     User.reinitializeUniqueUserName(this.getUsers());
   }
   
-  
  }
  class Admin {
   depend java.io.Serializable;
