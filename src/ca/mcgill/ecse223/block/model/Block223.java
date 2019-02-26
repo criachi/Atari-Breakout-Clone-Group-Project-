@@ -5,6 +5,8 @@ package ca.mcgill.ecse223.block.model;
 import java.io.Serializable;
 import java.util.*;
 
+import ca.mcgill.ecse223.block.application.Block223Application;
+
 // line 3 "../../../../../Block223 v2.ump"
 public class Block223 implements Serializable
 {
@@ -366,7 +368,7 @@ public class Block223 implements Serializable
   
   // line 10 "../../../../../Block223 v2.ump"
    public void reinitialize(){
-    //  Block.reinitializeAutouniqueID(this.getBlocks()); //WE DONT HAVE BLOCK LIST
+	Block.reinitializeAutouniqueID(Block223Application.getCurrentGame().getBlocks());
     Game.reinitializeUniqueGameName(this.getGames());
     User.reinitializeUniqueUserName(this.getUsers());
   }

@@ -2,10 +2,11 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.block.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 44 "../../../../../Block223 v2.ump"
-public class Block
+// line 61 "../../../../../Block223 v2.ump"
+public class Block implements Serializable
 {
 
   //------------------------
@@ -257,7 +258,16 @@ public class Block
     }
   }
 
-
+  public static void reinitializeAutouniqueID(List<Block> blocks) {
+	     nextId = 0; 
+	     for (Block block : blocks) {
+	        if (block.getId() > nextId) {
+	        nextId = block.getId();
+	       }   
+	     }
+	     nextId++;
+	  }
+  
   public String toString()
   {
     return super.toString() + "["+
@@ -268,4 +278,5 @@ public class Block
             "points" + ":" + getPoints()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null");
   }
+  private static final long serialVersionUID = 5332292624658907512L;
 }
