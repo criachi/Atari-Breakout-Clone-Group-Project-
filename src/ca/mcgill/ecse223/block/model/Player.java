@@ -3,8 +3,10 @@
 
 package ca.mcgill.ecse223.block.model;
 
-// line 23 "../../../../../Block223 v2.ump"
-public class Player extends UserRole
+import java.io.Serializable;
+
+// line 30 "../../../../../Block223 v2.ump"
+public class Player extends UserRole implements Serializable
 {
 
   //------------------------
@@ -28,5 +30,5 @@ public class Player extends UserRole
   {
     super.delete();
   }
-
+  private static final long serialVersionUID = -8062584216235283243L;
 }

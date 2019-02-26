@@ -2,10 +2,11 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.block.model;
+import java.io.Serializable;
 import java.util.*;
 
 // line 3 "../../../../../Block223 v2.ump"
-public class Block223
+public class Block223 implements Serializable
 {
 
   //------------------------
@@ -127,9 +128,9 @@ public class Block223
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public User addUser(String aUsername, UserRole... allRoles)
+  public User addUser(String aUsername)
   {
-    return new User(aUsername, this, allRoles);
+    return new User(aUsername, this);
   }
 
   public boolean addUser(User aUser)
@@ -358,6 +359,16 @@ public class Block223
       games.remove(aGame);
     }
     
+  }
+
+
+   private static final long serialVersionUID = -4904473121226232586L;
+  
+  // line 10 "../../../../../Block223 v2.ump"
+   public void reinitialize(){
+    //  Block.reinitializeAutouniqueID(this.getBlocks()); //WE DONT HAVE BLOCK LIST
+    Game.reinitializeUniqueGameName(this.getGames());
+    User.reinitializeUniqueUserName(this.getUsers());
   }
 
 }
