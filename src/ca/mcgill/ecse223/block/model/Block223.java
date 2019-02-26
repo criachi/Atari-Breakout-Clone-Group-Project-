@@ -360,4 +360,15 @@ public class Block223
     
   }
 
+  // line 9 "../../../../../Block223 v2.ump"
+   public Game findGame(String name){
+    for(Game game : getGames()) {
+		  if (game.getName().equals(name)) {
+			  return game;
+		  }
+	  }
+	  
+	  return null;
+  }
+
 }

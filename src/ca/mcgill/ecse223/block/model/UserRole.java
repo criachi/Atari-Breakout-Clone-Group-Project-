@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse223.block.model;
 
-// line 14 "../../../../../Block223 v2.ump"
+// line 24 "../../../../../Block223 v2.ump"
 public abstract class UserRole
 {
 

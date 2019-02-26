@@ -4,6 +4,16 @@ class Block223 {
    1 <@>- * User users;
    1 <@>- * UserRole roles;
    1 <@>- * Game games;
+   
+   public Game findGame(String name) {
+	  for(Game game : getGames()) {
+		  if (game.getName().equals(name)) {
+			  return game;
+		  }
+	  }
+	  
+	  return null;
+  }
 }
 
 class User {
