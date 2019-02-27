@@ -84,17 +84,6 @@ public class Block223Page extends JFrame{
 		
 		private JButton saveGameSettingButton;
 		
-		//BlockAssignment
-		private JComboBox<String> levelList;
-		private JLabel levelLabel;
-		private JComboBox<String> blockList;
-		private JLabel blockLabel;
-		private JTextField gridHorizontalPositionTextField;
-		private JLabel gridHorizontalPositionLabel;
-		private JTextField gridVerticalPositionTextField;
-		private JLabel gridVerticalPositionLabel;
-		private JButton assignBlockButton;
-		
 		//data elements
 		private String error = null;
 		
@@ -181,21 +170,6 @@ public class Block223Page extends JFrame{
 			maxPaddleLengthLabel = new JLabel();
 			maxPaddleLengthLabel.setText("Maximum Paddle Length");
 			
-			//Assigning blocks to a level
-			levelList = new JComboBox<String>();
-			levelLabel = new JLabel();
-			levelLabel.setText("Level:");
-			blockList = new JComboBox<String>();
-			blockLabel = new JLabel();
-			blockLabel.setText("Block ID:");
-			gridHorizontalPositionTextField = new JTextField();
-			gridHorizontalPositionLabel = new JLabel();
-			gridHorizontalPositionLabel.setText("Horizontal Position:");
-			gridVerticalPositionTextField = new JTextField();
-			gridVerticalPositionLabel = new JLabel();
-			gridVerticalPositionLabel.setText("Vertical Position:");
-			assignBlockButton = new JButton();
-			assignBlockButton.setText("Assign");
 			
 			// global settings
 			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -253,16 +227,6 @@ public class Block223Page extends JFrame{
 											.addComponent(speedIncreaseFactorTextField, 200, 200, 400)
 											.addComponent(minPaddleLengthTextField, 200, 200, 400)
 											.addComponent(maxPaddleLengthTextField, 200, 200, 400))
-									.addGroup(layout.createParallelGroup()
-											.addComponent(levelLabel)
-											.addComponent(blockLabel)
-											.addComponent(gridHorizontalPositionLabel)
-											.addComponent(gridVerticalPositionLabel))
-									.addGroup(layout.createParallelGroup()
-											.addComponent(levelList)
-											.addComponent(blockList)
-											.addComponent(gridHorizontalPositionTextField, 200, 200, 400)
-											.addComponent(gridVerticalPositionTextField, 200, 200, 400))
 									)
 							)
 					);
@@ -271,8 +235,6 @@ public class Block223Page extends JFrame{
 			layout.linkSize(SwingConstants.VERTICAL, new java.awt.Component[] {usernameField, passwordField, adminPasswordField});
 			layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {availableGames, gameNameTextField, nrOfLevelsTextField, nrOfBlocksPerLevelTextField, minBallSpeedXTextField, minBallSpeedYTextField, speedIncreaseFactorTextField, minPaddleLengthTextField, maxPaddleLengthTextField});
 			layout.linkSize(SwingConstants.VERTICAL, new java.awt.Component[] {availableGames, gameNameTextField, nrOfLevelsTextField, nrOfBlocksPerLevelTextField, minBallSpeedXTextField, minBallSpeedYTextField, speedIncreaseFactorTextField, minPaddleLengthTextField, maxPaddleLengthTextField});
-			layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {levelList, blockList, gridHorizontalPositionTextField, gridVerticalPositionTextField});
-			layout.linkSize(SwingConstants.VERTICAL, new java.awt.Component[] {levelList, blockList, gridHorizontalPositionTextField, gridVerticalPositionTextField});
 			
 			layout.setVerticalGroup(
 					layout.createParallelGroup()
@@ -283,30 +245,22 @@ public class Block223Page extends JFrame{
 									.addComponent(username)
 									.addComponent(usernameField)
 									.addComponent(gameSettingsLabel)
-									.addComponent(availableGames)
-									.addComponent(levelLabel)
-									.addComponent(levelList))
+									.addComponent(availableGames))
 							.addGroup(layout.createParallelGroup()
 									.addComponent(userPassword)
 									.addComponent(passwordField)
-									.addComponent(settingsLabel)
-									.addComponent(blockLabel)
-									.addComponent(blockList))
+									.addComponent(settingsLabel))
 							.addGroup(layout.createParallelGroup()
 									.addComponent(adminPassword)
 									.addComponent(adminPasswordField)
 									.addComponent(gameNameLabel)
-									.addComponent(gameNameTextField)
-									.addComponent(gridHorizontalPositionLabel)
-									.addComponent(gridHorizontalPositionTextField))
+									.addComponent(gameNameTextField))
 							.addGroup(layout.createParallelGroup()
 									.addComponent(signUp)
 									.addComponent(userLogIn)
 									.addComponent(adminLogIn)
 									.addComponent(nrOfLevelsLabel)
-									.addComponent(nrOfLevelsTextField)
-									.addComponent(gridVerticalPositionLabel)
-									.addComponent(gridVerticalPositionTextField))
+									.addComponent(nrOfLevelsTextField))
 							.addGroup(layout.createParallelGroup()
 									.addComponent(nrOfBlocksPerLevelLabel)
 									.addComponent(nrOfBlocksPerLevelTextField))
@@ -347,10 +301,6 @@ public class Block223Page extends JFrame{
 					//Paddle
 				minPaddleLengthTextField.setText("");
 				maxPaddleLengthTextField.setText("");
-				
-				//BlockAssignment
-				gridHorizontalPositionTextField.setText("");
-				gridVerticalPositionTextField.setText("");
 					
 			}
 		}
