@@ -191,4 +191,17 @@ public class Level
     }
   }
 
+  // line 62 "../../../../../Block223 v2.ump"
+   public BlockAssignment findBlockAssignment(int gridHorizontalPosition, int gridVerticalPosition){
+    List<BlockAssignment> blockAssignments = this.getBlockAssignments();
+		for(BlockAssignment blockAssignment: blockAssignments) {
+			int h = blockAssignment.getGridHorizontalPosition();
+			int v = blockAssignment.getGridVerticalPosition();
+				if(h == gridHorizontalPosition && v == gridVerticalPosition) {
+					return blockAssignment;
+				}
+		}
+		return null;
+  }
+
 }
