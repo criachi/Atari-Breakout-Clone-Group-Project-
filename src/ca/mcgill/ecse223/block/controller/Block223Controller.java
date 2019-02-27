@@ -2,17 +2,10 @@ package ca.mcgill.ecse223.block.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import ca.mcgill.ecse223.block.application.Block223Application;
-<<<<<<< HEAD
 import ca.mcgill.ecse223.block.controller.TOUserMode.Mode;
 import ca.mcgill.ecse223.block.model.*;
-=======
-
-import ca.mcgill.ecse223.block.model.*;
 import ca.mcgill.ecse223.block.persistence.Block223Persistence;
-
->>>>>>> refs/remotes/origin/master
 
 public class Block223Controller {
 
@@ -540,7 +533,6 @@ public class Block223Controller {
 	}
 
 	public List<TOGridCell> getBlocksAtLevelOfCurrentDesignableGame(int level) throws InvalidInputException {
-<<<<<<< HEAD
 		String error = "";
 		if(!(Block223Application.getCurrentUserRole() instanceof Admin)) {
 			error = "Admin priviliges are required to access game information. ";
@@ -569,14 +561,10 @@ public class Block223Controller {
 				assignment.getBlock().getBlue(), assignment.getBlock().getPoints());
 			result.add(to);
 		}
-		return result; 
-=======
-	return null;
->>>>>>> refs/remotes/origin/master
+		return result;
 	}
 
 	public static TOUserMode getUserMode() {
-<<<<<<< HEAD
 		UserRole userRole = Block223Application.getCurrentUserRole();
 		if(userRole == null) {
 			TOUserMode to = new TOUserMode(Mode.None);
@@ -590,14 +578,6 @@ public class Block223Controller {
 			TOUserMode to = new TOUserMode(Mode.Design);
 			return to;
 		}
-		return null;
-=======
 	return null;
->>>>>>> refs/remotes/origin/master
 	}
-<<<<<<< HEAD
-=======
-
-
->>>>>>> refs/remotes/origin/master
 }

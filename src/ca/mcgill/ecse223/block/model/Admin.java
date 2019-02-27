@@ -4,78 +4,6 @@
 package ca.mcgill.ecse223.block.model;
 import java.util.*;
 
-// line 19 "../../../../../Block223 v2.ump"
-public class Admin extends UserRole
-{
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //Admin Associations
-  private List<Game> games;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-<<<<<<< HEAD
-  public Admin(String aPassword, Block223 aBlock223)
-  {
-    super(aPassword, aBlock223);
-    games = new ArrayList<Game>();
-  }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
-  /* Code from template association_GetMany */
-  public Game getGame(int index)
-  {
-    Game aGame = games.get(index);
-    return aGame;
-  }
-
-  public List<Game> getGames()
-  {
-    List<Game> newGames = Collections.unmodifiableList(games);
-    return newGames;
-  }
-
-  public int numberOfGames()
-  {
-    int number = games.size();
-    return number;
-  }
-
-  public boolean hasGames()
-  {
-    boolean has = games.size() > 0;
-    return has;
-  }
-
-  public int indexOfGame(Game aGame)
-  {
-    int index = games.indexOf(aGame);
-    return index;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfGames()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne */
-  public Game addGame(String aName, int aNrBlocksPerLevel, Ball aBall, Paddle aPaddle, Block223 aBlock223)
-  {
-    return new Game(aName, aNrBlocksPerLevel, this, aBall, aPaddle, aBlock223);
-  }
-
-  public boolean addGame(Game aGame)
-  {
-=======
-package ca.mcgill.ecse223.block.model;
-import java.util.*;
-
 // line 39 "../../../../../Block223 v2.ump"
 public class Admin extends UserRole
 {
@@ -143,7 +71,6 @@ public class Admin extends UserRole
 
   public boolean addGame(Game aGame)
   {
->>>>>>> refs/remotes/origin/master
     boolean wasAdded = false;
     if (games.contains(aGame)) { return false; }
     Admin existingAdmin = aGame.getAdmin();

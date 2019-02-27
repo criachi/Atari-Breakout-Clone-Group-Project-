@@ -3,34 +3,6 @@
 
 package ca.mcgill.ecse223.block.model;
 
-// line 23 "../../../../../Block223 v2.ump"
-public class Player extends UserRole
-{
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-  public Player(String aPassword, Block223 aBlock223)
-  {
-    super(aPassword, aBlock223);
-  }
-
-  //------------------------
-  // INTERFACE
-  //------------------------
-
-<<<<<<< HEAD
-  public void delete()
-  {
-    super.delete();
-  }
-
-=======
 // line 43 "../../../../../Block223 v2.ump"
 public class Player extends UserRole
 {
@@ -57,5 +29,4 @@ public class Player extends UserRole
     super.delete();
   }
 
->>>>>>> refs/remotes/origin/master
 }

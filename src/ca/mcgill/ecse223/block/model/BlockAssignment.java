@@ -3,33 +3,7 @@
 
 package ca.mcgill.ecse223.block.model;
 
-// line 74 "../../../../../Block223 v2.ump"
-public class BlockAssignment
-{
-
-  //------------------------
-  // MEMBER VARIABLES
-  //------------------------
-
-  //BlockAssignment Attributes
-  private int gridHorizontalPosition;
-  private int gridVerticalPosition;
-
-  //BlockAssignment Associations
-  private Level level;
-  private Block block;
-  private Game game;
-
-  //------------------------
-  // CONSTRUCTOR
-  //------------------------
-
-<<<<<<< HEAD
-  public BlockAssignment(int aGridHorizontalPosition, int aGridVerticalPosition, Level aLevel, Block aBlock, Game aGame)
-=======
-package ca.mcgill.ecse223.block.model;
-
-// line 112 "../../../../../Block223 v2.ump"
+// line 124 "../../../../../Block223 v2.ump"
 public class BlockAssignment
 {
 
@@ -51,9 +25,8 @@ public class BlockAssignment
   //------------------------
 
   public BlockAssignment(int aGridHorizontalPosition, int aGridVerticalPosition, Level aLevel, Block aBlock, Game aGame)
->>>>>>> refs/remotes/origin/master
   {
-    // line 80 "../../../../../Block223 v2.ump"
+    // line 130 "../../../../../Block223 v2.ump"
     if(gridHorizontalPosition <= 0 || gridHorizontalPosition > maxNrHorizontalBlocks()) {
        			throw new RuntimeException("The horizontal position must be between 1 and " + maxNrHorizontalBlocks() + ".");
        		}
@@ -87,7 +60,7 @@ public class BlockAssignment
   public boolean setGridHorizontalPosition(int aGridHorizontalPosition)
   {
     boolean wasSet = false;
-    // line 80 "../../../../../Block223 v2.ump"
+    // line 130 "../../../../../Block223 v2.ump"
     if(gridHorizontalPosition <= 0 || gridHorizontalPosition > maxNrHorizontalBlocks()) {
        			throw new RuntimeException("The horizontal position must be between 1 and " + maxNrHorizontalBlocks() + ".");
        		}
@@ -103,7 +76,7 @@ public class BlockAssignment
   public boolean setGridVerticalPosition(int aGridVerticalPosition)
   {
     boolean wasSet = false;
-    // line 80 "../../../../../Block223 v2.ump"
+    // line 130 "../../../../../Block223 v2.ump"
     if(gridHorizontalPosition <= 0 || gridHorizontalPosition > maxNrHorizontalBlocks()) {
        			throw new RuntimeException("The horizontal position must be between 1 and " + maxNrHorizontalBlocks() + ".");
        		}
@@ -220,15 +193,15 @@ public class BlockAssignment
     }
   }
 
-  // line 89 "../../../../../Block223 v2.ump"
+  // line 139 "../../../../../Block223 v2.ump"
    public static  int maxNrHorizontalBlocks(){
-    int max = 375/25;	//I did calculations by hand on the number of blocks that can be placed horizontally
+    int max = (390 - 20 + 5)/25;
 		return max;
   }
 
-  // line 94 "../../../../../Block223 v2.ump"
+  // line 144 "../../../../../Block223 v2.ump"
    public static  int maxNrVerticalBlocks(){
-    int max = 347/22;
+    int max = (390 - 30 - 5 - 10 - 10 + 2) / 22;
 	return max;
   }
 
