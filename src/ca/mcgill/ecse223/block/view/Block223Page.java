@@ -35,10 +35,20 @@ public class Block223Page extends JFrame{
 
 	private static final long serialVersionUID = -3399224687781482984L;
 	
-	// UI elements
+		//Log/Log out elements
+		private JLabel username;
+		private JLabel userPassword;
+		private JLabel adminPassword;
+		private JTextField usernameField;
+		private JTextField passwordField;
+		private JTextField adminPasswordField;
+		private JButton userLogIn;
+		private JButton adminLogIn;
+	
+		// UI elements
 		private JLabel errorMessage; 
 		
-	//Game Settings
+		//Game Settings
 		
 		private JLabel gameSettingsLabel;
 		
@@ -81,6 +91,19 @@ public class Block223Page extends JFrame{
 		}
 		
 		private void initComponents () {
+			//elements for log in/out
+			username = new JLabel();
+			username.setText("Username: ");
+			userPassword = new JLabel();
+			userPassword.setText("Password: ");
+			adminPassword = new JLabel();
+			adminPassword.setText("Password(Admin): "); 
+			usernameField = new JTextField();
+			passwordField = new JTextField();
+			adminPasswordField = new JTextField();
+			userLogIn = new JButton();
+			adminLogIn = new JButton();
+			
 			// elements for error message
 			errorMessage = new JLabel();
 			errorMessage.setForeground(Color.RED);
@@ -141,7 +164,48 @@ public class Block223Page extends JFrame{
 			});
 			
 			
-			///layout
+			
+			GroupLayout layout = new GroupLayout(getContentPane());
+			getContentPane().setLayout(layout);
+			layout.setAutoCreateGaps(true);
+			layout.setAutoCreateContainerGaps(true);
+			
+			layout.setHorizontalGroup(
+					layout.createSequentialGroup()
+					.addGroup(layout.createParallelGroup()
+							.addComponent(errorMessage)
+							.addGroup(layout.createSequentialGroup()
+									.addGroup(layout.createParallelGroup()
+											.addComponent(username)
+											.addComponent(userPassword)
+											.addComponent(adminPassword))
+									.addGroup(layout.createParallelGroup()
+											.addComponent(usernameField, 200, 200, 400)
+											.addComponent(passwordField, 200, 200, 400)
+											.addComponent(adminPasswordField, 200, 200, 400))
+									)
+							)
+					);
+			
+			layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {usernameField, passwordField, adminPasswordField});
+			layout.linkSize(SwingConstants.VERTICAL, new java.awt.Component[] {usernameField, passwordField, adminPasswordField});
+			
+			layout.setVerticalGroup(
+					layout.createParallelGroup()
+					.addGroup(layout.createSequentialGroup()
+							.addComponent(errorMessage)
+							.addGroup(layout.createParallelGroup()
+									.addComponent(username)
+									.addComponent(usernameField))
+							.addGroup(layout.createParallelGroup()
+									.addComponent(userPassword)
+									.addComponent(passwordField))
+							.addGroup(layout.createParallelGroup()
+									.addComponent(adminPassword)
+									.addComponent(adminPasswordField)
+									)
+							)
+					);
 		}
 		private void refreshData() {
 			// error

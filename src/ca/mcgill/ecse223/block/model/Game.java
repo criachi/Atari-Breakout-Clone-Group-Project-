@@ -51,6 +51,11 @@ public class Game
 
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, Ball aBall, Paddle aPaddle, Block223 aBlock223)
   {
+    // line 39 "../../../../../Block223 v2.ump"
+    if(aName == null || aName.length() == 0) {
+    			throw new RuntimeException("Name cannot be empty.");
+    		}
+    // END OF UMPLE BEFORE INJECTION
     nrBlocksPerLevel = aNrBlocksPerLevel;
     if (!setName(aName))
     {
@@ -83,6 +88,11 @@ public class Game
 
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, int aMinBallSpeedXForBall, int aMinBallSpeedYForBall, double aBallSpeedIncreaseFactorForBall, int aMaxPaddleLengthForPaddle, int aMinPaddleLengthForPaddle, Block223 aBlock223)
   {
+    // line 39 "../../../../../Block223 v2.ump"
+    if(aName == null || aName.length() == 0) {
+    			throw new RuntimeException("Name cannot be empty.");
+    		}
+    // END OF UMPLE BEFORE INJECTION
     name = aName;
     nrBlocksPerLevel = aNrBlocksPerLevel;
     boolean didAddAdmin = setAdmin(aAdmin);
@@ -109,6 +119,11 @@ public class Game
   public boolean setName(String aName)
   {
     boolean wasSet = false;
+    // line 39 "../../../../../Block223 v2.ump"
+    if(aName == null || aName.length() == 0) {
+    			throw new RuntimeException("Name cannot be empty.");
+    		}
+    // END OF UMPLE BEFORE INJECTION
     String anOldName = getName();
     if (hasWithName(aName)) {
       return wasSet;

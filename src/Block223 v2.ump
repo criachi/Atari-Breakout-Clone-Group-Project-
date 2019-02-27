@@ -35,6 +35,12 @@ class Player {
 }
 
 class Game {
+	before constructor, setName {
+		if(aName == null || aName.length() == 0) {
+			throw new RuntimeException("Name cannot be empty.");
+		}
+	}
+	
    const Integer MIN_NR_LEVELS = 1;
    const Integer MAX_NR_LEVELS = 99; // this is somewhat redundant because the max multiplicity is enforced by Umple
    const Integer PLAY_AREA_SIDE = 400; // play area is now constant
