@@ -84,7 +84,7 @@ public class Block223Page extends JFrame{
 		
 		private JButton saveGameSettingButton;
 		
-		//BlockAssignment
+		//BlockAssignment part
 		private JComboBox<String> levelList;
 		private JLabel levelLabel;
 		private JComboBox<String> blockList;
