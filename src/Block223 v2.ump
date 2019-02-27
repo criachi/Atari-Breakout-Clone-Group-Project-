@@ -1,5 +1,7 @@
 namespace ca.mcgill.ecse223.block.model;
 
+use Block223Persistence.ump; 
+
 class Block223 {
    1 <@>- * User users;
    1 <@>- * UserRole roles;
@@ -28,7 +30,7 @@ class User {
 
 class UserRole {
     before constructor {
-   	if (password == null || password == "") {
+   	if (aPassword == null || aPassword == "") {
    		throw new RuntimeException("The player password needs to be specified. ");
     }
    }
@@ -53,19 +55,19 @@ class Game {
 	
    const Integer MIN_NR_LEVELS = 1;
    const Integer MAX_NR_LEVELS = 99; // this is somewhat redundant because the max multiplicity is enforced by Umple
-   const Integer PLAY_AREA_SIDE = 400; // play area is now constant
+   const Integer PLAY_AREA_SIDE = 390; // play area is now constant
    const Integer WALL_PADDING = 10;
    const Integer COLUMNS_PADDING = 5;
    const Integer ROW_PADDING = 2;
    unique name;
    before constructor, setName {
-    if (name == null) {
+    if (aName == null || aName == "") {
 	  throw new RuntimeException("The name of a game must be specified.");
 	}
   }
    Integer nrBlocksPerLevel;
    before constructor, setNrBlocksPerLevel {
-    if (nrBlocksPerLevel < 0) {
+    if (aNrBlocksPerLevel < 0) {
 	  throw new RuntimeException("The number of block per level must be greater than zero.");
 	}
   }
@@ -75,6 +77,16 @@ class Game {
    1 <@>- * BlockAssignment blockAssignments;
    1 <@>- 1 Ball ball;
    1 <@>- 1 Paddle paddle;
+
+   public Block findBlock(int id) {
+	List<Block> blocks = this.getBlocks();
+	for(Block block: blocks) {
+		if(id == block.getId()) {
+			return block;
+		}
+	}
+	return null; 
+   }
 }
 
 class Block {
@@ -91,6 +103,26 @@ class Block {
 	if (aPoints<1 || aPoints>1000) {
 	  throw new RuntimeException("Points must be between 1 and 1000");
     }
+   }
+   before setRed {
+    if(aRed<0 || aRed>255) {
+    	throw new RuntimeException("Red must be between 0 and 255");
+    }
+   }
+   before setGreen {
+   	if(aGreen<0 || aGreen>255) {
+   		throw new RuntimeException("Green must be between 0 and 255");
+   	}
+   }
+   before setBlue {
+    if(aBlue<0 || aBlue>255) {
+    	throw new RuntimeException("Blue must be between 0 and 255");
+    }
+   }
+   before setPoints {
+   	if (aPoints<1 || aPoints>1000) {
+   		throw new RuntimeException("Points must be between 1 and 1000");
+   	}
    }
    const Integer MIN_COLOR = 0;
    const Integer MAX_COLOR = 255;
@@ -126,11 +158,21 @@ class BlockAssignment {
    Integer gridVerticalPosition;
    * -- 1 Level level;
    * -- 1 Block block;
-   before constructor, setGridHorizontalPosition, setGridVerticalPosition {
-   		if(gridHorizontalPosition <= 0 || gridHorizontalPosition > maxNrHorizontalBlocks()) {
+   before constructor{
+   		if(aGridHorizontalPosition <= 0 || aGridHorizontalPosition > maxNrHorizontalBlocks()) {
    			throw new RuntimeException("The horizontal position must be between 1 and " + maxNrHorizontalBlocks() + ".");
    		}
-   		if(gridVerticalPosition <= 0 || gridVerticalPosition > maxNrVerticalBlocks()) {
+   		if(aGridVerticalPosition <= 0 || aGridVerticalPosition > maxNrVerticalBlocks()) {
+   			throw new RuntimeException("The vertical position must be between 1 and " + maxNrVerticalBlocks() + ".");
+   		}
+   }
+   before setGridHorizontalPosition {
+   		if(aGridHorizontalPosition <= 0 || aGridHorizontalPosition > maxNrHorizontalBlocks()) {
+   			throw new RuntimeException("The horizontal position must be between 1 and " + maxNrHorizontalBlocks() + ".");
+   		}
+   }
+   before setGridVerticalPosition {
+   		if(aGridVerticalPosition <= 0 || aGridVerticalPosition > maxNrVerticalBlocks()) {
    			throw new RuntimeException("The vertical position must be between 1 and " + maxNrVerticalBlocks() + ".");
    		}
    }
@@ -151,19 +193,19 @@ class Ball {
    const Integer BALL_DIAMETER = 10;
    Integer minBallSpeedX;
    before constructor, setMinBallSpeedX {
-    if (minBallSpeedX < 0) {
+    if (aMinBallSpeedX < 0) {
 	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
 	}
   }
    Integer minBallSpeedY;
    before constructor, setMinBallSpeedY {
-    if (minBallSpeedY < 0) {
+    if (aMinBallSpeedY < 0) {
 	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
 	}
   }
    Double ballSpeedIncreaseFactor;
    before constructor, setBallSpeedIncreaseFactor {
-    if (ballSpeedIncreaseFactor < 0) {
+    if (aBallSpeedIncreaseFactor < 0) {
 	  throw new RuntimeException("The speed increase factor of the ball must be greater than zero.");
 	}
   }
@@ -175,13 +217,13 @@ class Paddle {
    const Integer VERTICAL_DISTANCE = 30;
    Integer maxPaddleLength;
     before constructor, setMaxPaddleLength {
-    if (maxPaddleLength < 0 || maxPaddleLength > 400) {
+    if (aMaxPaddleLength < 0 || aMaxPaddleLength > 400) {
 	  throw new RuntimeException("The maximum length of the paddle must be greater than zero and less than equal to 400.");
 	}
   }
    Integer minPaddleLength;
     before constructor, setMinPaddleLength {
-    if (minPaddleLength < 0) {
+    if (aMinPaddleLength < 0) {
 	  throw new RuntimeException("The minimum length of the paddle must be greater than zero.");
 	}
   }

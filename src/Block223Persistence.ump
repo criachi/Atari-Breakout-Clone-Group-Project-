@@ -82,6 +82,7 @@ class Block223 {
 	usersByUsername.put(user.getUsername(), user);
 	}
  }
+}
  
  class UserRole {
   depend java.io.Serializable;

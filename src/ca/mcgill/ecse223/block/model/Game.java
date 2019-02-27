@@ -2,10 +2,12 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.block.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 47 "../../../../../Block223 v2.ump"
-public class Game
+// line 46 "../../../../../Block223Persistence.ump"
+// line 49 "../../../../../Block223 v2.ump"
+public class Game implements Serializable
 {
 
   //------------------------
@@ -22,7 +24,7 @@ public class Game
   /**
    * play area is now constant
    */
-  public static final int PLAY_AREA_SIDE = 400;
+  public static final int PLAY_AREA_SIDE = 390;
   public static final int WALL_PADDING = 10;
   public static final int COLUMNS_PADDING = 5;
   public static final int ROW_PADDING = 2;
@@ -51,18 +53,18 @@ public class Game
 
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, Ball aBall, Paddle aPaddle, Block223 aBlock223)
   {
-    // line 49 "../../../../../Block223 v2.ump"
+    // line 51 "../../../../../Block223 v2.ump"
     if(aName == null || aName.length() == 0) {
     			throw new RuntimeException("Name cannot be empty.");
     		}
     // END OF UMPLE BEFORE INJECTION
-    // line 62 "../../../../../Block223 v2.ump"
-    if (name == null) {
+    // line 64 "../../../../../Block223 v2.ump"
+    if (aName == null || aName == "") {
     	  throw new RuntimeException("The name of a game must be specified.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 68 "../../../../../Block223 v2.ump"
-    if (nrBlocksPerLevel < 0) {
+    // line 70 "../../../../../Block223 v2.ump"
+    if (aNrBlocksPerLevel < 0) {
     	  throw new RuntimeException("The number of block per level must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
@@ -98,18 +100,18 @@ public class Game
 
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, int aMinBallSpeedXForBall, int aMinBallSpeedYForBall, double aBallSpeedIncreaseFactorForBall, int aMaxPaddleLengthForPaddle, int aMinPaddleLengthForPaddle, Block223 aBlock223)
   {
-    // line 49 "../../../../../Block223 v2.ump"
+    // line 51 "../../../../../Block223 v2.ump"
     if(aName == null || aName.length() == 0) {
     			throw new RuntimeException("Name cannot be empty.");
     		}
     // END OF UMPLE BEFORE INJECTION
-    // line 62 "../../../../../Block223 v2.ump"
-    if (name == null) {
+    // line 64 "../../../../../Block223 v2.ump"
+    if (aName == null || aName == "") {
     	  throw new RuntimeException("The name of a game must be specified.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 68 "../../../../../Block223 v2.ump"
-    if (nrBlocksPerLevel < 0) {
+    // line 70 "../../../../../Block223 v2.ump"
+    if (aNrBlocksPerLevel < 0) {
     	  throw new RuntimeException("The number of block per level must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
@@ -139,13 +141,13 @@ public class Game
   public boolean setName(String aName)
   {
     boolean wasSet = false;
-    // line 49 "../../../../../Block223 v2.ump"
+    // line 51 "../../../../../Block223 v2.ump"
     if(aName == null || aName.length() == 0) {
     			throw new RuntimeException("Name cannot be empty.");
     		}
     // END OF UMPLE BEFORE INJECTION
-    // line 62 "../../../../../Block223 v2.ump"
-    if (name == null) {
+    // line 64 "../../../../../Block223 v2.ump"
+    if (aName == null || aName == "") {
     	  throw new RuntimeException("The name of a game must be specified.");
     	}
     // END OF UMPLE BEFORE INJECTION
@@ -165,8 +167,8 @@ public class Game
   public boolean setNrBlocksPerLevel(int aNrBlocksPerLevel)
   {
     boolean wasSet = false;
-    // line 68 "../../../../../Block223 v2.ump"
-    if (nrBlocksPerLevel < 0) {
+    // line 70 "../../../../../Block223 v2.ump"
+    if (aNrBlocksPerLevel < 0) {
     	  throw new RuntimeException("The number of block per level must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
@@ -645,6 +647,25 @@ public class Game
     }
   }
 
+  // line 52 "../../../../../Block223Persistence.ump"
+   public static  void reinitializeUniqueGameName(List<Game> games){
+    gamesByName = new HashMap<String, Game>();
+    for (Game game : games) {
+      gamesByName.put(game.getName(), game);
+    }
+  }
+
+  // line 82 "../../../../../Block223 v2.ump"
+   public Block findBlock(int id){
+    List<Block> blocks = this.getBlocks();
+	for(Block block: blocks) {
+		if(id == block.getId()) {
+			return block;
+		}
+	}
+	return null;
+  }
+
 
   public String toString()
   {
@@ -655,5 +676,13 @@ public class Game
             "  " + "ball = "+(getBall()!=null?Integer.toHexString(System.identityHashCode(getBall())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "paddle = "+(getPaddle()!=null?Integer.toHexString(System.identityHashCode(getPaddle())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "block223 = "+(getBlock223()!=null?Integer.toHexString(System.identityHashCode(getBlock223())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 49 "../../../../../Block223Persistence.ump"
+  private static final long serialVersionUID = -6233895506801793694L ;
+
+  
 }

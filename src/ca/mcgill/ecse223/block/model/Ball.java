@@ -2,10 +2,12 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.block.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 150 "../../../../../Block223 v2.ump"
-public class Ball
+// line 20 "../../../../../Block223Persistence.ump"
+// line 192 "../../../../../Block223 v2.ump"
+public class Ball implements Serializable
 {
 
   //------------------------
@@ -32,18 +34,18 @@ public class Ball
 
   public Ball(int aMinBallSpeedX, int aMinBallSpeedY, double aBallSpeedIncreaseFactor, Game aGame)
   {
-    // line 154 "../../../../../Block223 v2.ump"
-    if (minBallSpeedX < 0) {
+    // line 196 "../../../../../Block223 v2.ump"
+    if (aMinBallSpeedX < 0) {
     	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 160 "../../../../../Block223 v2.ump"
-    if (minBallSpeedY < 0) {
+    // line 202 "../../../../../Block223 v2.ump"
+    if (aMinBallSpeedY < 0) {
     	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 166 "../../../../../Block223 v2.ump"
-    if (ballSpeedIncreaseFactor < 0) {
+    // line 208 "../../../../../Block223 v2.ump"
+    if (aBallSpeedIncreaseFactor < 0) {
     	  throw new RuntimeException("The speed increase factor of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
@@ -59,18 +61,18 @@ public class Ball
 
   public Ball(int aMinBallSpeedX, int aMinBallSpeedY, double aBallSpeedIncreaseFactor, String aNameForGame, int aNrBlocksPerLevelForGame, Admin aAdminForGame, Paddle aPaddleForGame, Block223 aBlock223ForGame)
   {
-    // line 154 "../../../../../Block223 v2.ump"
-    if (minBallSpeedX < 0) {
+    // line 196 "../../../../../Block223 v2.ump"
+    if (aMinBallSpeedX < 0) {
     	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 160 "../../../../../Block223 v2.ump"
-    if (minBallSpeedY < 0) {
+    // line 202 "../../../../../Block223 v2.ump"
+    if (aMinBallSpeedY < 0) {
     	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 166 "../../../../../Block223 v2.ump"
-    if (ballSpeedIncreaseFactor < 0) {
+    // line 208 "../../../../../Block223 v2.ump"
+    if (aBallSpeedIncreaseFactor < 0) {
     	  throw new RuntimeException("The speed increase factor of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
@@ -87,8 +89,8 @@ public class Ball
   public boolean setMinBallSpeedX(int aMinBallSpeedX)
   {
     boolean wasSet = false;
-    // line 154 "../../../../../Block223 v2.ump"
-    if (minBallSpeedX < 0) {
+    // line 196 "../../../../../Block223 v2.ump"
+    if (aMinBallSpeedX < 0) {
     	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
@@ -100,8 +102,8 @@ public class Ball
   public boolean setMinBallSpeedY(int aMinBallSpeedY)
   {
     boolean wasSet = false;
-    // line 160 "../../../../../Block223 v2.ump"
-    if (minBallSpeedY < 0) {
+    // line 202 "../../../../../Block223 v2.ump"
+    if (aMinBallSpeedY < 0) {
     	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
@@ -113,8 +115,8 @@ public class Ball
   public boolean setBallSpeedIncreaseFactor(double aBallSpeedIncreaseFactor)
   {
     boolean wasSet = false;
-    // line 166 "../../../../../Block223 v2.ump"
-    if (ballSpeedIncreaseFactor < 0) {
+    // line 208 "../../../../../Block223 v2.ump"
+    if (aBallSpeedIncreaseFactor < 0) {
     	  throw new RuntimeException("The speed increase factor of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
@@ -161,5 +163,13 @@ public class Ball
             "minBallSpeedY" + ":" + getMinBallSpeedY()+ "," +
             "ballSpeedIncreaseFactor" + ":" + getBallSpeedIncreaseFactor()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 23 "../../../../../Block223Persistence.ump"
+  private static final long serialVersionUID = 145021574790956578L ;
+
+  
 }

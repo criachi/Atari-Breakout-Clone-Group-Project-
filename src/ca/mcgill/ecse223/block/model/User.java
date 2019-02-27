@@ -2,10 +2,12 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.block.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 19 "../../../../../Block223 v2.ump"
-public class User
+// line 74 "../../../../../Block223Persistence.ump"
+// line 21 "../../../../../Block223 v2.ump"
+public class User implements Serializable
 {
 
   //------------------------
@@ -31,7 +33,7 @@ public class User
 
   public User(String aUsername, Block223 aBlock223, UserRole... allRoles)
   {
-    // line 23 "../../../../../Block223 v2.ump"
+    // line 25 "../../../../../Block223 v2.ump"
     if(aUsername == null || aUsername == "") {
        		throw new RuntimeException("The username must be specified. ");
        	}
@@ -250,11 +252,27 @@ public class User
     }
   }
 
+  // line 80 "../../../../../Block223Persistence.ump"
+   public static  void reinitializeUniqueUserName(List<User> users){
+    usersByUsername = new HashMap<String, User>();
+    for (User user : users) {
+	usersByUsername.put(user.getUsername(), user);
+	}
+  }
+
 
   public String toString()
   {
     return super.toString() + "["+
             "username" + ":" + getUsername()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "block223 = "+(getBlock223()!=null?Integer.toHexString(System.identityHashCode(getBlock223())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 77 "../../../../../Block223Persistence.ump"
+  private static final long serialVersionUID = -2116860180323920601L ;
+
+  
 }
