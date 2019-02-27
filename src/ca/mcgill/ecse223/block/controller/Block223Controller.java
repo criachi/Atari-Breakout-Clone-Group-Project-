@@ -60,7 +60,7 @@ public class Block223Controller {
 		}
 		if(Block223Application.getCurrentUserRole() != Block223Application.getCurrentGame().getAdmin()) {
 			error = error + "Only the admin who created the game can define its game settings.";
-		}
+		} 
 		if(nrLevels <1 || nrLevels > 99) {
 			error = error + "The number of levels must be between 1 and 99.";
 		}
