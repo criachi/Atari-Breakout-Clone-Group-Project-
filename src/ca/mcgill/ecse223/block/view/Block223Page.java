@@ -73,7 +73,7 @@ public class Block223Page extends JFrame{
 		private JTextField minBallSpeedYTextField;
 		private JLabel minBallSpeedYLabel;
 		private JTextField speedIncreaseFactorTextField;
-		private JLabel speedIncreaseFactorLabel;
+		private JLabel speedIncreaseFactorLabel; 
 		
 		//Paddle
 		private JLabel paddleLabel;
