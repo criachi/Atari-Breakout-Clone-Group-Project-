@@ -44,13 +44,19 @@ public class Block223Page extends JFrame{
 		private JTextField adminPasswordField;
 		private JButton userLogIn;
 		private JButton adminLogIn;
+		
+		private JButton signUp;
 	
 		// UI elements
 		private JLabel errorMessage; 
+		private JLabel message;
 		
 		//Game Settings
-		
+		private JLabel gameNameLabel;
+		private JTextField gameNameTextField;
 		private JLabel gameSettingsLabel;
+		private JComboBox<String> availableGames;
+		private JLabel settingsLabel;
 		
 		//Level
 		private JTextField nrOfLevelsTextField;
@@ -89,7 +95,7 @@ public class Block223Page extends JFrame{
 		}
 		
 		private void initComponents () {
-			//elements for log in/out
+			//elements for log in/out/sign up
 			username = new JLabel();
 			username.setText("Username: ");
 			userPassword = new JLabel();
@@ -100,15 +106,33 @@ public class Block223Page extends JFrame{
 			passwordField = new JTextField();
 			adminPasswordField = new JTextField();
 			userLogIn = new JButton();
+			userLogIn.setText("User");
 			adminLogIn = new JButton();
+			adminLogIn.setText("Admin");
+			
+			signUp = new JButton();
+			signUp.setText("Sign up!");
 			
 			// elements for error message
 			errorMessage = new JLabel();
 			errorMessage.setForeground(Color.RED);
+			errorMessage.setText("WELCOME TO BLOCK223. THIS IS CURRENTLY A WIP.");
+			
+			message = new JLabel();
+			message.setText("WELCOME TO BLOCK223. THIS IS A WIP.");
+			message.setForeground(Color.RED);
 			
 			//elements for Game Settings
+			gameNameLabel = new JLabel();
+			gameNameLabel.setText("Name: ");
+			gameNameTextField = new JTextField();
+			availableGames = new JComboBox<String>();
+			
+			settingsLabel = new JLabel();
+			settingsLabel.setText("Settings");
+			
 			gameSettingsLabel = new JLabel ();
-			gameSettingsLabel.setText("Game Settings");
+			gameSettingsLabel.setText("Existing Games: ");
 			saveGameSettingButton = new JButton();
 			saveGameSettingButton.setText("Save Game");
 			
@@ -168,37 +192,93 @@ public class Block223Page extends JFrame{
 			layout.setHorizontalGroup(
 					layout.createSequentialGroup()
 					.addGroup(layout.createParallelGroup()
-							.addComponent(errorMessage)
 							.addGroup(layout.createSequentialGroup()
 									.addGroup(layout.createParallelGroup()
+											.addComponent(message)
 											.addComponent(username)
 											.addComponent(userPassword)
-											.addComponent(adminPassword))
+											.addComponent(adminPassword)
+											.addComponent(signUp))
 									.addGroup(layout.createParallelGroup()
 											.addComponent(usernameField, 200, 200, 400)
 											.addComponent(passwordField, 200, 200, 400)
-											.addComponent(adminPasswordField, 200, 200, 400))
+											.addComponent(adminPasswordField, 200, 200, 400)
+											.addGroup(layout.createSequentialGroup()
+													.addComponent(userLogIn, 80, 95, 95)
+													.addComponent(adminLogIn, 80, 95, 95)))
+									.addGroup(layout.createParallelGroup()
+											.addComponent(gameSettingsLabel)
+											.addComponent(settingsLabel)
+											.addComponent(gameNameLabel)
+											.addComponent(nrOfLevelsLabel)
+											.addComponent(nrOfBlocksPerLevelLabel)
+											.addComponent(minBallSpeedXLabel)
+											.addComponent(minBallSpeedYLabel)
+											.addComponent(speedIncreaseFactorLabel)
+											.addComponent(minPaddleLengthLabel)
+											.addComponent(maxPaddleLengthLabel))
+									.addGroup(layout.createParallelGroup()
+											.addComponent(availableGames)
+											.addComponent(gameNameTextField, 200, 200, 400)
+											.addComponent(nrOfLevelsTextField, 200, 200, 400)
+											.addComponent(nrOfBlocksPerLevelTextField, 200, 200, 400)
+											.addComponent(minBallSpeedXTextField, 200, 200, 400)
+											.addComponent(minBallSpeedYTextField, 200, 200, 400)
+											.addComponent(speedIncreaseFactorTextField, 200, 200, 400)
+											.addComponent(minPaddleLengthTextField, 200, 200, 400)
+											.addComponent(maxPaddleLengthTextField, 200, 200, 400))
 									)
 							)
 					);
 			
 			layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {usernameField, passwordField, adminPasswordField});
 			layout.linkSize(SwingConstants.VERTICAL, new java.awt.Component[] {usernameField, passwordField, adminPasswordField});
+			layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {availableGames, gameNameTextField, nrOfLevelsTextField, nrOfBlocksPerLevelTextField, minBallSpeedXTextField, minBallSpeedYTextField, speedIncreaseFactorTextField, minPaddleLengthTextField, maxPaddleLengthTextField});
+			layout.linkSize(SwingConstants.VERTICAL, new java.awt.Component[] {availableGames, gameNameTextField, nrOfLevelsTextField, nrOfBlocksPerLevelTextField, minBallSpeedXTextField, minBallSpeedYTextField, speedIncreaseFactorTextField, minPaddleLengthTextField, maxPaddleLengthTextField});
 			
 			layout.setVerticalGroup(
 					layout.createParallelGroup()
 					.addGroup(layout.createSequentialGroup()
-							.addComponent(errorMessage)
+							.addGroup(layout.createParallelGroup()
+									.addComponent(message))
 							.addGroup(layout.createParallelGroup()
 									.addComponent(username)
-									.addComponent(usernameField))
+									.addComponent(usernameField)
+									.addComponent(gameSettingsLabel)
+									.addComponent(availableGames))
 							.addGroup(layout.createParallelGroup()
 									.addComponent(userPassword)
-									.addComponent(passwordField))
+									.addComponent(passwordField)
+									.addComponent(settingsLabel))
 							.addGroup(layout.createParallelGroup()
 									.addComponent(adminPassword)
 									.addComponent(adminPasswordField)
-									)
+									.addComponent(gameNameLabel)
+									.addComponent(gameNameTextField))
+							.addGroup(layout.createParallelGroup()
+									.addComponent(signUp)
+									.addComponent(userLogIn)
+									.addComponent(adminLogIn)
+									.addComponent(nrOfLevelsLabel)
+									.addComponent(nrOfLevelsTextField))
+							.addGroup(layout.createParallelGroup()
+									.addComponent(nrOfBlocksPerLevelLabel)
+									.addComponent(nrOfBlocksPerLevelTextField))
+							.addGroup(layout.createParallelGroup()
+									.addComponent(minBallSpeedXLabel)
+									.addComponent(minBallSpeedXTextField))
+							.addGroup(layout.createParallelGroup()
+									.addComponent(minBallSpeedYLabel)
+									.addComponent(minBallSpeedYTextField))
+							.addGroup(layout.createParallelGroup()
+									.addComponent(speedIncreaseFactorLabel)
+									.addComponent(speedIncreaseFactorTextField))
+							.addGroup(layout.createParallelGroup()
+									.addComponent(minPaddleLengthLabel)
+									.addComponent(minPaddleLengthTextField))
+							.addGroup(layout.createParallelGroup()
+									.addComponent(maxPaddleLengthLabel)
+									.addComponent(maxPaddleLengthTextField))
 							)
 					);
 		}

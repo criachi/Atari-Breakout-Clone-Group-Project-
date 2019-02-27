@@ -152,6 +152,7 @@ public class Block223Controller {
 		}
 		
 		gameToDelete.delete();
+		Block223Persistence.save(block223);
 	}
 
 	public static void selectGame(String name) throws InvalidInputException {
