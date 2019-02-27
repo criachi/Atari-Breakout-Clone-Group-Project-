@@ -333,9 +333,9 @@ public class Block223Controller {
 				 }
 		}
 		catch (RuntimeException e) {
-			throw new InvalidInputException(e.getMessage());
 			if(player != null) player.delete();
 			if(admin != null) admin.delete();
+			throw new InvalidInputException(e.getMessage());
 		}
 		
 		Block223Persistence.save(block223); //need to implement save
@@ -394,9 +394,6 @@ public class Block223Controller {
 		Game game = Block223Application.getCurrentGame();
 		TOGame to = new TOGame(game.getName(),game.getLevels().size(),game.getNrBlocksPerLevel(),game.getBall().getMinBallSpeedX(),game.getBall().getMinBallSpeedY(),game.getBall().getBallSpeedIncreaseFactor(),game.getPaddle().getMaxPaddleLength(),game.getPaddle().getMinPaddleLength());
 		return to;
-	}
-	public static List<TOBlock> getBlocksOfCurrentDesignableGame() {
-		return null;
 	}
 
 	public static List<TOBlock> getBlocksOfCurrentDesignableGame() throws InvalidInputException {
