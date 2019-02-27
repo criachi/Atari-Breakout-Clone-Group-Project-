@@ -1,11 +1,13 @@
+
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.block.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 47 "../../../../../Block223 v2.ump"
-public class Game
+// line 34 "../../../../../Block223 v2.ump"
+public class Game implements Serializable
 {
 
   //------------------------
@@ -51,6 +53,16 @@ public class Game
 
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, Ball aBall, Paddle aPaddle, Block223 aBlock223)
   {
+    // line 43 "../../../../../Block223 v2.ump"
+    if (name == null) {
+    	  throw new RuntimeException("The name of a game must be specified.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
+    // line 49 "../../../../../Block223 v2.ump"
+    if (nrBlocksPerLevel < 0) {
+    	  throw new RuntimeException("The number of block per level must be greater than zero.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     nrBlocksPerLevel = aNrBlocksPerLevel;
     if (!setName(aName))
     {
@@ -83,6 +95,16 @@ public class Game
 
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, int aMinBallSpeedXForBall, int aMinBallSpeedYForBall, double aBallSpeedIncreaseFactorForBall, int aMaxPaddleLengthForPaddle, int aMinPaddleLengthForPaddle, Block223 aBlock223)
   {
+    // line 43 "../../../../../Block223 v2.ump"
+    if (name == null) {
+    	  throw new RuntimeException("The name of a game must be specified.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
+    // line 49 "../../../../../Block223 v2.ump"
+    if (nrBlocksPerLevel < 0) {
+    	  throw new RuntimeException("The number of block per level must be greater than zero.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     name = aName;
     nrBlocksPerLevel = aNrBlocksPerLevel;
     boolean didAddAdmin = setAdmin(aAdmin);
@@ -109,6 +131,11 @@ public class Game
   public boolean setName(String aName)
   {
     boolean wasSet = false;
+    // line 43 "../../../../../Block223 v2.ump"
+    if (name == null) {
+    	  throw new RuntimeException("The name of a game must be specified.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     String anOldName = getName();
     if (hasWithName(aName)) {
       return wasSet;
@@ -125,6 +152,11 @@ public class Game
   public boolean setNrBlocksPerLevel(int aNrBlocksPerLevel)
   {
     boolean wasSet = false;
+    // line 49 "../../../../../Block223 v2.ump"
+    if (nrBlocksPerLevel < 0) {
+    	  throw new RuntimeException("The number of block per level must be greater than zero.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     nrBlocksPerLevel = aNrBlocksPerLevel;
     wasSet = true;
     return wasSet;
@@ -611,4 +643,13 @@ public class Game
             "  " + "paddle = "+(getPaddle()!=null?Integer.toHexString(System.identityHashCode(getPaddle())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "block223 = "+(getBlock223()!=null?Integer.toHexString(System.identityHashCode(getBlock223())):"null");
   }
+
+  
+  public static void reinitializeUniqueGameName(List<Game> games) {
+    gamesByName = new HashMap<String, Game>();
+    for (Game game : games) {
+      gamesByName.put(game.getName(), game);
+    }
+  }
+  private static final long serialVersionUID = -6233895506801793694L;
 }

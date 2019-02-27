@@ -1,10 +1,13 @@
+
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.block.model;
 
-// line 96 "../../../../../Block223 v2.ump"
-public class BlockAssignment
+import java.io.Serializable;
+
+// line 79 "../../../../../Block223 v2.ump"
+public class BlockAssignment implements Serializable
 {
 
   //------------------------
@@ -179,4 +182,5 @@ public class BlockAssignment
             "  " + "block = "+(getBlock()!=null?Integer.toHexString(System.identityHashCode(getBlock())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null");
   }
+  private static final long serialVersionUID = 8120926036616538272L;
 }
