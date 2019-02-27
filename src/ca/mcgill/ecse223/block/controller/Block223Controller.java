@@ -5,6 +5,7 @@ import java.util.List;
 
 import ca.mcgill.ecse223.block.application.Block223Application;
 import ca.mcgill.ecse223.block.model.*;
+import ca.mcgill.ecse223.block.persistence.Block223Persistence;
 
 public class Block223Controller {
 
@@ -79,10 +80,69 @@ public class Block223Controller {
 	}
 
 	public static void addBlock(int red, int green, int blue, int points) throws InvalidInputException {
+		String error = "";
+		if(!(Block223Application.getCurrentUserRole() instanceof Admin)) {
+			error = "Admin privileges are required to add a block. ";
+		}
+		if(Block223Application.getCurrentGame() == null) {
+			error = error + "A game must be selected to add a block. ";
+		}
+		if(Block223Application.getCurrentUserRole() != Block223Application.getCurrentGame().getAdmin()) {
+			error = error + "Only the admin who created the game can add a block. ";
+		}
+		// validation check to see if another block w/ same color exists
+		for(Block block: Block223Application.getCurrentGame().getBlocks()) {
+			if((block.getRed() == red) && (block.getGreen() == green) && (block.getBlue() == blue)) {
+				error = error + "A block with the same color already exists for the game. ";
+			}
+		}
+		if (error.length() > 0) {
+			throw new InvalidInputException(error.trim());
+		}
+		Game game = Block223Application.getCurrentGame();
+		try {
+			Block block = new Block(red, green, blue, points, game);
+		}
+		catch (RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}		
+		// validation checks in constructor of block added as before checks in Umple file 
 	}
 
-	public static void deleteBlock(int id) throws InvalidInputException {
+	// helper method
+	// should this even be public? why did he make it public? 
+	public static Block findBlock(int id) {
+		Block foundBlock = null;
+		for(Block block: Block223Application.getCurrentGame().getBlocks()) {
+			if(block.getId() == id) {
+				foundBlock = block;
+				break;
+			}
+		}
+		return foundBlock; 
 	}
+	public static void deleteBlock(int id) throws InvalidInputException {
+		String error = "";
+		if (!(Block223Application.getCurrentUserRole() instanceof Admin)) {
+			error = "Admin privileges are required to delete a block. ";
+		} 
+		if (Block223Application.getCurrentGame() == null) {
+			error = error + "A game must be selected to delete a block. ";
+		}
+		if (Block223Application.getCurrentUserRole() != Block223Application.getCurrentGame().getAdmin()) {
+			error = error + "Only the admin who created the game can delete a block. ";
+		}
+		// this pattern of adding error messages to empty "error" string and throwing invalid input exception is taken from btms controller method: schedule
+		if (error.length() > 0) {
+			throw new InvalidInputException(error.trim());
+		}
+		Game game = Block223Application.getCurrentGame();
+		Block foundBlock = findBlock(id);
+		if(foundBlock != null) {
+			foundBlock.delete();
+		}
+	}
+
 
 	public static void updateBlock(int id, int red, int green, int blue, int points) throws InvalidInputException {
 	}
@@ -100,10 +160,54 @@ public class Block223Controller {
 	}
 
 	public static void saveGame() throws InvalidInputException {
+		String error = "";
+		if(!(Block223Application.getCurrentUserRole() instanceof Admin)) {
+			error = "Admin privileges are required to save a game. ";
+		}
+		if(Block223Application.getCurrentGame() == null) {
+			error = error + "A game must be selected to save it. ";
+		}
+		if(Block223Application.getCurrentUserRole() != Block223Application.getCurrentGame().getAdmin()) {
+			error = error + "Only the admin who created the game can save it. ";
+		}
+		if (error.length() > 0) {
+			throw new InvalidInputException(error.trim());
+		}
+		Block223 block223 = Block223Application.getBlock223();
+		Block223Persistence.save(block223); //need to implement save method in Persistence class
+		// might need to wrap the call to save in a try catch block like mentioned in page 23/27 of the sample solution of iteration 2...?
 	}
 
-	public static void register(String username, String playerPassword, String adminPassword)
-			throws InvalidInputException {
+	public static void register(String username, String playerPassword, String adminPassword) throws InvalidInputException {
+		String error = "";
+		if(Block223Application.getCurrentUserRole() != null) {
+			error = "Cannot register a new user while a user is logged in. ";
+		}
+		if(playerPassword.equals(adminPassword)) {
+			error = error + "The passwords have to be different. ";
+		}
+		if (error.length() > 0) {
+			throw new InvalidInputException(error.trim());
+		}
+		Block223 block223 = Block223Application.getBlock223();
+		// 4th and 5th validation checks are caught this way with try-catch block  			
+		Player player = null;
+		Admin admin = null;
+		try {
+			 player = new Player(playerPassword, block223);
+			 User user = new User(username, block223, player);
+			 if(adminPassword != null && adminPassword != "") {
+					admin = new Admin(adminPassword, block223);
+					user.addRole(admin);
+				 }
+		}
+		catch (RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+			if(player != null) player.delete();
+			if(admin != null) admin.delete();
+		}
+		
+		Block223Persistence.save(block223); //need to implement save
 	}
 
 	public static void login(String username, String password) throws InvalidInputException {
@@ -148,8 +252,27 @@ public class Block223Controller {
 		return null;
 	}
 
-	public static TOBlock getBlockOfCurrentDesignableGame(int id) throws InvalidInputException {
-		return null;
+	public static List<TOBlock> getBlocksOfCurrentDesignableGame() throws InvalidInputException {
+		String error = "";
+		if(!(Block223Application.getCurrentUserRole() instanceof Admin)){
+			error = "Admin privileges are required to access game information. ";
+		}
+		if(Block223Application.getCurrentGame() == null) {
+			error = error + "A game must be selected to access its information. ";
+		}
+		if(Block223Application.getCurrentUserRole() != Block223Application.getCurrentGame().getAdmin()) {
+			error = error + "Only the admin who created the game can access its information. ";
+		}
+		if (error.length() > 0) {
+			throw new InvalidInputException(error.trim());
+		}
+		Game game = Block223Application.getCurrentGame();
+		ArrayList<TOBlock> result = new ArrayList<TOBlock>();
+		for(Block block : game.getBlocks()) {
+			TOBlock to = new TOBlock(block.getId(), block.getRed(), block.getGreen(), block.getBlue(), block.getPoints());
+			result.add(to);
+		}
+		return result;
 	}
 
 	public List<TOGridCell> getBlocksAtLevelOfCurrentDesignableGame(int level) throws InvalidInputException {

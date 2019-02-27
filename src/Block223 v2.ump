@@ -19,9 +19,19 @@ class Block223 {
 class User {
    unique username;
    1 -> 1..2 UserRole roles;
+   before constructor {
+   	if(aUsername == null || aUsername == "") {
+   		throw new RuntimeException("The username must be specified. ");
+   	}
+   }
 }
 
 class UserRole {
+    before constructor {
+   	if (password == null || password == "") {
+   		throw new RuntimeException("The player password needs to be specified. ");
+    }
+   }
    abstract;
    password;
 }
@@ -52,6 +62,20 @@ class Game {
 }
 
 class Block {
+   before constructor {
+   	if (aRed<0 || aRed>255) {
+	  throw new RuntimeException("Red must be between 0 and 255");
+	}
+	if (aGreen<0 || aGreen>255) {
+	  throw new RuntimeException("Green must be between 0 and 255");
+	}
+	if (aBlue<0 || aBlue>255) {
+	  throw new RuntimeException("Blue must be between 0 and 255");
+	}
+	if (aPoints<1 || aPoints>1000) {
+	  throw new RuntimeException("Points must be between 1 and 1000");
+    }
+   }
    const Integer MIN_COLOR = 0;
    const Integer MAX_COLOR = 255;
    const Integer MIN_POINTS = 1;
