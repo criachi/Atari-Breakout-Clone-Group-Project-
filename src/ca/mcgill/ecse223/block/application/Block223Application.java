@@ -6,6 +6,7 @@ import ca.mcgill.ecse223.block.model.Block223;
 import ca.mcgill.ecse223.block.model.Game;
 import ca.mcgill.ecse223.block.model.UserRole;
 import ca.mcgill.ecse223.block.view.Block223Page;
+import ca.mcgill.ecse223.block.view.WelcomeWindow;
 
 public class Block223Application {
 	
@@ -17,7 +18,7 @@ public class Block223Application {
 	public static void main(String[] args) { 
 		java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Block223Page().setVisible(true);
+                new WelcomeWindow().frame.setVisible(true);
             }
         });
 	}

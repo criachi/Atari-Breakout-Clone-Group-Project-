@@ -200,6 +200,7 @@ public class Block223Page extends JFrame{
 			// global settings
 			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 			setTitle("Block 223");
+			setBounds(100,100,1300,400);
 			
 			//listeners for Game Settings
 			saveGameSettingButton.addActionListener(new java.awt.event.ActionListener() {
@@ -327,6 +328,7 @@ public class Block223Page extends JFrame{
 									.addComponent(maxPaddleLengthTextField))
 							)
 					);
+			
 		}
 		private void refreshData() {
 			// error
