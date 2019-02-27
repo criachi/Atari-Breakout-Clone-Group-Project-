@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
@@ -13,6 +14,23 @@ public class Game
   //------------------------
 
   public static final int MIN_NR_LEVELS = 1;
+=======
+/*PLEASE DO NOT EDIT THIS CODE*/
+/*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
+
+package ca.mcgill.ecse223.block.model;
+import java.util.*;
+
+// line 47 "../../../../../Block223 v2.ump"
+public class Game
+{
+
+  //------------------------
+  // STATIC VARIABLES
+  //------------------------
+
+  public static final int MIN_NR_LEVELS = 1;
+>>>>>>> refs/remotes/origin/master
 
   /**
    * this is somewhat redundant because the max multiplicity is enforced by Umple
@@ -49,6 +67,7 @@ public class Game
   // CONSTRUCTOR
   //------------------------
 
+<<<<<<< HEAD
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, Ball aBall, Paddle aPaddle, Block223 aBlock223)
   {
     nrBlocksPerLevel = aNrBlocksPerLevel;
@@ -108,7 +127,129 @@ public class Game
 
   public boolean setName(String aName)
   {
+=======
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //Game Attributes
+  private String name;
+  private int nrBlocksPerLevel;
+
+  //Game Associations
+  private Admin admin;
+  private List<Block> blocks;
+  private List<Level> levels;
+  private List<BlockAssignment> blockAssignments;
+  private Ball ball;
+  private Paddle paddle;
+  private Block223 block223;
+
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, Ball aBall, Paddle aPaddle, Block223 aBlock223)
+  {
+    // line 49 "../../../../../Block223 v2.ump"
+    if(aName == null || aName.length() == 0) {
+    			throw new RuntimeException("Name cannot be empty.");
+    		}
+    // END OF UMPLE BEFORE INJECTION
+    // line 62 "../../../../../Block223 v2.ump"
+    if (name == null) {
+    	  throw new RuntimeException("The name of a game must be specified.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
+    // line 68 "../../../../../Block223 v2.ump"
+    if (nrBlocksPerLevel < 0) {
+    	  throw new RuntimeException("The number of block per level must be greater than zero.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
+    nrBlocksPerLevel = aNrBlocksPerLevel;
+    if (!setName(aName))
+    {
+      throw new RuntimeException("Cannot create due to duplicate name");
+    }
+    boolean didAddAdmin = setAdmin(aAdmin);
+    if (!didAddAdmin)
+    {
+      throw new RuntimeException("Unable to create game due to admin");
+    }
+    blocks = new ArrayList<Block>();
+    levels = new ArrayList<Level>();
+    blockAssignments = new ArrayList<BlockAssignment>();
+    if (aBall == null || aBall.getGame() != null)
+    {
+      throw new RuntimeException("Unable to create Game due to aBall");
+    }
+    ball = aBall;
+    if (aPaddle == null || aPaddle.getGame() != null)
+    {
+      throw new RuntimeException("Unable to create Game due to aPaddle");
+    }
+    paddle = aPaddle;
+    boolean didAddBlock223 = setBlock223(aBlock223);
+    if (!didAddBlock223)
+    {
+      throw new RuntimeException("Unable to create game due to block223");
+    }
+  }
+
+  public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, int aMinBallSpeedXForBall, int aMinBallSpeedYForBall, double aBallSpeedIncreaseFactorForBall, int aMaxPaddleLengthForPaddle, int aMinPaddleLengthForPaddle, Block223 aBlock223)
+  {
+    // line 49 "../../../../../Block223 v2.ump"
+    if(aName == null || aName.length() == 0) {
+    			throw new RuntimeException("Name cannot be empty.");
+    		}
+    // END OF UMPLE BEFORE INJECTION
+    // line 62 "../../../../../Block223 v2.ump"
+    if (name == null) {
+    	  throw new RuntimeException("The name of a game must be specified.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
+    // line 68 "../../../../../Block223 v2.ump"
+    if (nrBlocksPerLevel < 0) {
+    	  throw new RuntimeException("The number of block per level must be greater than zero.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
+    name = aName;
+    nrBlocksPerLevel = aNrBlocksPerLevel;
+    boolean didAddAdmin = setAdmin(aAdmin);
+    if (!didAddAdmin)
+    {
+      throw new RuntimeException("Unable to create game due to admin");
+    }
+    blocks = new ArrayList<Block>();
+    levels = new ArrayList<Level>();
+    blockAssignments = new ArrayList<BlockAssignment>();
+    ball = new Ball(aMinBallSpeedXForBall, aMinBallSpeedYForBall, aBallSpeedIncreaseFactorForBall, this);
+    paddle = new Paddle(aMaxPaddleLengthForPaddle, aMinPaddleLengthForPaddle, this);
+    boolean didAddBlock223 = setBlock223(aBlock223);
+    if (!didAddBlock223)
+    {
+      throw new RuntimeException("Unable to create game due to block223");
+    }
+  }
+
+  //------------------------
+  // INTERFACE
+  //------------------------
+
+  public boolean setName(String aName)
+  {
+>>>>>>> refs/remotes/origin/master
     boolean wasSet = false;
+    // line 49 "../../../../../Block223 v2.ump"
+    if(aName == null || aName.length() == 0) {
+    			throw new RuntimeException("Name cannot be empty.");
+    		}
+    // END OF UMPLE BEFORE INJECTION
+    // line 62 "../../../../../Block223 v2.ump"
+    if (name == null) {
+    	  throw new RuntimeException("The name of a game must be specified.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
     String anOldName = getName();
     if (hasWithName(aName)) {
       return wasSet;
@@ -118,6 +259,7 @@ public class Game
     if (anOldName != null) {
       gamesByName.remove(anOldName);
     }
+<<<<<<< HEAD
     gamesByName.put(aName, this);
     return wasSet;
   }
@@ -291,6 +433,186 @@ public class Game
 
   public boolean addBlock(Block aBlock)
   {
+=======
+    gamesByName.put(aName, this);
+    return wasSet;
+  }
+
+  public boolean setNrBlocksPerLevel(int aNrBlocksPerLevel)
+  {
+    boolean wasSet = false;
+    // line 68 "../../../../../Block223 v2.ump"
+    if (nrBlocksPerLevel < 0) {
+    	  throw new RuntimeException("The number of block per level must be greater than zero.");
+    	}
+    // END OF UMPLE BEFORE INJECTION
+    nrBlocksPerLevel = aNrBlocksPerLevel;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public String getName()
+  {
+    return name;
+  }
+  /* Code from template attribute_GetUnique */
+  public static Game getWithName(String aName)
+  {
+    return gamesByName.get(aName);
+  }
+  /* Code from template attribute_HasUnique */
+  public static boolean hasWithName(String aName)
+  {
+    return getWithName(aName) != null;
+  }
+
+  public int getNrBlocksPerLevel()
+  {
+    return nrBlocksPerLevel;
+  }
+  /* Code from template association_GetOne */
+  public Admin getAdmin()
+  {
+    return admin;
+  }
+  /* Code from template association_GetMany */
+  public Block getBlock(int index)
+  {
+    Block aBlock = blocks.get(index);
+    return aBlock;
+  }
+
+  public List<Block> getBlocks()
+  {
+    List<Block> newBlocks = Collections.unmodifiableList(blocks);
+    return newBlocks;
+  }
+
+  public int numberOfBlocks()
+  {
+    int number = blocks.size();
+    return number;
+  }
+
+  public boolean hasBlocks()
+  {
+    boolean has = blocks.size() > 0;
+    return has;
+  }
+
+  public int indexOfBlock(Block aBlock)
+  {
+    int index = blocks.indexOf(aBlock);
+    return index;
+  }
+  /* Code from template association_GetMany */
+  public Level getLevel(int index)
+  {
+    Level aLevel = levels.get(index);
+    return aLevel;
+  }
+
+  public List<Level> getLevels()
+  {
+    List<Level> newLevels = Collections.unmodifiableList(levels);
+    return newLevels;
+  }
+
+  public int numberOfLevels()
+  {
+    int number = levels.size();
+    return number;
+  }
+
+  public boolean hasLevels()
+  {
+    boolean has = levels.size() > 0;
+    return has;
+  }
+
+  public int indexOfLevel(Level aLevel)
+  {
+    int index = levels.indexOf(aLevel);
+    return index;
+  }
+  /* Code from template association_GetMany */
+  public BlockAssignment getBlockAssignment(int index)
+  {
+    BlockAssignment aBlockAssignment = blockAssignments.get(index);
+    return aBlockAssignment;
+  }
+
+  public List<BlockAssignment> getBlockAssignments()
+  {
+    List<BlockAssignment> newBlockAssignments = Collections.unmodifiableList(blockAssignments);
+    return newBlockAssignments;
+  }
+
+  public int numberOfBlockAssignments()
+  {
+    int number = blockAssignments.size();
+    return number;
+  }
+
+  public boolean hasBlockAssignments()
+  {
+    boolean has = blockAssignments.size() > 0;
+    return has;
+  }
+
+  public int indexOfBlockAssignment(BlockAssignment aBlockAssignment)
+  {
+    int index = blockAssignments.indexOf(aBlockAssignment);
+    return index;
+  }
+  /* Code from template association_GetOne */
+  public Ball getBall()
+  {
+    return ball;
+  }
+  /* Code from template association_GetOne */
+  public Paddle getPaddle()
+  {
+    return paddle;
+  }
+  /* Code from template association_GetOne */
+  public Block223 getBlock223()
+  {
+    return block223;
+  }
+  /* Code from template association_SetOneToMany */
+  public boolean setAdmin(Admin aAdmin)
+  {
+    boolean wasSet = false;
+    if (aAdmin == null)
+    {
+      return wasSet;
+    }
+
+    Admin existingAdmin = admin;
+    admin = aAdmin;
+    if (existingAdmin != null && !existingAdmin.equals(aAdmin))
+    {
+      existingAdmin.removeGame(this);
+    }
+    admin.addGame(this);
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfBlocks()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public Block addBlock(int aRed, int aGreen, int aBlue, int aPoints)
+  {
+    return new Block(aRed, aGreen, aBlue, aPoints, this);
+  }
+
+  public boolean addBlock(Block aBlock)
+  {
+>>>>>>> refs/remotes/origin/master
     boolean wasAdded = false;
     if (blocks.contains(aBlock)) { return false; }
     Game existingGame = aBlock.getGame();

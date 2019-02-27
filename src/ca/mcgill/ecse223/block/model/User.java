@@ -29,6 +29,7 @@ public class User
   // CONSTRUCTOR
   //------------------------
 
+<<<<<<< HEAD
   public User(String aUsername, Block223 aBlock223, UserRole... allRoles)
   {
     if (!setUsername(aUsername))
@@ -54,6 +55,66 @@ public class User
 
   public boolean setUsername(String aUsername)
   {
+=======
+package ca.mcgill.ecse223.block.model;
+import java.util.*;
+
+// line 19 "../../../../../Block223 v2.ump"
+public class User
+{
+
+  //------------------------
+  // STATIC VARIABLES
+  //------------------------
+
+  private static Map<String, User> usersByUsername = new HashMap<String, User>();
+
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //User Attributes
+  private String username;
+
+  //User Associations
+  private List<UserRole> roles;
+  private Block223 block223;
+
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  public User(String aUsername, Block223 aBlock223, UserRole... allRoles)
+  {
+    // line 23 "../../../../../Block223 v2.ump"
+    if(aUsername == null || aUsername == "") {
+       		throw new RuntimeException("The username must be specified. ");
+       	}
+    // END OF UMPLE BEFORE INJECTION
+    if (!setUsername(aUsername))
+    {
+      throw new RuntimeException("Cannot create due to duplicate username");
+    }
+    roles = new ArrayList<UserRole>();
+    boolean didAddRoles = setRoles(allRoles);
+    if (!didAddRoles)
+    {
+      throw new RuntimeException("Unable to create User, must have 1 to 2 roles");
+    }
+    boolean didAddBlock223 = setBlock223(aBlock223);
+    if (!didAddBlock223)
+    {
+      throw new RuntimeException("Unable to create user due to block223");
+    }
+  }
+
+  //------------------------
+  // INTERFACE
+  //------------------------
+
+  public boolean setUsername(String aUsername)
+  {
+>>>>>>> refs/remotes/origin/master
     boolean wasSet = false;
     String anOldUsername = getUsername();
     if (hasWithUsername(aUsername)) {

@@ -24,7 +24,34 @@ public class BlockAssignment
   // CONSTRUCTOR
   //------------------------
 
+<<<<<<< HEAD
   public BlockAssignment(int aGridHorizontalPosition, int aGridVerticalPosition, Level aLevel, Block aBlock, Game aGame)
+=======
+package ca.mcgill.ecse223.block.model;
+
+// line 112 "../../../../../Block223 v2.ump"
+public class BlockAssignment
+{
+
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //BlockAssignment Attributes
+  private int gridHorizontalPosition;
+  private int gridVerticalPosition;
+
+  //BlockAssignment Associations
+  private Level level;
+  private Block block;
+  private Game game;
+
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  public BlockAssignment(int aGridHorizontalPosition, int aGridVerticalPosition, Level aLevel, Block aBlock, Game aGame)
+>>>>>>> refs/remotes/origin/master
   {
     // line 80 "../../../../../Block223 v2.ump"
     if(gridHorizontalPosition <= 0 || gridHorizontalPosition > maxNrHorizontalBlocks()) {
