@@ -59,8 +59,6 @@ public class Block223Page extends JFrame{
 		private JLabel currentLevelNumberLabel;
 		private JTextField nrOfBlocksPerLevelTextField;
 		private JLabel nrOfBlocksPerLevelLabel;
-		private JCheckBox randomLevelNumberCheckBox;
-		private JLabel randomLevelNumberLabel;
 		
 		//Ball
 		private JLabel ballLabel;
@@ -78,7 +76,7 @@ public class Block223Page extends JFrame{
 		private JTextField maxPaddleLengthTextField;
 		private JLabel maxPaddleLengthLabel;
 		
-		private JButton saveGameButton;
+		private JButton saveGameSettingButton;
 		
 		//data elements
 		private String error = null;
@@ -111,8 +109,8 @@ public class Block223Page extends JFrame{
 			//elements for Game Settings
 			gameSettingsLabel = new JLabel ();
 			gameSettingsLabel.setText("Game Settings");
-			saveGameButton = new JButton();
-			saveGameButton.setText("Save Game");
+			saveGameSettingButton = new JButton();
+			saveGameSettingButton.setText("Save Game");
 			
 				//elements for Level
 			nrOfLevelsTextField = new JTextField();
@@ -124,10 +122,7 @@ public class Block223Page extends JFrame{
 			nrOfBlocksPerLevelTextField = new JTextField();
 			nrOfBlocksPerLevelLabel = new JLabel();
 			nrOfBlocksPerLevelLabel.setText("Number of Block Per Level");
-			randomLevelNumberCheckBox = new JCheckBox();
-			randomLevelNumberLabel = new JLabel();
-			randomLevelNumberLabel.setText("Random Number of Levels");
-			
+						
 				//elements for Ball
 			ballLabel = new JLabel();
 			ballLabel.setText("Ball:");
@@ -157,9 +152,9 @@ public class Block223Page extends JFrame{
 			setTitle("Block 223");
 			
 			//listeners for Game Settings
-			saveGameButton.addActionListener(new java.awt.event.ActionListener() {
+			saveGameSettingButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent evt) {
-					saveGameButtonActionPerformed(evt);
+					saveGameSettingButtonActionPerformed(evt);
 				}
 			});
 			
@@ -217,8 +212,7 @@ public class Block223Page extends JFrame{
 				nrOfLevelsTextField.setText("");
 				currentLevelNumberTextField.setText("");
 				nrOfBlocksPerLevelTextField.setText("");
-				randomLevelNumberCheckBox.setSelected(false);
-				
+								
 					//Ball
 				minBallSpeedXTextField.setText("");
 				minBallSpeedYTextField.setText("");
@@ -230,7 +224,8 @@ public class Block223Page extends JFrame{
 					
 			}
 		}
-		private void saveGameButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		
+		private void saveGameSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {
 			error = null;
 			
 			int nrLevels = 0;
