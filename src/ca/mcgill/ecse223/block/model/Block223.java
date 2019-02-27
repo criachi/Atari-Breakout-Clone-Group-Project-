@@ -364,6 +364,7 @@ public class Block223 implements Serializable
   }
 
 
+
    private static final long serialVersionUID = -4904473121226232586L;
   
   // line 10 "../../../../../Block223 v2.ump"
@@ -372,5 +373,18 @@ public class Block223 implements Serializable
     Game.reinitializeUniqueGameName(this.getGames());
     User.reinitializeUniqueUserName(this.getUsers());
   }
+
+
+  // line 9 "../../../../../Block223 v2.ump"
+   public Game findGame(String name){
+    for(Game game : getGames()) {
+		  if (game.getName().equals(name)) {
+			  return game;
+		  }
+	  }
+	  
+	  return null;
+  }
+
 
 }

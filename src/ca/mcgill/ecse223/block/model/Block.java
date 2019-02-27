@@ -41,8 +41,23 @@ public class Block implements Serializable
   // CONSTRUCTOR
   //------------------------
 
+
   public Block(int aRed, int aGreen, int aBlue, int aPoints, Game aGame)
   {
+  // line 66 "../../../../../Block223 v2.ump"
+    if (aRed<0 || aRed>255) {
+    	  throw new RuntimeException("Red must be between 0 and 255");
+    	}
+    	if (aGreen<0 || aGreen>255) {
+    	  throw new RuntimeException("Green must be between 0 and 255");
+    	}
+    	if (aBlue<0 || aBlue>255) {
+    	  throw new RuntimeException("Blue must be between 0 and 255");
+    	}
+    	if (aPoints<1 || aPoints>1000) {
+    	  throw new RuntimeException("Points must be between 1 and 1000");
+        }
+    // END OF UMPLE BEFORE INJECTION
     red = aRed;
     green = aGreen;
     blue = aBlue;
