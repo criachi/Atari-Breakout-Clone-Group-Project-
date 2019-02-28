@@ -7,6 +7,7 @@ import ca.mcgill.ecse223.block.model.Game;
 import ca.mcgill.ecse223.block.model.UserRole;
 import ca.mcgill.ecse223.block.view.Block223Page;
 import ca.mcgill.ecse223.block.view.WelcomeWindow;
+import ca.mcgill.ecse223.block.persistence.*;
 
 public class Block223Application {
 	
@@ -30,8 +31,14 @@ public class Block223Application {
  		return block223;
 	}
 	
-	// TODO: resetBlock223() - requires persistence 
-	// public static void?? resetBlock223() { }
+	/**
+	 *  resetBlock223 added using persistence, but I am not sure if this going to work
+	 * @author Onur Cayci
+	 */
+	public static Block223 resetBlock223() {
+		block223 = Block223Persistence.load();
+		return block223;
+	}
 	
 	public static void setCurrentUserRole(UserRole aUserRole) {
 		currentUserRole = aUserRole;
