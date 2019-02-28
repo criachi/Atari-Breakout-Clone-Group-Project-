@@ -63,14 +63,12 @@ public class WelcomeWindow extends JFrame{
 		
 		//Setting up the action listener
 		btnLogIn.addActionListener(new java.awt.event.ActionListener() {
-			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnLogInActionPerformed(evt);	
 			}
 		});
 		
 		btnSignUp.addActionListener(new java.awt.event.ActionListener() {
-			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnSignUpActionPerformed(evt);
 			}
@@ -86,6 +84,7 @@ public class WelcomeWindow extends JFrame{
 	}
 	
 	private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {
-		
+		frame.dispose();
+		new RegisterWindow();
 	}
 }
