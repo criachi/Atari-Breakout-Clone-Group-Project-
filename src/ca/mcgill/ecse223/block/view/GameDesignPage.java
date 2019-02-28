@@ -50,7 +50,7 @@ public class GameDesignPage {
 	
 	
 	// error message element
-	private JLabel errorMessage;
+	private String error = null;
 	// data elements: each JComboBox needs to know which model object an entry in it refers to
 	// also, check my question abt this to Gunter: he said error messages also require hashmaps and any table we make requires one too 
 	// add/remove block - Work in Progress: unsure what value type to identify block
@@ -235,10 +235,29 @@ public class GameDesignPage {
 			index = 0;
 			for(TOBlock block : Block223Controller.getBlocksOfCurrentDesignableGame()) {
 				gameBlocks.put(index, block.getId());
+				yourBlocksComboBox.addItem("Red: " + block.getRed() + "Green: " + block.getGreen() + "Blue: " + block.getBlue() + "Points: " + block.getPoints());
+				index++;
 			}
 		}
+		//pack()? is it needed? check btms tutorial 5
 	}	
 	private void addBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		// clear error message 
+		error = null;
 		
+		// call the controller 
+		// but first convert the textfield inputs from strings to integers
+		int red, blue, green, points;
+		try {
+			red = Integer.parseInt(redTextField.getText());
+			blue = Integer.parseInt(blueTextField.getText());
+			green = Integer.parseInt(greenTextField.getText());
+		} catch (NumberFormatException e) {
+			
+		}
+		try {
+			Block223Controller.addBlock(, greenTextField.getText(), blueTextField.getText(), pointsTextField.getText());
+			
+		}
 	}
 }
