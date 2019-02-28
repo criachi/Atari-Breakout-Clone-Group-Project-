@@ -14,6 +14,10 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JTextField;
+
+import ca.mcgill.ecse223.block.controller.Block223Controller;
+import ca.mcgill.ecse223.block.controller.InvalidInputException;
+
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 
@@ -22,6 +26,7 @@ public class LogInWindow extends JFrame{
 	private JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordField;
+	private JLabel error;
 
 	/**
 	 * Create the application.
@@ -42,61 +47,42 @@ public class LogInWindow extends JFrame{
 		JDesktopPane desktopPane = new JDesktopPane();
 		desktopPane.setBackground(Color.LIGHT_GRAY);
 		frame.getContentPane().add(desktopPane, BorderLayout.CENTER);
-		GridBagLayout gbl_desktopPane = new GridBagLayout();
-		gbl_desktopPane.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gbl_desktopPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_desktopPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_desktopPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		desktopPane.setLayout(gbl_desktopPane);
+		desktopPane.setLayout(null);
 		
 		JLabel lblLogIn = new JLabel("Log In");
+		lblLogIn.setBounds(196, 30, 46, 20);
 		lblLogIn.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		GridBagConstraints gbc_lblLogIn = new GridBagConstraints();
-		gbc_lblLogIn.insets = new Insets(0, 0, 5, 5);
-		gbc_lblLogIn.gridx = 2;
-		gbc_lblLogIn.gridy = 1;
-		desktopPane.add(lblLogIn, gbc_lblLogIn);
+		desktopPane.add(lblLogIn);
 		
 		JLabel lblNewLabel = new JLabel("Username: ");
+		lblNewLabel.setBounds(75, 85, 82, 20);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 3;
-		desktopPane.add(lblNewLabel, gbc_lblNewLabel);
+		desktopPane.add(lblNewLabel);
 		
 		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.anchor = GridBagConstraints.WEST;
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.gridx = 3;
-		gbc_textField.gridy = 3;
-		desktopPane.add(textField, gbc_textField);
+		textField.setBounds(190, 85, 150, 20);
+		desktopPane.add(textField);
 		textField.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("Password: ");
+		lblNewLabel_1.setBounds(75, 140, 78, 20);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 1;
-		gbc_lblNewLabel_1.gridy = 5;
-		desktopPane.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		desktopPane.add(lblNewLabel_1);
 		
 		passwordField = new JPasswordField();
-		GridBagConstraints gbc_passwordField = new GridBagConstraints();
-		gbc_passwordField.insets = new Insets(0, 0, 5, 0);
-		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_passwordField.gridx = 3;
-		gbc_passwordField.gridy = 5;
-		desktopPane.add(passwordField, gbc_passwordField);
+		passwordField.setBounds(190, 140, 150, 20);
+		desktopPane.add(passwordField);
 		
 		JButton btnLogIn = new JButton("Log In");
-		GridBagConstraints gbc_btnLogIn = new GridBagConstraints();
-		gbc_btnLogIn.gridx = 3;
-		gbc_btnLogIn.gridy = 7;
-		desktopPane.add(btnLogIn, gbc_btnLogIn);
+		btnLogIn.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnLogIn.setBounds(188, 195, 75, 23);
+		desktopPane.add(btnLogIn);
+		
+		error = new JLabel("");
+		error.setForeground(Color.RED);
+		error.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		error.setBounds(100, 60, 250, 20);
+		desktopPane.add(error);
 		
 		btnLogIn.addActionListener(new java.awt.event.ActionListener() {
 
@@ -109,7 +95,14 @@ public class LogInWindow extends JFrame{
 	}
 
 	private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {
-		//Lets assume this is an admin for the example
+		try {
+			Block223Controller.login(textField.getText(), passwordField.getPassword().toString());
+		}
+		catch (InvalidInputException e) {
+			error.setText(e.getMessage());
+			return;
+		}
+		
 		frame.dispose();
 		new Block223Page().setVisible(true);
 	}

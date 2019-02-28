@@ -24,6 +24,7 @@ import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import ca.mcgill.ecse223.block.application.Block223Application;
 import ca.mcgill.ecse223.block.controller.Block223Controller;
 import ca.mcgill.ecse223.block.controller.TOGame;
 import ca.mcgill.ecse223.block.controller.InvalidInputException;
@@ -130,7 +131,7 @@ public class Block223Page extends JFrame{
 			errorMessage.setText("WELCOME TO BLOCK223. THIS IS CURRENTLY A WIP.");
 			
 			message = new JLabel();
-			message.setText("WELCOME TO BLOCK223. THIS IS A WIP.");
+			message.setText("Current user is "+Block223Application.getCurrentUserRole());
 			message.setForeground(Color.RED);
 			
 			//elements for Game Settings
@@ -200,7 +201,7 @@ public class Block223Page extends JFrame{
 			// global settings
 			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 			setTitle("Block 223");
-			setBounds(100,100,1300,400);
+			setBounds(100,100,900,400);
 			
 			//listeners for Game Settings
 			saveGameSettingButton.addActionListener(new java.awt.event.ActionListener() {
@@ -222,18 +223,6 @@ public class Block223Page extends JFrame{
 							.addGroup(layout.createSequentialGroup()
 									.addGroup(layout.createParallelGroup()
 											.addComponent(message)
-											.addComponent(username)
-											.addComponent(userPassword)
-											.addComponent(adminPassword)
-											.addComponent(signUp))
-									.addGroup(layout.createParallelGroup()
-											.addComponent(usernameField, 200, 200, 400)
-											.addComponent(passwordField, 200, 200, 400)
-											.addComponent(adminPasswordField, 200, 200, 400)
-											.addGroup(layout.createSequentialGroup()
-													.addComponent(userLogIn, 80, 95, 95)
-													.addComponent(adminLogIn, 80, 95, 95)))
-									.addGroup(layout.createParallelGroup()
 											.addComponent(gameSettingsLabel)
 											.addComponent(settingsLabel)
 											.addComponent(gameNameLabel)
@@ -268,8 +257,7 @@ public class Block223Page extends JFrame{
 							)
 					);
 			
-			layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {usernameField, passwordField, adminPasswordField});
-			layout.linkSize(SwingConstants.VERTICAL, new java.awt.Component[] {usernameField, passwordField, adminPasswordField});
+			
 			layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {availableGames, gameNameTextField, nrOfLevelsTextField, nrOfBlocksPerLevelTextField, minBallSpeedXTextField, minBallSpeedYTextField, speedIncreaseFactorTextField, minPaddleLengthTextField, maxPaddleLengthTextField});
 			layout.linkSize(SwingConstants.VERTICAL, new java.awt.Component[] {availableGames, gameNameTextField, nrOfLevelsTextField, nrOfBlocksPerLevelTextField, minBallSpeedXTextField, minBallSpeedYTextField, speedIncreaseFactorTextField, minPaddleLengthTextField, maxPaddleLengthTextField});
 			layout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {levelList, blockList, gridHorizontalPositionTextField, gridVerticalPositionTextField});
@@ -281,29 +269,20 @@ public class Block223Page extends JFrame{
 							.addGroup(layout.createParallelGroup()
 									.addComponent(message))
 							.addGroup(layout.createParallelGroup()
-									.addComponent(username)
-									.addComponent(usernameField)
 									.addComponent(gameSettingsLabel)
 									.addComponent(availableGames)
 									.addComponent(levelLabel)
 									.addComponent(levelList))
 							.addGroup(layout.createParallelGroup()
-									.addComponent(userPassword)
-									.addComponent(passwordField)
 									.addComponent(settingsLabel)
 									.addComponent(blockLabel)
 									.addComponent(blockList))
 							.addGroup(layout.createParallelGroup()
-									.addComponent(adminPassword)
-									.addComponent(adminPasswordField)
 									.addComponent(gameNameLabel)
 									.addComponent(gameNameTextField)
 									.addComponent(gridHorizontalPositionLabel)
 									.addComponent(gridHorizontalPositionTextField))
 							.addGroup(layout.createParallelGroup()
-									.addComponent(signUp)
-									.addComponent(userLogIn)
-									.addComponent(adminLogIn)
 									.addComponent(nrOfLevelsLabel)
 									.addComponent(nrOfLevelsTextField)
 									.addComponent(gridVerticalPositionLabel)

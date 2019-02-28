@@ -13,12 +13,14 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
+import java.awt.Color;
 
 public class RegisterWindow {
 
 	private JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordField;
+	private JLabel error;
 
 	/**
 	 * Create the application.
@@ -68,6 +70,12 @@ public class RegisterWindow {
 		btnSignUp.setBounds(228, 190, 91, 23);
 		desktopPane.add(btnSignUp);
 		
+		error = new JLabel("");
+		error.setForeground(Color.RED);
+		error.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		error.setBounds(85, 11, 300, 20);
+		desktopPane.add(error);
+		
 		btnSignUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnSignUpActionPerformed(evt);
@@ -76,8 +84,12 @@ public class RegisterWindow {
 	}
 	
 	private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {
+		if(textField.getText().length() == 0 || passwordField.getPassword().toString().length() == 0) {
+			error.setText("Error: Username or password cannot be empty.");
+			return;
+		}
+		
 		frame.dispose();
-		new RegisterWindowAdmin();
+		new RegisterWindowAdmin(textField.getText(), passwordField.getPassword().toString());
 	}
-	
 }

@@ -11,19 +11,29 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JPasswordField;
+
+import ca.mcgill.ecse223.block.controller.Block223Controller;
+import ca.mcgill.ecse223.block.controller.InvalidInputException;
+
 import javax.swing.JButton;
+import java.awt.Color;
 
 public class RegisterWindowAdmin {
 
 	private JFrame frame;
 	private JPasswordField passwordField;
-
+	private String username;
+	private String userPassword;
+	private JLabel error;
+	
 
 	/**
 	 * Create the application.
 	 */
-	public RegisterWindowAdmin() {
+	public RegisterWindowAdmin(String givenUsername, String givenPassword) {
 		initialize();
+		username = givenUsername;
+		userPassword = givenPassword;
 	}
 
 	/**
@@ -61,6 +71,12 @@ public class RegisterWindowAdmin {
 		btnSignUp.setBounds(242, 190, 91, 23);
 		desktopPane.add(btnSignUp);
 		
+		error = new JLabel("");
+		error.setForeground(Color.RED);
+		error.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		error.setBounds(186, 11, 125, 20);
+		desktopPane.add(error);
+		
 		btnSignUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnSignUpActionPerformed(evt);
@@ -69,6 +85,14 @@ public class RegisterWindowAdmin {
 	}
 	
 	private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {
+		try {
+			Block223Controller.register(username, userPassword, passwordField.getPassword().toString());
+		}
+		catch (InvalidInputException e) {
+			error.setText(e.getMessage());
+			return;
+		}
+		
 		frame.dispose();
 		new LogInWindow();
 	}
