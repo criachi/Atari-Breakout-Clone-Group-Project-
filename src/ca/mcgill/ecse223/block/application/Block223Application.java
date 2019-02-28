@@ -18,7 +18,7 @@ public class Block223Application {
 	public static void main(String[] args) { 
 		java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new WelcomeWindow().frame.setVisible(true);
+                new WelcomeWindow();
             }
         });
 	}

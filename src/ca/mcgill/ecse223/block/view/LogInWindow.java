@@ -11,32 +11,17 @@ import javax.swing.BoxLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 
-public class LogInWindow {
+public class LogInWindow extends JFrame{
 
 	private JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordField;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LogInWindow window = new LogInWindow();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -52,6 +37,7 @@ public class LogInWindow {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 		
 		JDesktopPane desktopPane = new JDesktopPane();
 		desktopPane.setBackground(Color.LIGHT_GRAY);
@@ -106,11 +92,25 @@ public class LogInWindow {
 		gbc_passwordField.gridy = 5;
 		desktopPane.add(passwordField, gbc_passwordField);
 		
-		JButton btnPlayer = new JButton("Log In");
-		GridBagConstraints gbc_btnPlayer = new GridBagConstraints();
-		gbc_btnPlayer.gridx = 3;
-		gbc_btnPlayer.gridy = 7;
-		desktopPane.add(btnPlayer, gbc_btnPlayer);
+		JButton btnLogIn = new JButton("Log In");
+		GridBagConstraints gbc_btnLogIn = new GridBagConstraints();
+		gbc_btnLogIn.gridx = 3;
+		gbc_btnLogIn.gridy = 7;
+		desktopPane.add(btnLogIn, gbc_btnLogIn);
+		
+		btnLogIn.addActionListener(new java.awt.event.ActionListener() {
+
+			@Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnLogInActionPerformed(evt);
+			}
+			
+		});
 	}
 
+	private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {
+		//Lets assume this is an admin for the example
+		frame.dispose();
+		new Block223Page().setVisible(true);
+	}
 }
