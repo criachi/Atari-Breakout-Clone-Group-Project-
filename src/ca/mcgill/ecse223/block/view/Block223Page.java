@@ -31,6 +31,8 @@ import ca.mcgill.ecse223.block.controller.InvalidInputException;
 import ca.mcgill.ecse223.block.controller.TOBlock;
 import ca.mcgill.ecse223.block.controller.TOGridCell;
 import ca.mcgill.ecse223.block.controller.TOUserMode;
+import ca.mcgill.ecse223.block.model.Admin;
+import ca.mcgill.ecse223.block.model.Player;
 
 public class Block223Page extends JFrame{
 
@@ -98,9 +100,11 @@ public class Block223Page extends JFrame{
 		
 		//data elements
 		private String error = null;
+		private String currentUser;
 		
 		
-		public Block223Page() {
+		public Block223Page(String user) {
+			currentUser = user;
 			initComponents();
 			refreshData();
 			
@@ -131,7 +135,15 @@ public class Block223Page extends JFrame{
 			errorMessage.setText("WELCOME TO BLOCK223. THIS IS CURRENTLY A WIP.");
 			
 			message = new JLabel();
-			message.setText("Current user is "+Block223Application.getCurrentUserRole());
+			if(Block223Application.getCurrentUserRole() instanceof Admin) {
+				message.setText("Current user is "+currentUser+" who is an ADMIN.");
+			}
+			else if(Block223Application.getCurrentUserRole() instanceof Player) {
+				message.setText("Current user is "+currentUser+" who is a PLAYER.");
+			}
+			else {
+				message.setText("Current user is "+currentUser+" who has an unrecognized role");
+			}
 			message.setForeground(Color.RED);
 			
 			//elements for Game Settings

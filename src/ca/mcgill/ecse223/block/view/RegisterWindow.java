@@ -21,6 +21,8 @@ public class RegisterWindow {
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private JLabel error;
+	private char[] password;
+	private String passwordPassed;
 
 	/**
 	 * Create the application.
@@ -76,9 +78,19 @@ public class RegisterWindow {
 		error.setBounds(85, 11, 300, 20);
 		desktopPane.add(error);
 		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(88, 190, 91, 23);
+		desktopPane.add(btnCancel);
+		
 		btnSignUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnSignUpActionPerformed(evt);
+			}
+		});
+		
+		btnCancel.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnCancelActionPerformed(evt);
 			}
 		});
 	}
@@ -89,7 +101,19 @@ public class RegisterWindow {
 			return;
 		}
 		
+		password = passwordField.getPassword();
+		passwordPassed = new String();
+		
+		for(int i = 0; i < password.length; i++) {
+			passwordPassed += password[i];
+		}
+		
 		frame.dispose();
-		new RegisterWindowAdmin(textField.getText(), passwordField.getPassword().toString());
+		new RegisterWindowAdmin(textField.getText(), passwordPassed);
+	}
+	
+	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {
+		frame.dispose();
+		new WelcomeWindow();
 	}
 }

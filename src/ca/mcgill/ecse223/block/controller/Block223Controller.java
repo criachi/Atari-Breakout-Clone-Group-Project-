@@ -461,14 +461,15 @@ public class Block223Controller {
 		User foundUser = User.getWithUsername(username);
 		if(foundUser == null) {
 			error = error + "The username and password do not match. ";
+			throw new InvalidInputException("The user does not exist.");
 		}
 		String foundPassword = null;
 		List<UserRole> users = foundUser.getRoles();
 		for(UserRole user: users) {
 			String rolePassword = user.getPassword();
-			if(rolePassword == password) {
+			if(rolePassword.contentEquals(password)) {
+				foundPassword = password;
 				Block223Application.setCurrentUserRole(user);
-				Block223Application.getBlock223();
 			}
 		}
 		if(foundPassword == null) {

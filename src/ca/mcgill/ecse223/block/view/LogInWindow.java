@@ -27,6 +27,8 @@ public class LogInWindow extends JFrame{
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private JLabel error;
+	private char[] password;
+	private String passwordPassed;
 
 	/**
 	 * Create the application.
@@ -84,19 +86,34 @@ public class LogInWindow extends JFrame{
 		error.setBounds(100, 60, 250, 20);
 		desktopPane.add(error);
 		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnCancel.setBounds(75, 196, 75, 23);
+		desktopPane.add(btnCancel);
+		
 		btnLogIn.addActionListener(new java.awt.event.ActionListener() {
-
-			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnLogInActionPerformed(evt);
 			}
-			
+		});
+		
+		btnCancel.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnCancelActionPerformed(evt);
+			}
 		});
 	}
 
 	private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {
+		password = passwordField.getPassword();
+		passwordPassed = new String();
+		
+		for(int i = 0; i < password.length; i++) {
+			passwordPassed += password[i];
+		}
+		
 		try {
-			Block223Controller.login(textField.getText(), passwordField.getPassword().toString());
+			Block223Controller.login(textField.getText(), passwordPassed);
 		}
 		catch (InvalidInputException e) {
 			error.setText(e.getMessage());
@@ -104,6 +121,11 @@ public class LogInWindow extends JFrame{
 		}
 		
 		frame.dispose();
-		new Block223Page().setVisible(true);
+		new Block223Page(textField.getText()).setVisible(true);
+	}
+	
+	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {
+		frame.dispose();
+		new WelcomeWindow();
 	}
 }

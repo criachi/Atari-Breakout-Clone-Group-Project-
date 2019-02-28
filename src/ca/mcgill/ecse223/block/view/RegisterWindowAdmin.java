@@ -25,6 +25,8 @@ public class RegisterWindowAdmin {
 	private String username;
 	private String userPassword;
 	private JLabel error;
+	private char[] password;
+	private String passwordPassed;
 	
 
 	/**
@@ -49,9 +51,9 @@ public class RegisterWindowAdmin {
 		frame.getContentPane().add(desktopPane, BorderLayout.CENTER);
 		desktopPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Sign Up As Admin");
+		JLabel lblNewLabel = new JLabel("Register As An Admin");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNewLabel.setBounds(144, 31, 150, 50);
+		lblNewLabel.setBounds(144, 31, 180, 50);
 		desktopPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Password: ");
@@ -82,11 +84,37 @@ public class RegisterWindowAdmin {
 				btnSignUpActionPerformed(evt);
 			}
 		});
+		
+		btnSkip.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				btnSkipActionPerformed(evt);
+			}
+		});
 	}
 	
 	private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {
+		password = passwordField.getPassword();
+		passwordPassed = new String();
+		
+		for(int i = 0; i < password.length; i++) {
+			passwordPassed += password[i];
+		}
+		
 		try {
-			Block223Controller.register(username, userPassword, passwordField.getPassword().toString());
+			Block223Controller.register(username, userPassword, passwordPassed);
+		}
+		catch (InvalidInputException e) {
+			error.setText(e.getMessage());
+			return;
+		}
+		
+		frame.dispose();
+		new LogInWindow();
+	}
+	
+	private void btnSkipActionPerformed(java.awt.event.ActionEvent evt) {
+		try {
+			Block223Controller.register(username, userPassword, null);
 		}
 		catch (InvalidInputException e) {
 			error.setText(e.getMessage());
