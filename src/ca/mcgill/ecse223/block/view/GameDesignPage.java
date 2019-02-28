@@ -1,6 +1,7 @@
 package ca.mcgill.ecse223.block.view;
 
 import java.awt.EventQueue;
+import ca.mcgill.ecse223.block.controller.*;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,13 +37,24 @@ public class GameDesignPage {
 	private JTextField greenTextField;
 	private JTextField pointsTextField;
 	
+	// Blocks in a Game
+	JComboBox<String> yourBlocksComboBox;
+	JLabel lblYourBlocks;
+	JLabel redLbl;
+	JLabel blueLbl;
+	JLabel greenLbl;
+	JLabel pointsLbl;
+	
+	// Log Out
+	JButton btnLogOut;
+	
+	
 	// error message element
 	private JLabel errorMessage;
 	// data elements: each JComboBox needs to know which model object an entry in it refers to
 	// also, check my question abt this to Gunter: he said error messages also require hashmaps and any table we make requires one too 
-	
 	// add/remove block - Work in Progress: unsure what value type to identify block
-	private HashMap<Integer, String> gameBlocks;
+	private HashMap<Integer, Integer> gameBlocks;
 	
 	/**
 	 * Launch the application.
@@ -80,20 +92,20 @@ public class GameDesignPage {
 				errorMessage = new JLabel();
 				errorMessage.setForeground(Color.RED);
 		
-		// Log Out
-		JButton btnLogOut = new JButton("Log Out");
+		// Initializing Log Out elements
+		btnLogOut = new JButton("Log Out");
 		
-		// Block Settings
-		JLabel lblYourBlocks = new JLabel("YOUR BLOCKS");
+		// Initializing Block Settings elements
+		lblYourBlocks = new JLabel("YOUR BLOCKS");
 		lblYourBlocks.setFont(new Font("Times New Roman", Font.BOLD, 25));
 		 
-		JLabel redLbl = new JLabel("Red");
+		redLbl = new JLabel("Red");
 		
-		JLabel blueLbl = new JLabel("Blue");
+		blueLbl = new JLabel("Blue");
 		
-		JLabel greenLbl = new JLabel("Green");
+		greenLbl = new JLabel("Green");
 		
-		JLabel pointsLbl = new JLabel("Points");
+		pointsLbl = new JLabel("Points");
 		
 		// Delete Block
 		JButton deleteBlockBtn = new JButton("Delete Block");
@@ -122,7 +134,7 @@ public class GameDesignPage {
 		pointsTextField.setColumns(10);
 		
 		// Display List of Blocks
-		JComboBox yourBlocksComboBox = new JComboBox<String>();
+		yourBlocksComboBox = new JComboBox<String>();
 		
 		// listeners for addBlock
 				addBlockBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -207,6 +219,7 @@ public class GameDesignPage {
 		errorMessage.setText(error);
 		if (error == null || error.length() == 0) {
 			//populate page with data 
+			Integer index = 0;
 			//block characteristics 
 			//red text field
 			redTextField.setText("");
@@ -217,7 +230,12 @@ public class GameDesignPage {
 			//points text field
 			pointsTextField.setText("");
 			//list of blocks (combo box)
-			
+			gameBlocks = new HashMap<Integer,Integer>();
+			yourBlocksComboBox.removeAllItems();
+			index = 0;
+			for(TOBlock block : Block223Controller.getBlocksOfCurrentDesignableGame()) {
+				gameBlocks.put(index, block.getId());
+			}
 		}
 	}	
 	private void addBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
