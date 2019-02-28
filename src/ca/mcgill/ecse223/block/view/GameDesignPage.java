@@ -1,3 +1,6 @@
+// check my method: private void addBlockBtnActionPerformed(java.awt.event.ActionEvent evt) 
+// as a template for how to call refresh methods and stuff like that... 
+// also refer to code from the BtmsPage class in Btms Version 2 (tuto 5) and even the one from version 4!
 package ca.mcgill.ecse223.block.view;
 
 import java.awt.EventQueue;
@@ -31,6 +34,8 @@ public class GameDesignPage {
 
 	private JFrame frame;
 	
+	// error JLabel 
+	private JLabel errorMessage;
 	// textfield components for characteristics of blocks (colors + points)
 	private JTextField redTextField;
 	private JTextField blueTextField;
@@ -48,8 +53,7 @@ public class GameDesignPage {
 	// Log Out
 	JButton btnLogOut;
 	
-	
-	// error message element
+	// error string
 	private String error = null;
 	// data elements: each JComboBox needs to know which model object an entry in it refers to
 	// also, check my question abt this to Gunter: he said error messages also require hashmaps and any table we make requires one too 
@@ -214,7 +218,10 @@ public class GameDesignPage {
 		);
 		frame.getContentPane().setLayout(groupLayout);
 	}
-	private void refreshData() {
+	private void refreshData() throws InvalidInputException {
+		refreshBlocks();
+	}
+	private void refreshBlocks() throws InvalidInputException {
 		// error
 		errorMessage.setText(error);
 		if (error == null || error.length() == 0) {
@@ -247,17 +254,27 @@ public class GameDesignPage {
 		
 		// call the controller 
 		// but first convert the textfield inputs from strings to integers
-		int red, blue, green, points;
+		int red = 0;
+		int blue = 0;
+		int green = 0; 
+		int points = 0;
 		try {
 			red = Integer.parseInt(redTextField.getText());
 			blue = Integer.parseInt(blueTextField.getText());
 			green = Integer.parseInt(greenTextField.getText());
+			points = Integer.parseInt(pointsTextField.getText());
 		} catch (NumberFormatException e) {
-			
-		}
-		try {
-			Block223Controller.addBlock(, greenTextField.getText(), blueTextField.getText(), pointsTextField.getText());
-			
+			error = "All field entries need to be numerical values!";
+		} // it dsnt seem to make sense: where is the error printed on the screen? in refreshData method! (check btms tutorial) 
+		if(error.length() == 0) {
+			try {
+				Block223Controller.addBlock(red, green, blue, points);
+				// you have to wrap this refresh call in a try catch block
+				// not sure yet if need to call refreshData() or just refreshBlocks()
+				refreshBlocks();
+			} catch (InvalidInputException e) {
+				error = e.getMessage();
+			}
 		}
 	}
 }
