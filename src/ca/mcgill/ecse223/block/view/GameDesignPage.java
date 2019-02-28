@@ -43,15 +43,22 @@ public class GameDesignPage {
 	private JTextField pointsTextField;
 	
 	// Blocks in a Game
-	JComboBox<String> yourBlocksComboBox;
-	JLabel lblYourBlocks;
-	JLabel redLbl;
-	JLabel blueLbl;
-	JLabel greenLbl;
-	JLabel pointsLbl;
+	private JComboBox<String> yourBlocksComboBox;
+	private JLabel lblYourBlocks;
+	private JLabel redLbl;
+	private JLabel blueLbl;
+	private JLabel greenLbl;
+	private JLabel pointsLbl;
+	private JButton deleteBlockBtn;
+	private JButton addBlockBtn;
+	private JButton updateBlockBtn;
+	private JButton saveChangesBtn;
+	
+	// Blocks in a Level (Block Assignment)
+	private JButton removeBlockAssignmentBtn;
 	
 	// Log Out
-	JButton btnLogOut;
+	private JButton logOutBtn;
 	
 	// error string
 	private String error = null;
@@ -81,23 +88,25 @@ public class GameDesignPage {
 	 */
 	public GameDesignPage() {
 		initialize();
+		//refreshData(); idk
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		// Initializing frame of application
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1270, 667);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// Initializing elements for error message
-				errorMessage = new JLabel();
-				errorMessage.setForeground(Color.RED);
+		errorMessage = new JLabel();
+		errorMessage.setForeground(Color.RED);
 		
 		// Initializing Log Out elements
-		btnLogOut = new JButton("Log Out");
+		logOutBtn = new JButton("Log Out");
 		
 		// Initializing Block Settings elements
 		lblYourBlocks = new JLabel("YOUR BLOCKS");
@@ -112,17 +121,33 @@ public class GameDesignPage {
 		pointsLbl = new JLabel("Points");
 		
 		// Delete Block
-		JButton deleteBlockBtn = new JButton("Delete Block");
-		deleteBlockBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		deleteBlockBtn = new JButton("Delete Block");
+		// Action Listener for deleteBlock
+		deleteBlockBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				deleteBlockBtnActionPerformed(evt);
 			}
 		});
 		// Add Block
-		JButton addBlockBtn = new JButton("Add Block");
-		addBlockBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		addBlockBtn = new JButton("Add Block");
+		// Action Listener for addBlock
+		addBlockBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				addBlockBtnActionPerformed(evt);
 			}
 		});
+		
+		// Haluk: Update Block
+		updateBlockBtn = new JButton("Update Block");
+		// Action Listener for updateBlock
+		updateBlockBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				removeBlockAssignmentBtnActionPerformed(evt);
+			}
+		});
+
+		// Save Changes 
+		saveChangesBtn = new JButton("Save Changes");
 		
 		// Initializing text fields for characteristics of blocks
 		redTextField = new JTextField();
@@ -140,44 +165,53 @@ public class GameDesignPage {
 		// Display List of Blocks
 		yourBlocksComboBox = new JComboBox<String>();
 		
-		// listeners for addBlock
-				addBlockBtn.addActionListener(new java.awt.event.ActionListener() {
-					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						addBlockBtnActionPerformed(evt);
-					}
-				});
-		
+		// Haluk: Remove Block from a Level
+		removeBlockAssignmentBtn = new JButton("Remove Block Assignment");
+		// Action Listener for removeBlockfromaLevel
+		removeBlockAssignmentBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				removeBlockAssignmentBtnActionPerformed(evt);
+			}
+		});
+		// DON'T TOUCH: U CHANGE THIS BY DRAGGING AND DROPPING THINGS IN THE DESIGN WINDOW
 		// Group Layout of Page
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(982, Short.MAX_VALUE)
+					.addGap(48)
+					.addComponent(saveChangesBtn)
+					.addPreferredGap(ComponentPlacement.RELATED, 803, Short.MAX_VALUE)
+					.addComponent(deleteBlockBtn)
+					.addGap(29)
+					.addComponent(addBlockBtn)
+					.addContainerGap())
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(133)
+					.addComponent(removeBlockAssignmentBtn)
+					.addPreferredGap(ComponentPlacement.RELATED, 749, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(btnLogOut)
-							.addContainerGap())
+							.addComponent(pointsLbl)
+							.addGap(18))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(pointsLbl)
-									.addGap(18))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-										.addComponent(blueLbl)
-										.addComponent(greenLbl)
-										.addComponent(redLbl))
-									.addPreferredGap(ComponentPlacement.UNRELATED)))
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(pointsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(greenTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(blueTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(redTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(44))
+								.addComponent(blueLbl)
+								.addComponent(greenLbl)
+								.addComponent(redLbl))
+							.addPreferredGap(ComponentPlacement.UNRELATED)))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(pointsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(greenTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(blueTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(redTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(updateBlockBtn))
+					.addGap(44))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap(1030, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(deleteBlockBtn)
-							.addGap(29)
-							.addComponent(addBlockBtn)
+							.addComponent(logOutBtn)
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -189,38 +223,49 @@ public class GameDesignPage {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(btnLogOut)
-					.addGap(56)
-					.addComponent(lblYourBlocks)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(yourBlocksComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 229, Short.MAX_VALUE)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(redTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(redLbl))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(blueTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(blueLbl))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(greenTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(greenLbl))
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(pointsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(pointsLbl))
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(addBlockBtn)
-						.addComponent(deleteBlockBtn))
-					.addContainerGap())
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(logOutBtn)
+							.addGap(56)
+							.addComponent(lblYourBlocks)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(yourBlocksComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(updateBlockBtn)
+								.addComponent(removeBlockAssignmentBtn))
+							.addGap(31)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(redTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(redLbl))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(blueTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(blueLbl))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(greenTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(greenLbl))
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(pointsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(pointsLbl))
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(addBlockBtn)
+								.addComponent(deleteBlockBtn))
+							.addContainerGap())
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(saveChangesBtn)
+							.addGap(28))))
 		);
 		frame.getContentPane().setLayout(groupLayout);
 	}
+	// Confusion... we will decide eventually how to organize refresh methods once I and we understand UI better :')
 	private void refreshData() throws InvalidInputException {
 		refreshBlocks();
 	}
+	// Christina
 	private void refreshBlocks() throws InvalidInputException {
 		// error
 		errorMessage.setText(error);
@@ -248,6 +293,7 @@ public class GameDesignPage {
 		}
 		//pack()? is it needed? check btms tutorial 5
 	}	
+	// Christina
 	private void addBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		// clear error message 
 		error = null;
@@ -276,5 +322,34 @@ public class GameDesignPage {
 				error = e.getMessage();
 			}
 		}
+	}
+	// Christina
+	private void deleteBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		// clear error msg and basic input validation
+		error = "";
+		int selectedBlock = yourBlocksComboBox.getSelectedIndex();
+		if (selectedBlock < 0) {
+			error = "A block needs to be selected to be updated! ";
+		}
+		if (error.length() == 0) {
+			// call the controller 
+			try {
+				Block223Controller.deleteBlock(gameBlocks.get(selectedBlock));
+				//update visuals 
+				refreshBlocks();
+			} catch (InvalidInputException e) {
+				error = e.getMessage();
+			}
+		}
+	}
+	
+	// Haluk's methods
+	// method for Update Block in a Game feature
+	private void updateBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		
+	}
+	// method for Remove Block from a Level 
+	private void removeBlockAssignmentBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		
 	}
 }
