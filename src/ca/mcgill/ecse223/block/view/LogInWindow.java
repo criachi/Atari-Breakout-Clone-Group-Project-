@@ -41,11 +41,15 @@ public class LogInWindow extends JFrame{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//Frame is set up, and the window size is set
+		//The default close operation must be exit_on_close, dispose_on_close will close the whole app once one page is killed
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		
+		
+		//Just about everything here is set up by the windowbuilder
 		JDesktopPane desktopPane = new JDesktopPane();
 		desktopPane.setBackground(Color.LIGHT_GRAY);
 		frame.getContentPane().add(desktopPane, BorderLayout.CENTER);
@@ -91,6 +95,10 @@ public class LogInWindow extends JFrame{
 		btnCancel.setBounds(75, 196, 75, 23);
 		desktopPane.add(btnCancel);
 		
+		/*
+		 * Here I set up action listeners. This is the same format 
+		 * for every action listener
+		 */
 		btnLogIn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnLogInActionPerformed(evt);
@@ -104,7 +112,12 @@ public class LogInWindow extends JFrame{
 		});
 	}
 
+	//A method is created for every action listener
 	private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {
+		/*
+		 * I first grab the password as a char array,
+		 * and convert it into a string for use by the controller
+		 */
 		password = passwordField.getPassword();
 		passwordPassed = new String();
 		
@@ -124,6 +137,7 @@ public class LogInWindow extends JFrame{
 		new Block223Page(textField.getText()).setVisible(true);
 	}
 	
+	//Cancel just closes the page and brings you back to the welcome window
 	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {
 		frame.dispose();
 		new WelcomeWindow();

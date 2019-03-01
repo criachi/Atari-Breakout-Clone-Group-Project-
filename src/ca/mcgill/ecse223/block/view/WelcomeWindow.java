@@ -37,6 +37,8 @@ public class WelcomeWindow extends JFrame{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//Frame is set up, and the window size is set
+		//The default close operation must be exit_on_close, dispose_on_close will close the whole app once one page is killed
 		frame = new JFrame();
 		frame.setBounds(100, 100, 627, 398);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,6 +78,9 @@ public class WelcomeWindow extends JFrame{
 		
 	}
 	
+	/*
+	 * A method needs to be created for every action listener
+	 */
 	private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {
 		//frame.dispose() will delete the current page (from what i understand)
 		frame.dispose();
