@@ -42,6 +42,8 @@ public class RegisterWindowAdmin {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//Frame is set up, and the window size is set
+		//The default close operation must be exit_on_close, dispose_on_close will close the whole app once one page is killed
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,6 +81,7 @@ public class RegisterWindowAdmin {
 		error.setBounds(186, 11, 125, 20);
 		desktopPane.add(error);
 		
+		//Action listeners are set up here, same format for every listener
 		btnSignUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnSignUpActionPerformed(evt);
@@ -92,6 +95,9 @@ public class RegisterWindowAdmin {
 		});
 	}
 	
+	/*
+	 * A method is created for every action listener
+	 */
 	private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {
 		password = passwordField.getPassword();
 		passwordPassed = new String();

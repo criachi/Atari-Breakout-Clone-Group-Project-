@@ -35,6 +35,8 @@ public class RegisterWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//Frame is set up, and the window size is set
+		//The default close operation must be exit_on_close, dispose_on_close will close the whole app once one page is killed
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,6 +84,10 @@ public class RegisterWindow {
 		btnCancel.setBounds(88, 190, 91, 23);
 		desktopPane.add(btnCancel);
 		
+		/*
+		 * Here I set up action listeners, this is the same format for
+		 * every action listener
+		 */
 		btnSignUp.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				btnSignUpActionPerformed(evt);
@@ -95,12 +101,14 @@ public class RegisterWindow {
 		});
 	}
 	
+	//Need to create a method for every action listener you want
 	private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {
 		if(textField.getText().length() == 0 || passwordField.getPassword().toString().length() == 0) {
 			error.setText("Error: Username or password cannot be empty.");
 			return;
 		}
 		
+		//Due to the password being protected, we need to copy the elements of the char array manually into a string
 		password = passwordField.getPassword();
 		passwordPassed = new String();
 		
