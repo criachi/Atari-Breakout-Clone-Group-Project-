@@ -107,6 +107,11 @@ public class GameDesignPage {
 		
 		// Initializing Log Out elements
 		logOutBtn = new JButton("Log Out");
+		logOutBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				logOutBtnActionPerformed(evt);
+			}
+		});
 		
 		// Initializing Block Settings elements
 		lblYourBlocks = new JLabel("YOUR BLOCKS");
@@ -148,6 +153,11 @@ public class GameDesignPage {
 
 		// Save Changes 
 		saveChangesBtn = new JButton("Save Changes");
+		saveChangesBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				saveChangesBtnActionPerformed(evt);
+			}
+		});
 		
 		// Initializing text fields for characteristics of blocks
 		redTextField = new JTextField();
@@ -266,7 +276,7 @@ public class GameDesignPage {
 		refreshBlocks();
 	}
 	// Christina
-	private void refreshBlocks() throws InvalidInputException {
+	private void refreshBlocks() {
 		// error
 		errorMessage.setText(error);
 		if (error == null || error.length() == 0) {
@@ -285,10 +295,14 @@ public class GameDesignPage {
 			gameBlocks = new HashMap<Integer,Integer>();
 			yourBlocksComboBox.removeAllItems();
 			index = 0;
+			try {
 			for(TOBlock block : Block223Controller.getBlocksOfCurrentDesignableGame()) {
 				gameBlocks.put(index, block.getId());
 				yourBlocksComboBox.addItem("Red: " + block.getRed() + "Green: " + block.getGreen() + "Blue: " + block.getBlue() + "Points: " + block.getPoints());
 				index++;
+			}
+			} catch (InvalidInputException e) {
+				error = e.getMessage();
 			}
 		}
 		//pack()? is it needed? check btms tutorial 5
@@ -351,5 +365,20 @@ public class GameDesignPage {
 	// method for Remove Block from a Level 
 	private void removeBlockAssignmentBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		
+	}
+	private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		//frame.dispose() will delete the current page (from what i understand)
+		frame.dispose();
+		new WelcomeWindow();
+		//new Block223Page().setVisible(true);
+	}
+	private void saveChangesBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		// clear error msg 
+		error = "";
+		try {
+			Block223Controller.saveGame();
+		} catch (InvalidInputException e) {
+			error = e.getMessage();
+		}
 	}
 }
