@@ -50,7 +50,6 @@ public class AdminDashBoardPage {
 	private JButton updateGameBtn;
 	private JComboBox<String> yourGamesComboBox;
 	private int gameListSize;
-	private String error;
 
 	/**
 	 * Create the application.
@@ -112,6 +111,8 @@ public class AdminDashBoardPage {
 		
 		textField = new JTextField();
 		textField.setColumns(10);
+		
+		errorMessage = new JLabel("New label");
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -143,11 +144,17 @@ public class AdminDashBoardPage {
 					.addPreferredGap(ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
 					.addComponent(createGameBtn)
 					.addGap(155))
+				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(errorMessage)
+					.addContainerGap(499, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(39)
+					.addGap(10)
+					.addComponent(errorMessage)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(logOutBtn)
 						.addComponent(lblYourGames))

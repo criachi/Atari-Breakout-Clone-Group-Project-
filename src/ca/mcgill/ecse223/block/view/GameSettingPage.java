@@ -55,6 +55,7 @@ public class GameSettingPage {
 			
 			private JButton setSettingButton;
 			private JButton saveGameBtn;
+			private JButton backBtn;
 
 			public  GameSettingPage() {
 				initComponents();
@@ -79,8 +80,8 @@ public class GameSettingPage {
 				desktopPane.add(errorMessage);
 				
 				//elements for Game Settings
-				gameSettingLabel = new JLabel("Game Settings ");
-				gameSettingLabel.setBounds(15, 16, 202, 28);
+				gameSettingLabel = new JLabel("Define Game Settings ");
+				gameSettingLabel.setBounds(15, 16, 327, 28);
 				gameSettingLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 				desktopPane.add(gameSettingLabel);
 				
@@ -183,8 +184,18 @@ public class GameSettingPage {
 				saveGameBtn.setBounds(442, 390, 133, 28);
 				desktopPane.add(saveGameBtn);
 				
+				backBtn = new JButton("Back");
+				backBtn.setBounds(15, 390, 115, 29);
+				desktopPane.add(backBtn);
+				
 				
 				//listeners for Game Settings
+				backBtn.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						backBtnActionPerformed(evt);
+					}
+				});
+				
 				saveGameBtn.addActionListener(new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
 						saveGameBtnActionPerformed(evt);
@@ -313,6 +324,11 @@ public class GameSettingPage {
 				Block223Controller.logout();
 				frame.dispose();
 				new WelcomeWindow();
+				
+			}
+			private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {
+				frame.dispose();
+				new AdminDashBoardPage();
 				
 			}
 }

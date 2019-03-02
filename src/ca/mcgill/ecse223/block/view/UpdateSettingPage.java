@@ -79,8 +79,8 @@ public class UpdateSettingPage {
 				desktopPane.add(errorMessage);
 				
 				//elements for Game Settings
-				gameSettingLabel = new JLabel("Game Settings ");
-				gameSettingLabel.setBounds(15, 12, 202, 28);
+				gameSettingLabel = new JLabel("Update Game Settings ");
+				gameSettingLabel.setBounds(15, 12, 376, 32);
 				gameSettingLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 				desktopPane.add(gameSettingLabel);
 				
