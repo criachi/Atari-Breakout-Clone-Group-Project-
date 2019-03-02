@@ -197,6 +197,11 @@ public class GameDesignPage {
 		
 		// Go back
 		backBtn = new JButton("Back");
+		backBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				backBtnActionPerformed(evt);
+			}
+		});
 		
 		lblSelectALevel = new JLabel("Select a Level: ");
 		lblSelectALevel.setFont(new Font("Tahoma", Font.BOLD, 20));
@@ -340,6 +345,11 @@ public class GameDesignPage {
 		}
 		//pack()? is it needed? check btms tutorial 5
 	} 	
+	
+	private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		frame.dispose();
+		new AdminDashBoardPage();
+	}
 	// Christina
 	private void addBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		errorMessage.setText("");

@@ -50,6 +50,7 @@ public class AdminDashBoardPage {
 	private JButton updateGameBtn;
 	private JComboBox<String> yourGamesComboBox;
 	private int gameListSize;
+	private String error;
 
 	/**
 	 * Create the application.
@@ -178,6 +179,8 @@ public class AdminDashBoardPage {
 		gameListSize = availableGames.size();
 		System.out.println("You have "+gameListSize+" games!");
 		
+		yourGamesComboBox.addItem("");
+		
 		for(int i = 0; i < gameListSize; i++) {
 			yourGamesComboBox.addItem(availableGames.get(i).getName());
 		}
@@ -210,7 +213,16 @@ public class AdminDashBoardPage {
 		//new Block223Page().setVisible(true);
 	}
 	private void deleteGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		try {
+			Block223Controller.deleteGame(yourGamesComboBox.getItemAt(yourGamesComboBox.getSelectedIndex()));
+		}
+		catch(InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+			return;
+		}
 		
+		yourGamesComboBox.remove(yourGamesComboBox.getSelectedIndex());
+		yourGamesComboBox.updateUI();
 	}
 	// here set up mechanism to take the game name from the previous page and then on the update settings page start it out with the textfields alrdy filled out w/ the characteristics of the game
     // use the select game method in the feature
@@ -218,10 +230,19 @@ public class AdminDashBoardPage {
 		// clear error msg and basic input validation
     	
     	int selectedGameIndex = yourGamesComboBox.getSelectedIndex();
-		if (selectedGameIndex <0) {
+		if (selectedGameIndex < 1) {
 			errorMessage.setText("A game needs to be selected to be updated! ");
 			return;
 		} 
+		
+		try {
+			Block223Controller.selectGame(yourGamesComboBox.getItemAt(selectedGameIndex));
+		}
+		catch(InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+			return;
+		}
+		
 		frame.dispose();
 		new UpdateSettingPage();
 	}

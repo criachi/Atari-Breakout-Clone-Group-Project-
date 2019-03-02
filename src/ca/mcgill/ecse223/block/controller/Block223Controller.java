@@ -164,10 +164,10 @@ public class Block223Controller {
 	}
 
 	public static void selectGame(String name) throws InvalidInputException {
-		String error = " ";
+		String error = new String();
 		
 		if (!( Block223Application.getCurrentUserRole() instanceof Admin)) {
-			error = "Admin privileges are required to define game settings.";
+			error += "Admin privileges are required to define game settings.";
 		}
 		if(Block223Application.getCurrentUserRole() != Block223Application.getCurrentGame().getAdmin()) {
 			error = error + "Only the admin who created the game can define its game settings.";
@@ -433,7 +433,8 @@ public class Block223Controller {
 		if(Block223Application.getCurrentUserRole() != null) {
 			error = "Cannot register a new user while a user is logged in. ";
 		}
-		if(playerPassword.equals(adminPassword)) {
+		System.out.println(playerPassword + " "+ adminPassword);
+		if(playerPassword.trim() == adminPassword.trim()){
 			error = error + "The passwords have to be different. ";
 		}
 		if (error.length() > 0) {

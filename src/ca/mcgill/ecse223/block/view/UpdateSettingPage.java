@@ -54,19 +54,6 @@ public class UpdateSettingPage {
 			
 			private JButton saveGameSettingButton;
 			private JButton btnBack;
-			
-			public static void main(String[] args) {
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							UpdateSettingPage window = new UpdateSettingPage();
-							window.frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
-			}
 
 			public  UpdateSettingPage() {
 				initComponents();
@@ -77,7 +64,7 @@ public class UpdateSettingPage {
 						
 				//Frame
 				frame = new JFrame();
-				frame.setBounds(500, 800, 607, 483);
+				frame.setBounds(100, 100, 607, 483);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setVisible(true);
 				
@@ -212,6 +199,12 @@ public class UpdateSettingPage {
 			
 				
 				//listeners for Game Settings
+				btnBack.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						btnBackActionPerformed(evt);
+					}
+				});
+				
 				saveGameSettingButton.addActionListener(new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
 						saveGameSettingButtonActionPerformed(evt);
@@ -253,6 +246,10 @@ public class UpdateSettingPage {
 				}
 			}
 			*/ 
+			private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {
+				frame.dispose();
+				new AdminDashBoardPage();
+			}
 			
 			private void saveGameSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {
 				
@@ -334,6 +331,7 @@ public class UpdateSettingPage {
 				
 			}
 			private void nextBtnActionPerformed(java.awt.event.ActionEvent evt) {
+				frame.dispose();
 				new GameDesignPage();
 				
 			}

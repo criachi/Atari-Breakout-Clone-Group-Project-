@@ -140,6 +140,13 @@ public class RegisterWindow {
 			return;
 		}
 		
+		if(passwordPassed.trim().length() == adminPasswordPassed.trim().length()) {
+			if(passwordPassed.trim().contentEquals(adminPasswordPassed.trim())) {
+				error.setText("Error: Password and Admin Password cannot be the same.");
+				return;
+			}
+		}
+		
 		try {
 			if(adminPasswordPassed.isEmpty()) {
 				Block223Controller.register(textField.getText(), passwordPassed, null);
