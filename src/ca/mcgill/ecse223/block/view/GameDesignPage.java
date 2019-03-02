@@ -83,22 +83,6 @@ public class GameDesignPage {
 	private HashMap<Integer, TOBlock> gameBlocks;
 	private JLabel lblSelectALevel;
 	private JComboBox levelComboBox;
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GameDesignPage window = new GameDesignPage();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	} 
 
 	/**
 	 * Create the application.
@@ -117,6 +101,7 @@ public class GameDesignPage {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1270, 667);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 		
 		// Initializing elements for error message
 		errorMessage = new JLabel();
@@ -422,6 +407,7 @@ public class GameDesignPage {
 	}
 	private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		//frame.dispose() will delete the current page (from what i understand)
+		Block223Controller.logout();
 		frame.dispose();
 		new WelcomeWindow();
 		//new Block223Page().setVisible(true);

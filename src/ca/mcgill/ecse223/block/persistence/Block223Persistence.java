@@ -19,6 +19,7 @@ public class Block223Persistence {
 			}
 			else {
 				block223.reinitialize();
+				//block223 = new Block223();
 			}
 			return block223;
 		}

@@ -23,10 +23,14 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import ca.mcgill.ecse223.block.controller.Block223Controller;
+import ca.mcgill.ecse223.block.controller.InvalidInputException;
+import ca.mcgill.ecse223.block.controller.TOGame;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -45,6 +49,7 @@ public class AdminDashBoardPage {
 	private JTextField textField;
 	private JButton updateGameBtn;
 	private JComboBox yourGamesComboBox;
+	private int gameListSize;
 
 	/**
 	 * Create the application.
@@ -100,6 +105,7 @@ public class AdminDashBoardPage {
 		
 		lblOr = new JLabel("OR:");
 		lblOr.setFont(new Font("Tahoma", Font.BOLD, 25));
+		
 		
 		lblGameName = new JLabel("Game name");
 		
@@ -160,6 +166,20 @@ public class AdminDashBoardPage {
 					.addGap(72))
 		);
 		frame.getContentPane().setLayout(groupLayout);
+		
+		ArrayList<TOGame> availableGames = new ArrayList<TOGame>();
+		try {
+			availableGames = (ArrayList<TOGame>) Block223Controller.getDesignableGames();
+		}
+		catch (InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+		}
+		
+		gameListSize = availableGames.size();
+		System.out.println("You have "+gameListSize+" games!");
+		
+		
+		
 	}
 	private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		//frame.dispose() will delete the current page (from what i understand)
@@ -170,6 +190,19 @@ public class AdminDashBoardPage {
 	}
 	private void createGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		//frame.dispose() will delete the current page (from what i understand)
+		
+		try {
+			Block223Controller.createGame(textField.getText());
+		}
+		catch(InvalidInputException e) {
+			String testString = new String(e.getMessage());
+			System.out.println(testString);
+			errorMessage.setText(testString);
+			return;
+		}
+		
+		
+		
 		frame.dispose();
 		new GameSettingPage();
 		//new Block223Page().setVisible(true);

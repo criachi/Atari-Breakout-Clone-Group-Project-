@@ -34,7 +34,7 @@ public class Block223Controller {
 		 * which searches for a game based on name.
 		 * The method will return the game if its found, or null otherwise
 		 */
-		if(block223.findGame(name) == null) {
+		if(block223.findGame(name) != null) {
 			throw new InvalidInputException("The name of a game must be unique.");
 		}
 		
@@ -43,9 +43,11 @@ public class Block223Controller {
 			new Game(name, 1, (Admin)user, 1, 1, 1, 10, 10, block223);
 		}
 		catch(RuntimeException e) {
-			String error = e.getMessage();
+			String error = new String(e.getMessage());
 			throw new InvalidInputException(error);
 		}
+		
+		Block223Application.setCurrentGame(block223.findGame(name));
 	}
 
 	public static void setGameDetails(int nrLevels, int nrBlocksPerLevel, int minBallSpeedX, int minBallSpeedY,
@@ -57,6 +59,7 @@ public class Block223Controller {
 		}
 		if (Block223Application.getCurrentGame() == null) {
 			error = error + "A game must be selected to define game settings.";
+			throw new InvalidInputException(error);
 		} 
 		if(Block223Application.getCurrentUserRole() != Block223Application.getCurrentGame().getAdmin()) {
 			error = error + "Only the admin who created the game can define its game settings.";
@@ -457,11 +460,11 @@ public class Block223Controller {
 		String error = "";
 		Block223Application.resetBlock223();
 		if(Block223Application.getCurrentUserRole() != null) {
-			error = "Cannot login a user while a user already logged in. ";
+			error = "Cannot login a user while a user already logged in.\n";
 		}
 		User foundUser = User.getWithUsername(username);
 		if(foundUser == null) {
-			error = error + "The username and password do not match. ";
+			error = error + "The username cannot be found.\n";
 			throw new InvalidInputException(error);
 		}
 		String foundPassword = null;
@@ -474,7 +477,8 @@ public class Block223Controller {
 			}
 		}
 		if(foundPassword == null) {
-			error = error + "The username and password do not match. ";
+			error = error + "The username and password do not match.\n"
+					+ "";
 		}
 		if(error.length() > 0) {
 			throw new InvalidInputException(error.trim());
