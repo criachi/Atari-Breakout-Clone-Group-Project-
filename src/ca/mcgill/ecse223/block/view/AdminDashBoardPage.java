@@ -184,7 +184,6 @@ public class AdminDashBoardPage {
 		}
 		
 		gameListSize = availableGames.size();
-		System.out.println("You have "+gameListSize+" games!");
 		
 		yourGamesComboBox.addItem("");
 		
@@ -207,9 +206,8 @@ public class AdminDashBoardPage {
 			Block223Controller.createGame(textField.getText());
 		}
 		catch(InvalidInputException e) {
-			String testString = new String(e.getMessage());
-			System.out.println(testString);
-			errorMessage.setText(testString);
+			System.out.println(e.getMessage());
+			//errorMessage.setText(e.getMessage());
 			return;
 		}
 		
@@ -224,7 +222,8 @@ public class AdminDashBoardPage {
 			Block223Controller.deleteGame(yourGamesComboBox.getItemAt(yourGamesComboBox.getSelectedIndex()));
 		}
 		catch(InvalidInputException e) {
-			errorMessage.setText(e.getMessage());
+			System.out.println(e.getMessage());
+			//errorMessage.setText(e.getMessage());
 			return;
 		}
 		
