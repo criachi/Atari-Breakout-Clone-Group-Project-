@@ -461,6 +461,9 @@ public class Block223Controller {
 
 	public static void login(String username, String password) throws InvalidInputException {
 		String error = "";
+		//Should be changed back resetBlock223 only once persistence is fixed
+		//At the moment load doesnt really work and it was just making a new 223
+		//block every time I logged in meaning nothing would save between logins.
 		if(Block223Application.getBlock223() == null) {
 			Block223Application.resetBlock223();
 		}
