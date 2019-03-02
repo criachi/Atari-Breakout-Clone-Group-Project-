@@ -55,19 +55,6 @@ public class GameSettingPage {
 			
 			private JButton setSettingButton;
 			private JButton saveGameBtn;
-			
-			public static void main(String[] args) {
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							GameSettingPage window = new GameSettingPage();
-							window.frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
-			}
 
 			public  GameSettingPage() {
 				initComponents();
@@ -77,7 +64,7 @@ public class GameSettingPage {
 			private void initComponents() {
 				//Frame
 				frame = new JFrame();
-				frame.setBounds(500, 800, 611, 504);
+				frame.setBounds(100, 100, 611, 504);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setVisible(true);
 				
@@ -87,7 +74,7 @@ public class GameSettingPage {
 				
 				errorMessage = new JLabel("");
 				errorMessage.setForeground(Color.RED);
-				errorMessage.setFont(new Font("Tahoma", Font.BOLD, 18));
+				errorMessage.setFont(new Font("Tahoma", Font.BOLD, 12));
 				errorMessage.setBounds(15, 404, 376, 28);
 				desktopPane.add(errorMessage);
 				
@@ -242,14 +229,14 @@ public class GameSettingPage {
 			
 			private void setSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {
 				
-				String error = null;
+				String error = new String();
 				
 				int nrLevels = 0;
 				try {
 					nrLevels = Integer.parseInt(nrOfLevelsTextField.getText());
 				}
 				catch (NumberFormatException e) {
-					error = "Number of levels needs to be a numerical value!";
+					error += "Number of levels needs to be a numerical value!";
 				}
 				int nrBlocksPerLevel = 0;
 				try {
@@ -294,16 +281,22 @@ public class GameSettingPage {
 					error = error + "Minimum paddle length needs to be a numerical value!";
 				}
 				
-				error.trim();
 				
+				error.trim();
 				if (error.length() == 0) {
 				
 					try {
 						Block223Controller.setGameDetails(nrLevels, nrBlocksPerLevel, minBallSpeedX, minBallSpeedY, ballSpeedIncreaseFactor, maxPaddleLength, minPaddleLength);
 					} catch (InvalidInputException e) {
-						error = e.getMessage();
+						errorMessage.setText(e.getMessage());
 					}
 				}
+				else {
+					System.out.println(error);
+					errorMessage.setText(error);
+				}
+				
+				frame.dispose();
 				new GameDesignPage();
 				// update visuals
 				// refreshData(); -> idk if we need this somewhere in this method
@@ -317,6 +310,7 @@ public class GameSettingPage {
 				}
 			}
 			private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
+				Block223Controller.logout();
 				frame.dispose();
 				new WelcomeWindow();
 				
