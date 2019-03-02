@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+
+import ca.mcgill.ecse223.block.controller.Block223Controller;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -16,22 +19,6 @@ public class PlayerDashBoardPage {
 	private JLabel lblWeAreWorking;
 	private JLabel lblCheckBackIn;
 	private JButton logOutBtn;
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PlayerDashBoardPage window = new PlayerDashBoardPage();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -47,6 +34,7 @@ public class PlayerDashBoardPage {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 638, 506);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 		
 		lblWeAreWorking = new JLabel("We are working on allowing you to play games!");
 		lblWeAreWorking.setFont(new Font("Tahoma", Font.BOLD, 25));
@@ -92,6 +80,7 @@ public class PlayerDashBoardPage {
 	}
 	private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		//frame.dispose() will delete the current page (from what i understand)
+		Block223Controller.logout();
 		frame.dispose();
 		new WelcomeWindow();
 		//new Block223Page().setVisible(true);

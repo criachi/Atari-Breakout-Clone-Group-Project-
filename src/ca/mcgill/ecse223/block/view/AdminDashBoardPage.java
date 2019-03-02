@@ -13,6 +13,9 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import ca.mcgill.ecse223.block.controller.Block223Controller;
+
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
@@ -32,22 +35,6 @@ public class AdminDashBoardPage {
 	private JComboBox yourGamesComboBox;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdminDashBoardPage window = new AdminDashBoardPage();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public AdminDashBoardPage() {
@@ -61,6 +48,7 @@ public class AdminDashBoardPage {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 605, 541);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 		
 		lblYourGames = new JLabel("YOUR GAMES");
 		lblYourGames.setFont(new Font("Tahoma", Font.BOLD, 25));
@@ -167,6 +155,7 @@ public class AdminDashBoardPage {
 	}
 	private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		//frame.dispose() will delete the current page (from what i understand)
+		Block223Controller.logout();
 		frame.dispose();
 		new WelcomeWindow();
 		//new Block223Page().setVisible(true);
