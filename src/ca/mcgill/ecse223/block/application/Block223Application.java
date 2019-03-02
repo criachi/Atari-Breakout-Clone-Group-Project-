@@ -45,7 +45,7 @@ public class Block223Application {
 		currentUserRole = aUserRole;
 	}
 	
-	public static UserRole getCurrentUserRole() { // throws InvalidInputException? unsure bc we dk how this will be used
+	public static UserRole getCurrentUserRole() { 
 		return currentUserRole;
 	}
 
@@ -53,7 +53,7 @@ public class Block223Application {
 		currentGame = aGame;
 	}
 	
-	public static Game getCurrentGame() { //same question: shld we throw InvalidInputException?
+	public static Game getCurrentGame() { 
 		return currentGame;
 	}
 }
