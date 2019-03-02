@@ -47,8 +47,6 @@ import java.awt.event.ItemEvent;
 public class GameDesignPage {
 
 	private JFrame frame;
-	
-	// error JLabel 
 	private JLabel errorMessage;
 	// textfield components for characteristics of blocks (colors + points)
 	private JTextField redTextField;
@@ -83,6 +81,7 @@ public class GameDesignPage {
 	private HashMap<Integer, TOBlock> gameBlocks;
 	private JLabel lblSelectALevel;
 	private JComboBox levelComboBox;
+	
 
 
 	/**
@@ -103,10 +102,6 @@ public class GameDesignPage {
 		frame.setBounds(100, 100, 1270, 667);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		
-		// Initializing elements for error message
-		errorMessage = new JLabel("");
-		errorMessage.setForeground(Color.RED);
 		
 		// Initializing Log Out elements
 		logOutBtn = new JButton("Log Out");
@@ -205,11 +200,13 @@ public class GameDesignPage {
 		
 		levelComboBox = new JComboBox();
 		
+		errorMessage = new JLabel("");
+		
 		// DON'T TOUCH: U CHANGE THIS BY DRAGGING AND DROPPING THINGS IN THE DESIGN WINDOW
 		// Group Layout of Page
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -244,32 +241,29 @@ public class GameDesignPage {
 					.addGap(35))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(errorMessage)
-					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-							.addGap(161)
-							.addComponent(levelComboBox, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 850, Short.MAX_VALUE)
-							.addComponent(logOutBtn))
+						.addComponent(errorMessage, GroupLayout.PREFERRED_SIZE, 724, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblSelectALevel)
+							.addGap(28)
+							.addComponent(levelComboBox, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(logOutBtn)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(backBtn)
 							.addGap(18)
 							.addComponent(saveChangesBtn)
-							.addPreferredGap(ComponentPlacement.RELATED, 747, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
 							.addComponent(deleteBlockBtn)
 							.addGap(29)
 							.addComponent(addBlockBtn)))
 					.addContainerGap())
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblSelectALevel)
-					.addContainerGap(1081, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(10)
+					.addGap(37)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(logOutBtn)
@@ -277,11 +271,10 @@ public class GameDesignPage {
 							.addComponent(lblYourBlocks)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(yourBlocksComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
 							.addComponent(updateBlockBtn)
-							.addPreferredGap(ComponentPlacement.RELATED, 24, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(errorMessage)
 							.addGap(18)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblSelectALevel)
@@ -315,6 +308,10 @@ public class GameDesignPage {
 								.addComponent(saveChangesBtn)
 								.addComponent(backBtn))
 							.addGap(27))))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(errorMessage, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(567, Short.MAX_VALUE))
 		);
 		frame.getContentPane().setLayout(groupLayout);
 	}

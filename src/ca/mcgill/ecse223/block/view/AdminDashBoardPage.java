@@ -112,7 +112,7 @@ public class AdminDashBoardPage {
 		textField = new JTextField();
 		textField.setColumns(10);
 		
-		errorMessage = new JLabel("New label");
+		errorMessage = new JLabel("");
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
