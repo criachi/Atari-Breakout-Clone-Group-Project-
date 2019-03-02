@@ -1,3 +1,8 @@
+// SAVE GAME SETTING BUTTON ACTION PERFORMED METHOD FIX WAY OF DISPLAYING ERROR
+
+
+
+
 package ca.mcgill.ecse223.block.view;
 
 import javax.swing.JFrame;
@@ -15,6 +20,7 @@ import ca.mcgill.ecse223.block.controller.InvalidInputException;
 import javax.swing.JButton;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 
 public class GameSettingPage {
 	//Game Settings
@@ -47,8 +53,21 @@ public class GameSettingPage {
 			private JTextField maxPaddleLengthTextField;
 			private JLabel maxPaddleLengthLabel;
 			
-			private JButton saveGameSettingButton;
+			private JButton setSettingButton;
+			private JButton saveGameBtn;
 			
+			public static void main(String[] args) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							GameSettingPage window = new GameSettingPage();
+							window.frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
 
 			public  GameSettingPage() {
 				initComponents();
@@ -78,10 +97,10 @@ public class GameSettingPage {
 				gameSettingLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 				desktopPane.add(gameSettingLabel);
 				
-				saveGameSettingButton = new JButton("Save Game");
-				saveGameSettingButton.setBounds(442, 404, 133, 28);
-				saveGameSettingButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
-				desktopPane.add(saveGameSettingButton);
+				setSettingButton = new JButton("Set Settings\r\n");
+				setSettingButton.setBounds(442, 342, 133, 28);
+				setSettingButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
+				desktopPane.add(setSettingButton);
 				
 				logOutBtn = new JButton("Log Out");
 				logOutBtn.setBounds(442, 16, 133, 28);
@@ -172,12 +191,21 @@ public class GameSettingPage {
 				maxPaddleLengthLabel.setBounds(15, 294, 207, 20);
 				maxPaddleLengthLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				desktopPane.add(maxPaddleLengthLabel);
-			
+				
+				saveGameBtn = new JButton("Save Game");
+				saveGameBtn.setBounds(442, 390, 133, 28);
+				desktopPane.add(saveGameBtn);
+				
 				
 				//listeners for Game Settings
-				saveGameSettingButton.addActionListener(new java.awt.event.ActionListener() {
+				saveGameBtn.addActionListener(new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						saveGameSettingButtonActionPerformed(evt);
+						saveGameBtnActionPerformed(evt);
+					}
+				});
+				setSettingButton.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						setSettingButtonActionPerformed(evt);
 					}
 				});
 				
@@ -212,7 +240,7 @@ public class GameSettingPage {
 			}
 			*/ 
 			
-			private void saveGameSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {
+			private void setSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {
 				
 				String error = null;
 				
@@ -279,6 +307,14 @@ public class GameSettingPage {
 				new GameDesignPage();
 				// update visuals
 				// refreshData(); -> idk if we need this somewhere in this method
+			}
+			private void saveGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
+				errorMessage.setText("");
+				try {
+					Block223Controller.saveGame();
+				} catch (InvalidInputException e) {
+					errorMessage.setText(e.getMessage());
+				}
 			}
 			private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
 				frame.dispose();

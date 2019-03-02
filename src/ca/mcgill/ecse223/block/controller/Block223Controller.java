@@ -415,7 +415,8 @@ public class Block223Controller {
 			throw new InvalidInputException(error.trim());
 		}
 		Block223 block223 = Block223Application.getBlock223();
-		Block223Persistence.save(block223); //need to implement save method in Persistence class
+		
+		Block223Persistence.save(block223); 
 		// might need to wrap the call to save in a try catch block like mentioned in page 23/27 of the sample solution of iteration 2...?
 	}
 

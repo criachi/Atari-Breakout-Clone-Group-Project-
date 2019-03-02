@@ -16,6 +16,7 @@ import ca.mcgill.ecse223.block.controller.InvalidInputException;
 import javax.swing.JButton;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 
 public class UpdateSettingPage {
 	//Game Settings
@@ -52,8 +53,20 @@ public class UpdateSettingPage {
 			private JLabel maxPaddleLengthLabel;
 			
 			private JButton saveGameSettingButton;
+			private JButton btnBack;
 			
-			
+			public static void main(String[] args) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							UpdateSettingPage window = new UpdateSettingPage();
+							window.frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
 
 			public  UpdateSettingPage() {
 				initComponents();
@@ -192,6 +205,10 @@ public class UpdateSettingPage {
 				maxPaddleLengthLabel.setBounds(15, 312, 207, 20);
 				maxPaddleLengthLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				desktopPane.add(maxPaddleLengthLabel);
+				
+				btnBack = new JButton("Back");
+				btnBack.setBounds(15, 376, 115, 29);
+				desktopPane.add(btnBack);
 			
 				
 				//listeners for Game Settings

@@ -1,10 +1,20 @@
 // check my method: private void addBlockBtnActionPerformed(java.awt.event.ActionEvent evt) 
 // as a template for how to call refresh methods and stuff like that... 
 // also refer to code from the BtmsPage class in Btms Version 2 (tuto 5) and even the one from version 4!
+
+
+// CHRISTINA: LOOK AT DELETEBLOCKACTIONPERFORMED METHOD CUZ IF SELECTEDINDEX <0 U JUST ADD THE ERROR TO THE STRING BUT REFRESH DATA IS CALLED IN TRY CATCH BLOCK SO IT MIGHT NOT EXECUTE TO DISPLAY THE STRING IF THERE IS AN ERROR
+
+
+
+
+
 package ca.mcgill.ecse223.block.view;
 
 import java.awt.EventQueue;
 import ca.mcgill.ecse223.block.controller.*;
+
+import java.awt.Graphics;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,6 +39,10 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import java.awt.Canvas;
+import javax.swing.Box;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class GameDesignPage {
 
@@ -60,12 +74,15 @@ public class GameDesignPage {
 	// Log Out
 	private JButton logOutBtn;
 	
-	// error string
-	private String error = null;
+	// Back
+	private JButton backBtn;
+
 	// data elements: each JComboBox needs to know which model object an entry in it refers to
 	// also, check my question abt this to Gunter: he said error messages also require hashmaps and any table we make requires one too 
 	// add/remove block - Work in Progress: unsure what value type to identify block
-	private HashMap<Integer, Integer> gameBlocks;
+	private HashMap<Integer, TOBlock> gameBlocks;
+	private JLabel lblSelectALevel;
+	private JComboBox levelComboBox;
 	
 	/**
 	 * Launch the application.
@@ -81,7 +98,7 @@ public class GameDesignPage {
 				}
 			}
 		});
-	}
+	} 
 
 	/**
 	 * Create the application.
@@ -147,12 +164,13 @@ public class GameDesignPage {
 		// Action Listener for updateBlock
 		updateBlockBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				removeBlockAssignmentBtnActionPerformed(evt);
+				updateBlockBtnActionPerformed(evt);
 			}
 		});
 
 		// Save Changes 
 		saveChangesBtn = new JButton("Save Changes");
+		// Action Listener for saveChanges
 		saveChangesBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				saveChangesBtnActionPerformed(evt);
@@ -174,7 +192,15 @@ public class GameDesignPage {
 		
 		// Display List of Blocks
 		yourBlocksComboBox = new JComboBox<String>();
-		
+		yourBlocksComboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+			}
+		});
+		yourBlocksComboBox.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				yourBlocksComboBoxActionPerformed(evt);
+			}
+		});
 		// Haluk: Remove Block from a Level
 		removeBlockAssignmentBtn = new JButton("Remove Block Assignment");
 		// Action Listener for removeBlockfromaLevel
@@ -183,33 +209,39 @@ public class GameDesignPage {
 				removeBlockAssignmentBtnActionPerformed(evt);
 			}
 		});
+		
+		// Go back
+		backBtn = new JButton("Back");
+		
+		lblSelectALevel = new JLabel("Select a Level: ");
+		lblSelectALevel.setFont(new Font("Tahoma", Font.BOLD, 20));
+		
+		levelComboBox = new JComboBox();
+		
 		// DON'T TOUCH: U CHANGE THIS BY DRAGGING AND DROPPING THINGS IN THE DESIGN WINDOW
 		// Group Layout of Page
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(48)
-					.addComponent(saveChangesBtn)
-					.addPreferredGap(ComponentPlacement.RELATED, 803, Short.MAX_VALUE)
-					.addComponent(deleteBlockBtn)
-					.addGap(29)
-					.addComponent(addBlockBtn)
-					.addContainerGap())
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(133)
-					.addComponent(removeBlockAssignmentBtn)
-					.addPreferredGap(ComponentPlacement.RELATED, 749, Short.MAX_VALUE)
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(pointsLbl)
-							.addGap(18))
-						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(blueLbl)
-								.addComponent(greenLbl)
-								.addComponent(redLbl))
-							.addPreferredGap(ComponentPlacement.UNRELATED)))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(33)
+									.addComponent(removeBlockAssignmentBtn)
+									.addPreferredGap(ComponentPlacement.RELATED, 761, Short.MAX_VALUE)
+									.addComponent(blueLbl))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addContainerGap(1001, Short.MAX_VALUE)
+									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+										.addComponent(greenLbl)
+										.addComponent(redLbl))))
+							.addPreferredGap(ComponentPlacement.UNRELATED))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap(997, Short.MAX_VALUE)
+							.addComponent(pointsLbl)
+							.addGap(18)))
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(pointsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(greenTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -220,38 +252,54 @@ public class GameDesignPage {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap(1030, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblYourBlocks)
+						.addComponent(yourBlocksComboBox, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE))
+					.addGap(35))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(21)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(logOutBtn)
-							.addContainerGap())
+							.addComponent(lblSelectALevel)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(levelComboBox, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 853, Short.MAX_VALUE)
+							.addComponent(logOutBtn))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(lblYourBlocks)
-								.addComponent(yourBlocksComboBox, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE))
-							.addGap(35))))
+							.addComponent(backBtn)
+							.addGap(18)
+							.addComponent(saveChangesBtn)
+							.addPreferredGap(ComponentPlacement.RELATED, 747, Short.MAX_VALUE)
+							.addComponent(deleteBlockBtn)
+							.addGap(29)
+							.addComponent(addBlockBtn)))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblSelectALevel)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(levelComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(logOutBtn)))
+					.addGap(56)
+					.addComponent(lblYourBlocks)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(yourBlocksComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
+					.addComponent(updateBlockBtn)
+					.addPreferredGap(ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(logOutBtn)
-							.addGap(56)
-							.addComponent(lblYourBlocks)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(yourBlocksComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(updateBlockBtn)
-								.addComponent(removeBlockAssignmentBtn))
-							.addGap(31)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(redTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(redLbl))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(blueTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(blueLbl))
+								.addComponent(blueLbl)
+								.addComponent(removeBlockAssignmentBtn))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(greenTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -266,20 +314,20 @@ public class GameDesignPage {
 								.addComponent(deleteBlockBtn))
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(saveChangesBtn)
-							.addGap(28))))
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(saveChangesBtn)
+								.addComponent(backBtn))
+							.addGap(27))))
 		);
 		frame.getContentPane().setLayout(groupLayout);
 	}
 	// Confusion... we will decide eventually how to organize refresh methods once I and we understand UI better :')
-	private void refreshData() throws InvalidInputException {
+	private void refreshData(){
 		refreshBlocks();
 	}
 	// Christina
 	private void refreshBlocks() {
-		// error
-		errorMessage.setText(error);
-		if (error == null || error.length() == 0) {
+		if (errorMessage.getText() == "") {
 			//populate page with data 
 			Integer index = 0;
 			//block characteristics 
@@ -292,26 +340,24 @@ public class GameDesignPage {
 			//points text field
 			pointsTextField.setText("");
 			//list of blocks (combo box)
-			gameBlocks = new HashMap<Integer,Integer>();
+			gameBlocks = new HashMap<Integer,TOBlock>();
 			yourBlocksComboBox.removeAllItems();
 			index = 0;
 			try {
 			for(TOBlock block : Block223Controller.getBlocksOfCurrentDesignableGame()) {
-				gameBlocks.put(index, block.getId());
+				gameBlocks.put(index, block);
 				yourBlocksComboBox.addItem("Red: " + block.getRed() + "Green: " + block.getGreen() + "Blue: " + block.getBlue() + "Points: " + block.getPoints());
 				index++;
 			}
 			} catch (InvalidInputException e) {
-				error = e.getMessage();
+				errorMessage.setText(e.getMessage());
 			}
 		}
 		//pack()? is it needed? check btms tutorial 5
-	}	
+	} 	
 	// Christina
 	private void addBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
-		// clear error message 
-		error = null;
-		
+		errorMessage.setText("");
 		// call the controller 
 		// but first convert the textfield inputs from strings to integers
 		int red = 0;
@@ -323,44 +369,52 @@ public class GameDesignPage {
 			blue = Integer.parseInt(blueTextField.getText());
 			green = Integer.parseInt(greenTextField.getText());
 			points = Integer.parseInt(pointsTextField.getText());
+			Block223Controller.addBlock(red, green, blue, points);
+			// you have to wrap this refresh call in a try catch block
+			// not sure yet if need to call refreshData() or just refreshBlocks()
+			refreshBlocks();
 		} catch (NumberFormatException e) {
-			error = "All field entries need to be numerical values!";
-		} // it dsnt seem to make sense: where is the error printed on the screen? in refreshData method! (check btms tutorial) 
-		if(error.length() == 0) {
-			try {
-				Block223Controller.addBlock(red, green, blue, points);
-				// you have to wrap this refresh call in a try catch block
-				// not sure yet if need to call refreshData() or just refreshBlocks()
-				refreshBlocks();
-			} catch (InvalidInputException e) {
-				error = e.getMessage();
-			}
+			errorMessage.setText("All field entries need to be numerical values!");
+		} catch (InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
 		}
 	}
 	// Christina
 	private void deleteBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
-		// clear error msg and basic input validation
-		error = "";
+		errorMessage.setText("");
 		int selectedBlock = yourBlocksComboBox.getSelectedIndex();
 		if (selectedBlock < 0) {
-			error = "A block needs to be selected to be updated! ";
+			errorMessage.setText("A block needs to be selected to be deleted! ");
+			return;
 		}
-		if (error.length() == 0) {
+			TOBlock block = gameBlocks.get(selectedBlock);
 			// call the controller 
 			try {
-				Block223Controller.deleteBlock(gameBlocks.get(selectedBlock));
+				Block223Controller.deleteBlock(gameBlocks.get(selectedBlock).getId());
 				//update visuals 
 				refreshBlocks();
 			} catch (InvalidInputException e) {
-				error = e.getMessage();
+				errorMessage.setText(e.getMessage());
 			}
-		}
 	}
 	
 	// Haluk's methods
 	// method for Update Block in a Game feature
 	private void updateBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
-		
+		errorMessage.setText("");
+		int selectedBlockIndex = yourBlocksComboBox.getSelectedIndex();
+		if(selectedBlockIndex < 0) {
+			errorMessage.setText("A block needs to be selected to be updated! ");
+			return;
+		}
+			// call the controller 
+			TOBlock block = gameBlocks.get(selectedBlockIndex);
+			try {
+				Block223Controller.updateBlock(block.getId(), Integer.parseInt(redTextField.getText()), Integer.parseInt(greenTextField.getText()), Integer.parseInt(blueTextField.getText()), Integer.parseInt(pointsTextField.getText()));
+				refreshData();
+			} catch (InvalidInputException e) {
+				errorMessage.setText(e.getMessage());
+			}
 	}
 	// method for Remove Block from a Level 
 	private void removeBlockAssignmentBtnActionPerformed(java.awt.event.ActionEvent evt) {
@@ -372,13 +426,23 @@ public class GameDesignPage {
 		new WelcomeWindow();
 		//new Block223Page().setVisible(true);
 	}
+	// to display the info of the currently selected block in the respective text fields 
+	private void yourBlocksComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
+		int selectedBlockIndex = yourBlocksComboBox.getSelectedIndex();
+		if(selectedBlockIndex>=0) {
+			TOBlock block = gameBlocks.get(selectedBlockIndex);
+			redTextField.setText(Integer.toString(block.getRed()));
+			blueTextField.setText(Integer.toString(block.getBlue()));
+			greenTextField.setText(Integer.toString(block.getGreen()));
+			pointsTextField.setText(Integer.toString(block.getPoints()));
+		}
+	}
 	private void saveChangesBtnActionPerformed(java.awt.event.ActionEvent evt) {
-		// clear error msg 
-		error = "";
+		errorMessage.setText("");
 		try {
 			Block223Controller.saveGame();
 		} catch (InvalidInputException e) {
-			error = e.getMessage();
+			errorMessage.setText(e.getMessage());
 		}
 	}
 }
