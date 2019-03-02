@@ -16,11 +16,13 @@ public class Block223Controller {
 	public static void createGame(String name) throws InvalidInputException {
 		UserRole user = Block223Application.getCurrentUserRole();
 		
+		String error = new String();
 		/*
 		 * The method below will check if the user is an admin
 		 */
 		if(!(user instanceof Admin)) {
-			throw new InvalidInputException("Admin privileges are required to create a game");
+			error += "Admin privileges are required to create a game";
+			throw new InvalidInputException(error);
 		}
 		
 		Block223 block223 = Block223Application.getBlock223();
@@ -34,7 +36,8 @@ public class Block223Controller {
 		 * The method will return the game if its found, or null otherwise
 		 */
 		if(block223.findGame(name) != null) {
-			throw new InvalidInputException("The name of a game must be unique.");
+			error += "The name of a game must be unique.";
+			throw new InvalidInputException(error);
 		}
 		
 		
@@ -42,7 +45,7 @@ public class Block223Controller {
 			new Game(name, 1, (Admin)user, 1, 1, 1, 10, 10, block223);
 		}
 		catch(RuntimeException e) {
-			String error = new String(e.getMessage());
+			error += e.getMessage();
 			throw new InvalidInputException(error);
 		}
 		
@@ -139,6 +142,7 @@ public class Block223Controller {
 	public static void deleteGame(String name) throws InvalidInputException {
 		Block223 block223 = Block223Application.getBlock223();
 		UserRole user = Block223Application.getCurrentUserRole();
+		String error = new String();
 		
 		//Check that logged in user is an admin
 		if(!(user instanceof Admin)) {
@@ -152,14 +156,16 @@ public class Block223Controller {
 		}
 		//Check that game admin is currently signed in admin
 		else if(!(gameToDelete.getAdmin().equals((Admin)user))){
-			throw new InvalidInputException("Only the admin who created the game can delete the game.");
+			error += "Only the admin who created the game can delete the game.";
+			throw new InvalidInputException(error);
 		}
 		
 		gameToDelete.delete();
 		try {
 		Block223Persistence.save(block223);
 		} catch(RuntimeException e) {
-			throw new InvalidInputException(e.getMessage());
+			error += e.getMessage();
+			throw new InvalidInputException(error);
 		}
 	}
 
@@ -433,7 +439,6 @@ public class Block223Controller {
 		if(Block223Application.getCurrentUserRole() != null) {
 			error = "Cannot register a new user while a user is logged in. ";
 		}
-		System.out.println(playerPassword + " "+ adminPassword);
 		if(playerPassword.trim() == adminPassword.trim()){
 			error = error + "The passwords have to be different. ";
 		}
