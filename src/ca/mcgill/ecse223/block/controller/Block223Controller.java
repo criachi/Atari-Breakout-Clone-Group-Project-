@@ -442,8 +442,7 @@ public class Block223Controller {
 					admin = new Admin(adminPassword, block223);
 					user.addRole(admin);
 				 }
-		}
-		catch (RuntimeException e) {
+		} catch (RuntimeException e) {
 			if(player != null) player.delete();
 			if(admin != null) admin.delete();
 			throw new InvalidInputException(e.getMessage());
