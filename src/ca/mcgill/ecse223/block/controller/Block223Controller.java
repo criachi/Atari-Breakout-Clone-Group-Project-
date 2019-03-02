@@ -462,7 +462,7 @@ public class Block223Controller {
 		User foundUser = User.getWithUsername(username);
 		if(foundUser == null) {
 			error = error + "The username and password do not match. ";
-			throw new InvalidInputException("The user does not exist.");
+			throw new InvalidInputException(error);
 		}
 		String foundPassword = null;
 		List<UserRole> users = foundUser.getRoles();

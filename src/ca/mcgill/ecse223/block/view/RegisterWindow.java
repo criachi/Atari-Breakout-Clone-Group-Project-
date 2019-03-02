@@ -11,6 +11,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
+
+import ca.mcgill.ecse223.block.application.Block223Application;
+import ca.mcgill.ecse223.block.controller.Block223Controller;
+import ca.mcgill.ecse223.block.controller.InvalidInputException;
+
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -23,6 +28,9 @@ public class RegisterWindow {
 	private JLabel error;
 	private char[] password;
 	private String passwordPassed;
+	private JPasswordField passwordField_1;
+	private char[] adminPassword;
+	private String adminPasswordPassed;
 
 	/**
 	 * Create the application.
@@ -48,26 +56,26 @@ public class RegisterWindow {
 		
 		JLabel lblNewLabel = new JLabel("Register as A Player");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNewLabel.setBounds(119, 42, 200, 50);
+		lblNewLabel.setBounds(117, 23, 200, 50);
 		desktopPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Username: ");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_1.setBounds(88, 113, 100, 25);
+		lblNewLabel_1.setBounds(88, 70, 100, 25);
 		desktopPane.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Password: ");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel_2.setBounds(88, 150, 100, 25);
+		lblNewLabel_2.setBounds(88, 100, 100, 25);
 		desktopPane.add(lblNewLabel_2);
 		
 		textField = new JTextField();
-		textField.setBounds(198, 117, 150, 20);
+		textField.setBounds(198, 70, 150, 20);
 		desktopPane.add(textField);
 		textField.setColumns(10);
 		
 		passwordField = new JPasswordField();
-		passwordField.setBounds(198, 154, 150, 20);
+		passwordField.setBounds(198, 100, 150, 20);
 		desktopPane.add(passwordField);
 		
 		JButton btnSignUp = new JButton("Sign Up");
@@ -83,6 +91,15 @@ public class RegisterWindow {
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(88, 190, 91, 23);
 		desktopPane.add(btnCancel);
+		
+		JLabel lblPasswordadmin = new JLabel("Password (Admin):");
+		lblPasswordadmin.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblPasswordadmin.setBounds(47, 115, 140, 49);
+		desktopPane.add(lblPasswordadmin);
+		
+		passwordField_1 = new JPasswordField();
+		passwordField_1.setBounds(198, 131, 150, 20);
+		desktopPane.add(passwordField_1);
 		
 		/*
 		 * Here I set up action listeners, this is the same format for
@@ -103,11 +120,6 @@ public class RegisterWindow {
 	
 	//Need to create a method for every action listener you want
 	private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {
-		if(textField.getText().length() == 0 || passwordField.getPassword().toString().length() == 0) {
-			error.setText("Error: Username or password cannot be empty.");
-			return;
-		}
-		
 		//Due to the password being protected, we need to copy the elements of the char array manually into a string
 		password = passwordField.getPassword();
 		passwordPassed = new String();
@@ -116,8 +128,33 @@ public class RegisterWindow {
 			passwordPassed += password[i];
 		}
 		
+		adminPassword = passwordField_1.getPassword();
+		adminPasswordPassed = new String();
+		
+		for(int i = 0; i < adminPassword.length; i++) {
+			adminPasswordPassed += adminPassword[i];
+		}
+		
+		if(textField.getText().length() == 0 || passwordPassed.length() == 0) {
+			error.setText("Error: Username or password cannot be empty.");
+			return;
+		}
+		
+		try {
+			if(adminPasswordPassed.isEmpty()) {
+				Block223Controller.register(textField.getText(), passwordPassed, null);
+			}
+			else {
+				Block223Controller.register(textField.getText(), passwordPassed, adminPasswordPassed);
+			}
+		}
+		catch(InvalidInputException e) {
+			error.setText(e.getMessage());
+		}
+				
+		
 		frame.dispose();
-		new RegisterWindowAdmin(textField.getText(), passwordPassed);
+		new LogInWindow();
 	}
 	
 	private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {

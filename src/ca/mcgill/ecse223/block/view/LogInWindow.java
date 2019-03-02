@@ -15,8 +15,11 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.JTextField;
 
+import ca.mcgill.ecse223.block.application.Block223Application;
 import ca.mcgill.ecse223.block.controller.Block223Controller;
 import ca.mcgill.ecse223.block.controller.InvalidInputException;
+import ca.mcgill.ecse223.block.controller.TOUserMode;
+import ca.mcgill.ecse223.block.controller.TOUserMode.Mode;
 
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -133,8 +136,19 @@ public class LogInWindow extends JFrame{
 			return;
 		}
 		
-		frame.dispose();
-		new Block223Page(textField.getText()).setVisible(true);
+		TOUserMode loggedUser = Block223Controller.getUserMode();
+		if(loggedUser.getMode() == Mode.Play) {
+			frame.dispose();
+			new PlayerDashBoardPage();
+		}
+		else if(loggedUser.getMode() == Mode.Design) {
+			frame.dispose();
+			new AdminDashBoardPage();
+		}
+		else {
+			error.setText("Error: No User is currently logged in.");
+			return;
+		}
 	}
 	
 	//Cancel just closes the page and brings you back to the welcome window
