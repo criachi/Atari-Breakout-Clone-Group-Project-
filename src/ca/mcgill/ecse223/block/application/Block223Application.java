@@ -23,10 +23,10 @@ public class Block223Application {
             }
         });
 	}
+	// before it was creating a new instance of block223, not loading 
 	public static Block223 getBlock223() {
-		if ( block223 == null) {
-			// for now, we are just creating an empty Block223
-			block223 = new Block223();
+		if (block223 == null) {
+			block223 = Block223Persistence.load();
 		}
  		return block223;
 	}

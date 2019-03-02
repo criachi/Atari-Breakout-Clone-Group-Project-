@@ -2,7 +2,6 @@ package ca.mcgill.ecse223.block.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import ca.mcgill.ecse223.block.application.Block223Application;
 import ca.mcgill.ecse223.block.controller.TOUserMode.Mode;
 import ca.mcgill.ecse223.block.model.*;
@@ -157,7 +156,11 @@ public class Block223Controller {
 		}
 		
 		gameToDelete.delete();
+		try {
 		Block223Persistence.save(block223);
+		} catch(RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
 	}
 
 	public static void selectGame(String name) throws InvalidInputException {
@@ -418,9 +421,11 @@ public class Block223Controller {
 			throw new InvalidInputException(error.trim());
 		}
 		Block223 block223 = Block223Application.getBlock223();
-		
+		try {
 		Block223Persistence.save(block223); 
-		// might need to wrap the call to save in a try catch block like mentioned in page 23/27 of the sample solution of iteration 2...?
+		} catch (RuntimeException e) {
+			throw new InvalidInputException(e.getMessage());
+		}
 	}
 
 	public static void register(String username, String playerPassword, String adminPassword) throws InvalidInputException {
@@ -445,15 +450,13 @@ public class Block223Controller {
 					admin = new Admin(adminPassword, block223);
 					user.addRole(admin);
 				 }
+			 Block223Persistence.save(block223); //maybe?
 		} catch (RuntimeException e) {
 			if(player != null) player.delete();
 			if(admin != null) admin.delete();
 			throw new InvalidInputException(e.getMessage());
 		}
 		
-		
-		
-		Block223Persistence.save(block223); //need to implement save
 	}
 
 	public static void login(String username, String password) throws InvalidInputException {
