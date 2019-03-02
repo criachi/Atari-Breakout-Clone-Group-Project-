@@ -23,7 +23,8 @@ public class Block223Application {
             }
         });
 	}
-	// before it was creating a new instance of block223, not loading 
+	// before it was creating a new instance of block223, not loading
+	// this is in tutorial 7 end of pg 2 beg of pg 3
 	public static Block223 getBlock223() {
 		if (block223 == null) {
 			block223 = Block223Persistence.load();

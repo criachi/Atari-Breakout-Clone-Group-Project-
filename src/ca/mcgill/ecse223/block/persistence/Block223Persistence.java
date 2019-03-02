@@ -20,7 +20,7 @@ public class Block223Persistence {
 			else {
 				//Once reinitialize is fixed we need to uncomment it
 				//and not have a new block223 be created
-				//block223.reinitialize();
+				block223.reinitialize();
 				block223 = new Block223();
 			}
 			return block223;

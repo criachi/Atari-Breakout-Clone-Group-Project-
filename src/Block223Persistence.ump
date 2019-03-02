@@ -4,9 +4,11 @@ class Block223 {
   depend java.io.Serializable;
   isA Serializable;
  private static final long serialVersionUID = -4904473121226232586L;
-  
   public void reinitialize() {
-  	Block.reinitializeAutouniqueID(Block223Application.getCurrentGame().getBlocks()); 
+  	for( Game game : this.getGames() ) {
+  		List<Block> blocks = game.getBlocks();
+  	    Block.reinitializeAutouniqueID(blocks); 
+  	}
     Game.reinitializeUniqueGameName(this.getGames());
     User.reinitializeUniqueUserName(this.getUsers());
   }

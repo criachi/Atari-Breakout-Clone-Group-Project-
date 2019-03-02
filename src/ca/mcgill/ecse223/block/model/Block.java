@@ -5,7 +5,7 @@ package ca.mcgill.ecse223.block.model;
 import java.io.Serializable;
 import java.util.*;
 
-// line 25 "../../../../../Block223Persistence.ump"
+// line 27 "../../../../../Block223Persistence.ump"
 // line 92 "../../../../../Block223 v2.ump"
 public class Block implements Serializable
 {
@@ -293,7 +293,7 @@ public class Block implements Serializable
     }
   }
 
-  // line 31 "../../../../../Block223Persistence.ump"
+  // line 33 "../../../../../Block223Persistence.ump"
    public static  void reinitializeAutouniqueID(List<Block> blocks){
     nextId = 0; 
      for (Block block : blocks) {
@@ -319,7 +319,7 @@ public class Block implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 28 "../../../../../Block223Persistence.ump"
+  // line 30 "../../../../../Block223Persistence.ump"
   private static final long serialVersionUID = 5332292624658907512L ;
 
   
