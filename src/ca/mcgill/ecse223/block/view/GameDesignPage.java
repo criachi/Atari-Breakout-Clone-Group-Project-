@@ -212,15 +212,17 @@ public class GameDesignPage {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(33)
-									.addComponent(removeBlockAssignmentBtn)
-									.addPreferredGap(ComponentPlacement.RELATED, 761, Short.MAX_VALUE)
-									.addComponent(blueLbl))
-								.addGroup(groupLayout.createSequentialGroup()
 									.addContainerGap(1001, Short.MAX_VALUE)
 									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 										.addComponent(greenLbl)
-										.addComponent(redLbl))))
+										.addComponent(redLbl)))
+								.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+									.addGap(33)
+									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+										.addComponent(saveChangesBtn)
+										.addComponent(removeBlockAssignmentBtn))
+									.addPreferredGap(ComponentPlacement.RELATED, 761, Short.MAX_VALUE)
+									.addComponent(blueLbl)))
 							.addPreferredGap(ComponentPlacement.UNRELATED))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap(997, Short.MAX_VALUE)
@@ -240,21 +242,22 @@ public class GameDesignPage {
 						.addComponent(yourBlocksComboBox, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE))
 					.addGap(35))
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(errorMessage, GroupLayout.PREFERRED_SIZE, 724, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblSelectALevel)
-							.addGap(28)
-							.addComponent(levelComboBox, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
+							.addContainerGap()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(errorMessage, GroupLayout.PREFERRED_SIZE, 724, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblSelectALevel)
+									.addGap(28)
+									.addComponent(levelComboBox, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED, 405, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(23)
+							.addComponent(backBtn)))
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addComponent(logOutBtn)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(backBtn)
-							.addGap(18)
-							.addComponent(saveChangesBtn)
-							.addPreferredGap(ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
 							.addComponent(deleteBlockBtn)
 							.addGap(29)
 							.addComponent(addBlockBtn)))
@@ -305,8 +308,8 @@ public class GameDesignPage {
 							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(saveChangesBtn)
-								.addComponent(backBtn))
+								.addComponent(backBtn)
+								.addComponent(saveChangesBtn))
 							.addGap(27))))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
@@ -321,7 +324,6 @@ public class GameDesignPage {
 	}
 	// Christina
 	private void refreshBlocks() {
-		if (errorMessage.getText() == "" || errorMessage.getText() == null) {
 			//populate page with data 
 			Integer index = 0;
 			//block characteristics 
@@ -340,13 +342,13 @@ public class GameDesignPage {
 			try {
 			for(TOBlock block : Block223Controller.getBlocksOfCurrentDesignableGame()) {
 				gameBlocks.put(index, block);
-				yourBlocksComboBox.addItem("Red: " + block.getRed() + "Green: " + block.getGreen() + "Blue: " + block.getBlue() + "Points: " + block.getPoints());
+				yourBlocksComboBox.addItem("Red: " + block.getRed() + " Green: " + block.getGreen() + " Blue: " + block.getBlue() + " Points: " + block.getPoints());
 				index++;
 			}
 			} catch (InvalidInputException e) {
 				errorMessage.setText(e.getMessage());
 			}
-		}
+		
 		//pack()? is it needed? check btms tutorial 5
 	} 	
 	
