@@ -23,7 +23,8 @@ public class Block223Application {
             }
         });
 	}
-	// before it was creating a new instance of block223, not loading 
+	// before it was creating a new instance of block223, not loading
+	// this is in tutorial 7 end of pg 2 beg of pg 3
 	public static Block223 getBlock223() {
 		if (block223 == null) {
 			block223 = Block223Persistence.load();
@@ -44,7 +45,7 @@ public class Block223Application {
 		currentUserRole = aUserRole;
 	}
 	
-	public static UserRole getCurrentUserRole() { // throws InvalidInputException? unsure bc we dk how this will be used
+	public static UserRole getCurrentUserRole() { 
 		return currentUserRole;
 	}
 
@@ -52,7 +53,7 @@ public class Block223Application {
 		currentGame = aGame;
 	}
 	
-	public static Game getCurrentGame() { //same question: shld we throw InvalidInputException?
+	public static Game getCurrentGame() { 
 		return currentGame;
 	}
 }

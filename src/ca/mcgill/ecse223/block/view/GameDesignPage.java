@@ -104,7 +104,7 @@ public class GameDesignPage {
 		frame.setVisible(true);
 		
 		// Initializing elements for error message
-		errorMessage = new JLabel();
+		errorMessage = new JLabel("");
 		errorMessage.setForeground(Color.RED);
 		
 		// Initializing Log Out elements
@@ -177,10 +177,6 @@ public class GameDesignPage {
 		
 		// Display List of Blocks
 		yourBlocksComboBox = new JComboBox<String>();
-		yourBlocksComboBox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-			}
-		});
 		yourBlocksComboBox.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				yourBlocksComboBoxActionPerformed(evt);
@@ -317,7 +313,7 @@ public class GameDesignPage {
 	}
 	// Christina
 	private void refreshBlocks() {
-		if (errorMessage.getText() == "") {
+		if (errorMessage.getText() == "" || errorMessage.getText() == null) {
 			//populate page with data 
 			Integer index = 0;
 			//block characteristics 
@@ -382,7 +378,6 @@ public class GameDesignPage {
 			errorMessage.setText("A block needs to be selected to be deleted! ");
 			return;
 		}
-			TOBlock block = gameBlocks.get(selectedBlock);
 			// call the controller 
 			try {
 				Block223Controller.deleteBlock(gameBlocks.get(selectedBlock).getId());
@@ -402,12 +397,19 @@ public class GameDesignPage {
 			errorMessage.setText("A block needs to be selected to be updated! ");
 			return;
 		}
+			
 			// call the controller 
 			TOBlock block = gameBlocks.get(selectedBlockIndex);
 			try {
-				Block223Controller.updateBlock(block.getId(), Integer.parseInt(redTextField.getText()), Integer.parseInt(greenTextField.getText()), Integer.parseInt(blueTextField.getText()), Integer.parseInt(pointsTextField.getText()));
+				int red = Integer.parseInt(redTextField.getText());
+				int blue = Integer.parseInt(blueTextField.getText());
+				int green = Integer.parseInt(greenTextField.getText());
+				int points = Integer.parseInt(pointsTextField.getText());
+				Block223Controller.updateBlock(block.getId(), red, green, blue, points);
 				refreshData();
 			} catch (InvalidInputException e) {
+				errorMessage.setText(e.getMessage());
+			} catch (NumberFormatException e) {
 				errorMessage.setText(e.getMessage());
 			}
 	}
