@@ -1,4 +1,16 @@
-// TODO: In updateGame 
+// TODO: when the user clicks create game, he is taken to 
+//game settings page and create game creates the default game ofc 
+//but careful it hasnt saved it in persistence yet! 
+//once he defines all game settings, 
+//he presses save game and its saved (call save Game in action listener)
+// the set settings button calls serGameDetails which changes the model object but not persistence 
+// only delete game and the register method call save automatically in their code 
+// also, when u delete a game, make sure the combobox has had sth selected from it beforehand (check my delete block action listener) 
+// otherwise display an error 
+// and then in the action listener for the delete method, u need to refresh the page (so refresh the combo box) to give a list w/ 1 less game... 
+// check my refresh Blocks! 
+// all these methods im asking u to check are in gameDesignPage... 
+
 
 
 
@@ -112,10 +124,10 @@ public class AdminDashBoardPage {
 								.addComponent(deleteGameBtn)
 								.addComponent(updateGameBtn))))
 					.addGap(25))
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(100)
 					.addComponent(lblOr)
-					.addContainerGap(414, Short.MAX_VALUE))
+					.addContainerGap(437, Short.MAX_VALUE))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblGameName)
@@ -132,15 +144,11 @@ public class AdminDashBoardPage {
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(logOutBtn)
 						.addComponent(lblYourGames))
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(46)
-							.addComponent(yourGamesComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(44))
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-							.addComponent(deleteGameBtn)
-							.addGap(44)))
+					.addPreferredGap(ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(yourGamesComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(deleteGameBtn))
+					.addGap(44)
 					.addComponent(updateGameBtn)
 					.addGap(112)
 					.addComponent(lblOr)

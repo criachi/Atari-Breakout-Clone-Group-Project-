@@ -83,12 +83,15 @@ public class WelcomeWindow extends JFrame{
 	 */
 	private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {
 		//frame.dispose() will delete the current page (from what i understand)
+		System.out.println("hihi");
 		frame.dispose();
+		
 		new LogInWindow();
 		//new Block223Page().setVisible(true);
 	}
 	
 	private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {
+		System.out.println("here");
 		frame.dispose();
 		new RegisterWindow();
 	}
