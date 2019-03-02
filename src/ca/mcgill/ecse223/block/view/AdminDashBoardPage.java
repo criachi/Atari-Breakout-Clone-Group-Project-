@@ -48,7 +48,7 @@ public class AdminDashBoardPage {
 	private JLabel lblGameName;
 	private JTextField textField;
 	private JButton updateGameBtn;
-	private JComboBox yourGamesComboBox;
+	private JComboBox<String> yourGamesComboBox;
 	private int gameListSize;
 
 	/**
@@ -178,7 +178,9 @@ public class AdminDashBoardPage {
 		gameListSize = availableGames.size();
 		System.out.println("You have "+gameListSize+" games!");
 		
-		
+		for(int i = 0; i < gameListSize; i++) {
+			yourGamesComboBox.addItem(availableGames.get(i).getName());
+		}
 		
 	}
 	private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {

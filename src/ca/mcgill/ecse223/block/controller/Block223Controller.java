@@ -458,7 +458,10 @@ public class Block223Controller {
 
 	public static void login(String username, String password) throws InvalidInputException {
 		String error = "";
-		Block223Application.resetBlock223();
+		if(Block223Application.getBlock223() == null) {
+			Block223Application.resetBlock223();
+		}
+		
 		if(Block223Application.getCurrentUserRole() != null) {
 			error = "Cannot login a user while a user already logged in.\n";
 		}
