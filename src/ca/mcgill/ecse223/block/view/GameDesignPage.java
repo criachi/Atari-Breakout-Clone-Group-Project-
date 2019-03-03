@@ -394,7 +394,9 @@ public class GameDesignPage {
 		}
 			// call the controller 
 			try {
-				Block223Controller.deleteBlock(gameBlocks.get(selectedBlock).getId());
+				//System.out.println("yi");
+				Block223Controller.deleteBlock(gameBlocks.get(selectedBlock-1).getId());
+				//System.out.println("what");
 				//update visuals 
 				refreshBlocks();
 			} catch (InvalidInputException e) {
@@ -443,7 +445,7 @@ public class GameDesignPage {
 		int selectedBlockIndex = yourBlocksComboBox.getSelectedIndex();
 		if(selectedBlockIndex>=1) {
 			//System.out.println("hi");
-			TOBlock block = gameBlocks.get(selectedBlockIndex);
+			TOBlock block = gameBlocks.get(selectedBlockIndex-1);
 			//System.out.println("why");
 			redTextField.setText(Integer.toString(block.getRed()));
 			//System.out.println("after rd");
