@@ -31,6 +31,14 @@ public class GameSettingPage {
 			private JLabel gameSettingLabel;
 			private JButton logOutBtn;
 			
+			private int nrLevels = 0;
+			private int nrBlocksPerLevel = 1;
+			private int minBallSpeedX = 1;
+			private int minBallSpeedY = 1;
+			private int maxPaddleLength = 10;
+			private double ballSpeedIncreaseFactor = 1.0;
+			private int minPaddleLength = 10;
+			
 						
 			//Level
 			private JTextField nrOfLevelsTextField;
@@ -246,14 +254,7 @@ public class GameSettingPage {
 			private void setSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {
 				
 				errorMessage.setText("");
-				
-				int nrLevels = 0;
-				int nrBlocksPerLevel = 0;
-				int minBallSpeedX = 0;
-				int minBallSpeedY = 0;
-				int maxPaddleLength = 0;
-				double ballSpeedIncreaseFactor = 0;
-				int minPaddleLength = 0;
+		
 				try {
 					nrLevels = Integer.parseInt(nrOfLevelsTextField.getText());
 					nrBlocksPerLevel = Integer.parseInt(nrOfBlocksPerLevelTextField.getText());
@@ -297,6 +298,18 @@ public class GameSettingPage {
 				
 			}
 			private void nextBtnActionPerformed(java.awt.event.ActionEvent evt) {
+				if(nrLevels == 0) {
+					try {
+						Block223Controller.setGameDetails(1, nrBlocksPerLevel, minBallSpeedX, minBallSpeedY, ballSpeedIncreaseFactor, maxPaddleLength, minPaddleLength);
+					}
+					catch (NumberFormatException e) {
+						errorMessage.setText("All fields need to be set to numerical values! ");
+						return; 
+					} catch (InvalidInputException e) {
+							errorMessage.setText(e.getMessage());
+							return;
+					}
+				}
 				frame.dispose();
 				new GameDesignPage();
 				
