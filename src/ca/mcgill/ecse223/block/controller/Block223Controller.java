@@ -144,13 +144,13 @@ public class Block223Controller {
 				throw new InvalidInputException(error);
 			}
 			
-			List <Level> levels = game.getLevels();
-				levels.size();
-				if (nrLevels > levels.size()) {
+			List<Level> levels = game.getLevels();
+				while (levels.size() < nrLevels) {
 					game.addLevel();
 					levels.size();
 					
-				}else if (nrLevels < levels.size()) {
+				}
+				while(nrLevels < levels.size()) {
 					Level level = game.getLevel(levels.size()-1);
 					level.delete();
 					levels.size();

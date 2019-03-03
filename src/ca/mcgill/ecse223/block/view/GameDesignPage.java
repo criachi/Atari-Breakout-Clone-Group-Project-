@@ -89,7 +89,7 @@ public class GameDesignPage {
 	 */
 	public GameDesignPage() {
 		initialize();
-		//refreshData(); idk
+		refreshBlocks(); //for now it is refresh blocks, but we shld call a global refresh method which refreshes evth in page 
 	}
 
 	/**
@@ -318,7 +318,6 @@ public class GameDesignPage {
 					.addContainerGap(567, Short.MAX_VALUE))
 		);
 		frame.getContentPane().setLayout(groupLayout);
-		refreshBlocks();
 	}
 	// Confusion... we will decide eventually how to organize refresh methods once I and we understand UI better :')
 	private void refreshData(){
@@ -386,8 +385,10 @@ public class GameDesignPage {
 	// Christina
 	private void deleteBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		errorMessage.setText("");
+		//System.out.println("hehe");
 		int selectedBlock = yourBlocksComboBox.getSelectedIndex();
-		if (selectedBlock < 0) {
+		//System.out.println("heyo");
+		if (selectedBlock < 1) {
 			errorMessage.setText("A block needs to be selected to be deleted! ");
 			return;
 		}
@@ -406,7 +407,7 @@ public class GameDesignPage {
 	private void updateBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		errorMessage.setText("");
 		int selectedBlockIndex = yourBlocksComboBox.getSelectedIndex();
-		if(selectedBlockIndex < 0) {
+		if(selectedBlockIndex < 1) {
 			errorMessage.setText("A block needs to be selected to be updated! ");
 			return;
 		}
@@ -438,14 +439,19 @@ public class GameDesignPage {
 	}
 	// to display the info of the currently selected block in the respective text fields 
 	private void yourBlocksComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
+		//System.out.println("im here");
 		int selectedBlockIndex = yourBlocksComboBox.getSelectedIndex();
-		if(selectedBlockIndex>=0) {
+		if(selectedBlockIndex>=1) {
+			//System.out.println("hi");
 			TOBlock block = gameBlocks.get(selectedBlockIndex);
+			//System.out.println("why");
 			redTextField.setText(Integer.toString(block.getRed()));
+			//System.out.println("after rd");
 			blueTextField.setText(Integer.toString(block.getBlue()));
+			//System.out.println("after green)");
 			greenTextField.setText(Integer.toString(block.getGreen()));
 			pointsTextField.setText(Integer.toString(block.getPoints()));
-		}
+		} 
 	}
 	private void saveChangesBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		errorMessage.setText("");

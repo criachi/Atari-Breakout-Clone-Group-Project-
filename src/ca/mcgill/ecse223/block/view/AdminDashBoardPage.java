@@ -183,7 +183,7 @@ public class AdminDashBoardPage {
 	private void refreshComboBox() {
 		errorMessage.setText("");
 			try {
-				ArrayList<TOGame> availableGames = (ArrayList<TOGame>) Block223Controller.getDesignableGames();
+				List<TOGame> availableGames = Block223Controller.getDesignableGames();
 				yourGamesComboBox.removeAllItems();
 				yourGamesComboBox.addItem("");
 				for(TOGame game : availableGames) {
@@ -235,7 +235,7 @@ public class AdminDashBoardPage {
 	}
 	private void deleteGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		int selectedGame = yourGamesComboBox.getSelectedIndex();
-		if (selectedGame < 0) {
+		if (selectedGame < 1) {
 			errorMessage.setText("A game needs to be selected to be deleted! ");
 			return;
 		}
@@ -257,7 +257,7 @@ public class AdminDashBoardPage {
 		// clear error msg and basic input validation
     	
     	int selectedGameIndex = yourGamesComboBox.getSelectedIndex();
-		if (selectedGameIndex < 0) {
+		if (selectedGameIndex < 1) {
 			errorMessage.setText("A game needs to be selected to be updated! ");
 			return;
 		} 
