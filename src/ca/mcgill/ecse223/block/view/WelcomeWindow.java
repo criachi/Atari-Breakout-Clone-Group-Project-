@@ -83,7 +83,6 @@ public class WelcomeWindow extends JFrame{
 	 */
 	private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {
 		//frame.dispose() will delete the current page (from what i understand)
-		System.out.println("show console");
 		frame.dispose();
 		
 		new LogInWindow();

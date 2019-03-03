@@ -238,7 +238,7 @@ public class UpdateSettingPage {
 				try {
 					TOGame currentGame = Block223Controller.getCurrentDesignableGame();
 					gameNameTextField.setText(currentGame.getName());
-					nrOfLevelsTextField.setText(String.valueOf(currentGame.getNrLevels()));
+					nrOfLevelsTextField.setText("1"); // before: String.valueOf(currentGame.getNrLevels())
 					nrOfBlocksPerLevelTextField.setText(String.valueOf(currentGame.getNrBlocksPerLevel()));
 					minBallSpeedXTextField.setText(String.valueOf(currentGame.getMinBallSpeedX()));
 					minBallSpeedYTextField.setText(String.valueOf(currentGame.getMinBallSpeedY()));
