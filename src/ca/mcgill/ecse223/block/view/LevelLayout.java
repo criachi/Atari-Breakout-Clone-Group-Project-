@@ -24,6 +24,10 @@ public class LevelLayout extends JComponent {
 	private int blockId;
 	private List<TOGridCell> blockAssignments;
 	
+	public LevelLayout() {
+		super();
+	}
+	
 	public void doDrawing(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g.create();
 		BasicStroke stroke = new BasicStroke(2);
@@ -43,7 +47,7 @@ public class LevelLayout extends JComponent {
 			}
 			x++;
 		}
-		if(blockAssignments.size() != 0) {
+		/**if(blockAssignments.size() != 0) {
 			for(TOGridCell cell: blockAssignments) {
 				int h = cell.getGridHorizontalPosition();
 				int v = cell.getGridVerticalPosition();
@@ -59,7 +63,7 @@ public class LevelLayout extends JComponent {
 				grids.put(newFiller, cellPosition);
 				g2d.draw(newFiller);
 			}
-		}
+		}*/
 	}
 	
 	public void paintComponent(Graphics g) {

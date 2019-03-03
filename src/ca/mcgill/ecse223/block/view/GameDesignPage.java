@@ -106,6 +106,8 @@ public class GameDesignPage {
 	public GameDesignPage() {
 		initialize();
 		refreshBlocks(); //for now it is refresh blocks, but we shld call a global refresh method which refreshes evth in page 
+		refreshLevels();
+		refreshBlockAssignmentComboBox();
 	}
 
 	/**
@@ -316,15 +318,16 @@ public class GameDesignPage {
 										.addGroup(groupLayout.createSequentialGroup()
 											.addComponent(removeBlockAssignmentBtn)
 											.addGap(33)))
-									.addComponent(table, GroupLayout.PREFERRED_SIZE, 371, GroupLayout.PREFERRED_SIZE)))
-							.addPreferredGap(ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(table, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addGroup(groupLayout.createSequentialGroup()
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 										.addComponent(yourBlocksComboBox, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE)
 										.addComponent(lblYourBlocks))
 									.addGap(191))
-								.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createSequentialGroup()
 									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 										.addComponent(redLbl)
 										.addComponent(blueLbl)
@@ -338,12 +341,12 @@ public class GameDesignPage {
 										.addComponent(greenTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 										.addComponent(pointsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 									.addGap(198))
-								.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(deleteBlockBtn)
 									.addGap(18)
 									.addComponent(addBlockBtn)
 									.addGap(151))
-								.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(logOutBtn)
 									.addGap(29))))
 						.addGroup(groupLayout.createSequentialGroup()
@@ -384,16 +387,31 @@ public class GameDesignPage {
 										.addComponent(redLbl)))))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(logOutBtn)
+								.addComponent(errorMessage, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(85)
-									.addComponent(table, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE))
+									.addGap(190)
+									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(blueTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(blueLbl))
+									.addGap(18)
+									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(greenTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(greenLbl))
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(pointsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(pointsLbl))
+									.addGap(18)
+									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(addBlockBtn)
+										.addComponent(deleteBlockBtn)))
 								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-										.addComponent(logOutBtn)
-										.addComponent(errorMessage, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createSequentialGroup()
+									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(table, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 											.addGap(167)
 											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 												.addComponent(lblVerticalPosition)
@@ -411,32 +429,14 @@ public class GameDesignPage {
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addComponent(btnMoveBlock)
 											.addGap(30)
-											.addComponent(removeBlockAssignmentBtn)
-											.addPreferredGap(ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
-											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(backBtn)
-												.addComponent(saveChangesBtn)))
-										.addGroup(groupLayout.createSequentialGroup()
-											.addGap(190)
-											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(blueTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(blueLbl))
-											.addGap(18)
-											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(greenTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(greenLbl))
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(pointsTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(pointsLbl))
-											.addGap(18)
-											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(addBlockBtn)
-												.addComponent(deleteBlockBtn))))))))
+											.addComponent(removeBlockAssignmentBtn)))
+									.addPreferredGap(ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(backBtn)
+										.addComponent(saveChangesBtn))))))
 					.addContainerGap())
 		);
 		frame.getContentPane().setLayout(groupLayout);
-		refreshLevels();
 	}
 	// Confusion... we will decide eventually how to organize refresh methods once I and we understand UI better :')
 	private void refreshData(){
@@ -502,16 +502,18 @@ public class GameDesignPage {
 			for(int i = 0; i < nrLevels; i++) {
 				levels.put(i, Block223Controller.getBlocksAtLevelOfCurrentDesignableGame(i+1));
 				levelComboBox.addItem("Level " + (i+1));
+				System.out.println("Level " + (i+1) + " added. ");
 			}
 			levelComboBox.setSelectedIndex(0);
-			int index = 0;
+			/**int index = 0;
 			for(TOGridCell cell: Block223Controller.getBlocksAtLevelOfCurrentDesignableGame(0)) {
 				blockAssignments.put(index, cell);
 				blockAssignmentComboBox.addItem("Red: " + cell.getRed() + " Green: " + cell.getGreen() + " Blue: " + cell.getBlue() + " Points: " + cell.getPoints() + " X: " + cell.getGridHorizontalPosition() + " Y: " + cell.getGridVerticalPosition());
 				index++;
-			}
+			}*/
 		} catch(InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
+			System.out.println(errorMessage);
 		}
 	}
 	
