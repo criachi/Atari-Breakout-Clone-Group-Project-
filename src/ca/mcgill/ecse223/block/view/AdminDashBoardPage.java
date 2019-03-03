@@ -12,10 +12,10 @@
 // all these methods im asking u to check are in gameDesignPage... 
 
 
-
-
+//chekc update game action performed method i commented sth out bc when it is uncommented, it gives a nullpointer exception on the console!! and dsnt take us to the next pg
 package ca.mcgill.ecse223.block.view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -105,7 +105,7 @@ public class AdminDashBoardPage {
 			}
 		});
 		yourGamesComboBox = new JComboBox();
-		
+		yourGamesComboBox.addItem("");
 		lblOr = new JLabel("OR:");
 		lblOr.setFont(new Font("Tahoma", Font.BOLD, 25));
 		
@@ -116,6 +116,7 @@ public class AdminDashBoardPage {
 		textField.setColumns(10);
 		
 		errorMessage = new JLabel("");
+		errorMessage.setForeground(Color.RED);
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -177,13 +178,14 @@ public class AdminDashBoardPage {
 					.addGap(72))
 		);
 		frame.getContentPane().setLayout(groupLayout);
-		
+		refreshComboBox();
 		}
 	private void refreshComboBox() {
 		errorMessage.setText("");
 			try {
 				List<TOGame> availableGames = Block223Controller.getDesignableGames();
 				yourGamesComboBox.removeAllItems();
+				yourGamesComboBox.addItem("");
 				for(TOGame game : availableGames) {
 					yourGamesComboBox.addItem(game.getName());
 				}
@@ -227,14 +229,13 @@ public class AdminDashBoardPage {
 			errorMessage.setText(e.getMessage());
 			return;
 		}
-		refreshComboBox();
 		frame.dispose();
 		new GameSettingPage();
 		//new Block223Page().setVisible(true);
 	}
 	private void deleteGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		int selectedGame = yourGamesComboBox.getSelectedIndex();
-		if (selectedGame < 0) {
+		if (selectedGame < 1) {
 			errorMessage.setText("A game needs to be selected to be deleted! ");
 			return;
 		}

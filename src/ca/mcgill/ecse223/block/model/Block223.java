@@ -368,7 +368,7 @@ public class Block223 implements Serializable
   		List<Block> blocks = game.getBlocks();
   	    Block.reinitializeAutouniqueID(blocks); 
   	}
-    Game.reinitializeUniqueGameName(this.getGames());
+  	Game.reinitializeUniqueGameName(this.getGames());
     User.reinitializeUniqueUserName(this.getUsers());
   }
 

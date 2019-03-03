@@ -105,7 +105,7 @@ public class GameDesignPage {
 	 */
 	public GameDesignPage() {
 		initialize();
-		//refreshData(); idk
+		refreshBlocks(); //for now it is refresh blocks, but we shld call a global refresh method which refreshes evth in page 
 	}
 
 	/**
@@ -189,6 +189,7 @@ public class GameDesignPage {
 		
 		// Display List of Blocks
 		yourBlocksComboBox = new JComboBox<String>();
+		yourBlocksComboBox.addItem("");
 		yourBlocksComboBox.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				yourBlocksComboBoxActionPerformed(evt);
@@ -457,11 +458,12 @@ public class GameDesignPage {
 			//list of blocks (combo box)
 			gameBlocks = new HashMap<Integer,TOBlock>();
 			yourBlocksComboBox.removeAllItems();
+			yourBlocksComboBox.addItem("");
 			index = 0;
 			try {
 			for(TOBlock block : Block223Controller.getBlocksOfCurrentDesignableGame()) {
 				gameBlocks.put(index, block);
-				yourBlocksComboBox.addItem("Red: " + block.getRed() + " Green: " + block.getGreen() + " Blue: " + block.getBlue() + " Points: " + block.getPoints());
+				yourBlocksComboBox.addItem("R: " + block.getRed() + " G: " + block.getGreen() + " B: " + block.getBlue() + " Points: " + block.getPoints());
 				index++;
 			}
 			} catch (InvalidInputException e) {
@@ -515,7 +517,7 @@ public class GameDesignPage {
 	
 	private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		frame.dispose();
-		new AdminDashBoardPage();
+		new UpdateSettingPage();
 	}
 	// Christina
 	private void addBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
@@ -544,14 +546,18 @@ public class GameDesignPage {
 	// Christina
 	private void deleteBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		errorMessage.setText("");
+		//System.out.println("hehe");
 		int selectedBlock = yourBlocksComboBox.getSelectedIndex();
-		if (selectedBlock < 0) {
+		//System.out.println("heyo");
+		if (selectedBlock < 1) {
 			errorMessage.setText("A block needs to be selected to be deleted! ");
 			return;
 		}
 			// call the controller 
 			try {
-				Block223Controller.deleteBlock(gameBlocks.get(selectedBlock).getId());
+				//System.out.println("yi");
+				Block223Controller.deleteBlock(gameBlocks.get(selectedBlock-1).getId());
+				//System.out.println("what");
 				//update visuals 
 				refreshBlocks();
 			} catch (InvalidInputException e) {
@@ -564,11 +570,10 @@ public class GameDesignPage {
 	private void updateBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		errorMessage.setText("");
 		int selectedBlockIndex = yourBlocksComboBox.getSelectedIndex();
-		if(selectedBlockIndex < 0) {
+		if(selectedBlockIndex < 1) {
 			errorMessage.setText("A block needs to be selected to be updated! ");
 			return;
 		}
-			
 			// call the controller 
 			TOBlock block = gameBlocks.get(selectedBlockIndex);
 			try {
@@ -655,14 +660,19 @@ public class GameDesignPage {
 	}
 	// to display the info of the currently selected block in the respective text fields 
 	private void yourBlocksComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
+		//System.out.println("im here");
 		int selectedBlockIndex = yourBlocksComboBox.getSelectedIndex();
-		if(selectedBlockIndex>=0) {
-			TOBlock block = gameBlocks.get(selectedBlockIndex);
+		if(selectedBlockIndex>=1) {
+			//System.out.println("hi");
+			TOBlock block = gameBlocks.get(selectedBlockIndex-1);
+			//System.out.println("why");
 			redTextField.setText(Integer.toString(block.getRed()));
+			//System.out.println("after rd");
 			blueTextField.setText(Integer.toString(block.getBlue()));
+			//System.out.println("after green)");
 			greenTextField.setText(Integer.toString(block.getGreen()));
 			pointsTextField.setText(Integer.toString(block.getPoints()));
-		}
+		} 
 	}
 	//comment this out when running the program
 	private void levelComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
