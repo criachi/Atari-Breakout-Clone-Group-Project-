@@ -173,6 +173,7 @@ public class GameDesignPage {
 		
 		// Display List of Blocks
 		yourBlocksComboBox = new JComboBox<String>();
+		yourBlocksComboBox.addItem("");
 		yourBlocksComboBox.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				yourBlocksComboBoxActionPerformed(evt);
@@ -317,6 +318,7 @@ public class GameDesignPage {
 					.addContainerGap(567, Short.MAX_VALUE))
 		);
 		frame.getContentPane().setLayout(groupLayout);
+		refreshBlocks();
 	}
 	// Confusion... we will decide eventually how to organize refresh methods once I and we understand UI better :')
 	private void refreshData(){
@@ -338,11 +340,12 @@ public class GameDesignPage {
 			//list of blocks (combo box)
 			gameBlocks = new HashMap<Integer,TOBlock>();
 			yourBlocksComboBox.removeAllItems();
+			yourBlocksComboBox.addItem("");
 			index = 0;
 			try {
 			for(TOBlock block : Block223Controller.getBlocksOfCurrentDesignableGame()) {
 				gameBlocks.put(index, block);
-				yourBlocksComboBox.addItem("Red: " + block.getRed() + " Green: " + block.getGreen() + " Blue: " + block.getBlue() + " Points: " + block.getPoints());
+				yourBlocksComboBox.addItem("R: " + block.getRed() + " G: " + block.getGreen() + " B: " + block.getBlue() + " Points: " + block.getPoints());
 				index++;
 			}
 			} catch (InvalidInputException e) {
@@ -354,7 +357,7 @@ public class GameDesignPage {
 	
 	private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		frame.dispose();
-		new AdminDashBoardPage();
+		new UpdateSettingPage();
 	}
 	// Christina
 	private void addBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
@@ -407,7 +410,6 @@ public class GameDesignPage {
 			errorMessage.setText("A block needs to be selected to be updated! ");
 			return;
 		}
-			
 			// call the controller 
 			TOBlock block = gameBlocks.get(selectedBlockIndex);
 			try {

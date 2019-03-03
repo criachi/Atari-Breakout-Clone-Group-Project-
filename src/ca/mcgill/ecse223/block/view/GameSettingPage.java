@@ -280,15 +280,13 @@ public class GameSettingPage {
 				// refreshData(); -> idk if we need this somewhere in this method
 			}
 			private void saveGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
-				if(errorMessage.getText() != "") {
+					errorMessage.setText("");
 					try {
 						Block223Controller.saveGame();
 					} catch (InvalidInputException e) {
 						errorMessage.setText(e.getMessage());
 					}
-			    } else {
-			    	errorMessage.setText("Cannot save game due to errors in inputs. ");
-			    }
+			    
 			}
 			private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
 				Block223Controller.logout();

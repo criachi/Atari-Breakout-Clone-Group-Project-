@@ -12,10 +12,10 @@
 // all these methods im asking u to check are in gameDesignPage... 
 
 
-
-
+//chekc update game action performed method i commented sth out bc when it is uncommented, it gives a nullpointer exception on the console!! and dsnt take us to the next pg
 package ca.mcgill.ecse223.block.view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -105,7 +105,7 @@ public class AdminDashBoardPage {
 			}
 		});
 		yourGamesComboBox = new JComboBox();
-		
+		yourGamesComboBox.addItem("");
 		lblOr = new JLabel("OR:");
 		lblOr.setFont(new Font("Tahoma", Font.BOLD, 25));
 		
@@ -116,6 +116,7 @@ public class AdminDashBoardPage {
 		textField.setColumns(10);
 		
 		errorMessage = new JLabel("");
+		errorMessage.setForeground(Color.RED);
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -177,13 +178,14 @@ public class AdminDashBoardPage {
 					.addGap(72))
 		);
 		frame.getContentPane().setLayout(groupLayout);
-		
+		refreshComboBox();
 		}
 	private void refreshComboBox() {
 		errorMessage.setText("");
 			try {
-				List<TOGame> availableGames = Block223Controller.getDesignableGames();
+				ArrayList<TOGame> availableGames = (ArrayList<TOGame>) Block223Controller.getDesignableGames();
 				yourGamesComboBox.removeAllItems();
+				yourGamesComboBox.addItem("");
 				for(TOGame game : availableGames) {
 					yourGamesComboBox.addItem(game.getName());
 				}
@@ -256,18 +258,18 @@ public class AdminDashBoardPage {
 		// clear error msg and basic input validation
     	
     	int selectedGameIndex = yourGamesComboBox.getSelectedIndex();
-		if (selectedGameIndex < 1) {
+		if (selectedGameIndex < 0) {
 			errorMessage.setText("A game needs to be selected to be updated! ");
 			return;
 		} 
 		
-		try {
+		/*try {
 			Block223Controller.selectGame(yourGamesComboBox.getItemAt(selectedGameIndex));
 		}
 		catch(InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 			return;
-		}
+		}*/
 		
 		frame.dispose();
 		new UpdateSettingPage();
