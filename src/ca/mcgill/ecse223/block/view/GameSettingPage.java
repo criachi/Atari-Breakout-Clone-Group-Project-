@@ -39,6 +39,14 @@ public class GameSettingPage {
 			private double ballSpeedIncreaseFactor = 1.0;
 			private int minPaddleLength = 10;
 			
+			private int nrLevelsOld;
+			private int nrBlocksPerLevelOld;
+			private int minBallSpeedXOld;
+			private int minBallSpeedYOld;
+			private int maxPaddleLengthOld;
+			private int minPaddleLengthOld;
+			private double ballSpeedIncreaseFactorOld;
+			
 						
 			//Level
 			private JTextField nrOfLevelsTextField;
@@ -254,7 +262,25 @@ public class GameSettingPage {
 			private void setSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {
 				
 				errorMessage.setText("");
-		
+				
+				/*
+				 * The variable_old declared here are in case the try catch block
+				 * fails so that the variables are set to their old values.
+				 * This way if the user is not able to set any settings but 
+				 * they did change the text fields, the variables holding the 
+				 * values in the text fields dont get set with unallowed values
+				 * (which was causing problems when we tried to go the next page
+				 * without successfully setting stuff.)
+				 */
+				
+				nrLevelsOld = nrLevels;
+				nrBlocksPerLevelOld = nrBlocksPerLevel;
+				minBallSpeedXOld = minBallSpeedX;
+				minBallSpeedYOld = minBallSpeedY;
+				ballSpeedIncreaseFactorOld = ballSpeedIncreaseFactor;
+				maxPaddleLengthOld = maxPaddleLength;
+				minPaddleLengthOld = minPaddleLength; 
+				
 				try {
 					nrLevels = Integer.parseInt(nrOfLevelsTextField.getText());
 					nrBlocksPerLevel = Integer.parseInt(nrOfBlocksPerLevelTextField.getText());
@@ -267,9 +293,27 @@ public class GameSettingPage {
 				}
 				catch (NumberFormatException e) {
 					errorMessage.setText("All fields need to be set to numerical values! ");
+					
+					nrLevels = nrLevelsOld;
+					nrBlocksPerLevel = nrBlocksPerLevelOld;
+					minBallSpeedX = minBallSpeedXOld;
+					minBallSpeedY = minBallSpeedYOld;
+					ballSpeedIncreaseFactor = ballSpeedIncreaseFactorOld;
+					maxPaddleLength = maxPaddleLengthOld;
+					minPaddleLength = minPaddleLengthOld;
+					
 					return; 
 				} catch (InvalidInputException e) {
 						errorMessage.setText(e.getMessage());
+						
+						nrLevels = nrLevelsOld;
+						nrBlocksPerLevel = nrBlocksPerLevelOld;
+						minBallSpeedX = minBallSpeedXOld;
+						minBallSpeedY = minBallSpeedYOld;
+						ballSpeedIncreaseFactor = ballSpeedIncreaseFactorOld;
+						maxPaddleLength = maxPaddleLengthOld;
+						minPaddleLength = minPaddleLengthOld;
+						
 						return;
 				}
 				
@@ -298,6 +342,7 @@ public class GameSettingPage {
 				
 			}
 			private void nextBtnActionPerformed(java.awt.event.ActionEvent evt) {
+				System.out.println(nrBlocksPerLevel+" "+minBallSpeedX+" "+minBallSpeedY);
 				if(nrLevels == 0) {
 					try {
 						Block223Controller.setGameDetails(1, nrBlocksPerLevel, minBallSpeedX, minBallSpeedY, ballSpeedIncreaseFactor, maxPaddleLength, minPaddleLength);
@@ -306,8 +351,8 @@ public class GameSettingPage {
 						errorMessage.setText("All fields need to be set to numerical values! ");
 						return; 
 					} catch (InvalidInputException e) {
-							errorMessage.setText(e.getMessage());
-							return;
+						errorMessage.setText(e.getMessage());
+						return;
 					}
 				}
 				frame.dispose();

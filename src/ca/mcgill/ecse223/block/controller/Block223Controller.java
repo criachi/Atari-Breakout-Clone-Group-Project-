@@ -147,14 +147,12 @@ public class Block223Controller {
 			List<Level> levels = game.getLevels();
 				while (levels.size() < nrLevels) {
 					game.addLevel();
-					levels.size();
 					
 				}
 				while(nrLevels < levels.size()) {
 					Level level = game.getLevel(levels.size()-1);
 					level.delete();
-					levels.size();
-				}			
+				}	
 	}
 
 	public static void deleteGame(String name) throws InvalidInputException {
@@ -247,7 +245,6 @@ public class Block223Controller {
 			setGameDetails(nrLevels, nrBlocksPerLevel, minBallSpeedX, minBallSpeedY, ballSpeedIncreaseFactor, maxPaddleLength, minPaddleLength);
 		}
 		catch(InvalidInputException e) {
-			System.out.println("Could not set game details due to: "+e.getMessage());
 			error += e.getMessage();
 			throw new InvalidInputException(error);
 		}

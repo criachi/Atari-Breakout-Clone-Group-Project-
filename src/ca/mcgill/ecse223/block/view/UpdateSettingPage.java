@@ -282,7 +282,6 @@ public class UpdateSettingPage {
 						Block223Controller.updateGame(gameNameTextField.getText(), numLevels, numBlocks, minXSpeed, minYSpeed, speedIncFactor, maxLength, minLength);
 					} 
 				catch (InvalidInputException e) {
-					System.out.println("Whoops");
 						errorMessage.setText(e.getMessage());
 						return;
 					}
