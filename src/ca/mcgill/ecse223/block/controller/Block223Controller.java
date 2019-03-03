@@ -599,7 +599,7 @@ public class Block223Controller {
 		return to;
     }
     
-	public List<TOGridCell> getBlocksAtLevelOfCurrentDesignableGame(int level) throws InvalidInputException {
+	public static List<TOGridCell> getBlocksAtLevelOfCurrentDesignableGame(int level) throws InvalidInputException {
 		String error = "";
 		if(!(Block223Application.getCurrentUserRole() instanceof Admin)) {
 			error = "Admin privileges are required to access game information. ";
