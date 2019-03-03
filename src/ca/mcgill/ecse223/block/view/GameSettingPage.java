@@ -342,7 +342,6 @@ public class GameSettingPage {
 				
 			}
 			private void nextBtnActionPerformed(java.awt.event.ActionEvent evt) {
-				System.out.println(nrBlocksPerLevel+" "+minBallSpeedX+" "+minBallSpeedY);
 				if(nrLevels == 0) {
 					try {
 						Block223Controller.setGameDetails(1, nrBlocksPerLevel, minBallSpeedX, minBallSpeedY, ballSpeedIncreaseFactor, maxPaddleLength, minPaddleLength);
