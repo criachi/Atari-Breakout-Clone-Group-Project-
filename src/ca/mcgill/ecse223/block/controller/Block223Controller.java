@@ -382,7 +382,7 @@ public class Block223Controller {
 			throw new InvalidInputException(error.trim());
 		}
 		try {
-			BlockAssignment blockAssignment = new BlockAssignment(gridHorizontalPosition, gridVerticalPosition, foundLevel, block, game);
+			new BlockAssignment(gridHorizontalPosition, gridVerticalPosition, foundLevel, block, game);
 		} catch (RuntimeException e) {
 			throw new InvalidInputException(e.getMessage());
 		}
@@ -403,7 +403,7 @@ public class Block223Controller {
 		}
 		Level foundLevel = null;
 		try {
-			foundLevel = game.getLevel(level);
+			foundLevel = game.getLevel(level-1);
 		} catch (IndexOutOfBoundsException e) {
 			error = error + " Level" + level + " does not exist for the game.";
 		}
@@ -432,7 +432,7 @@ public class Block223Controller {
 
 	public static void removeBlock(int level, int gridHorizontalPosition, int gridVerticalPosition) throws InvalidInputException {
 		Game game = Block223Application.getCurrentGame();
-		Level thisLevel = game.getLevel(level);
+		Level thisLevel = game.getLevel(level-1);
 		BlockAssignment assignment = thisLevel.findBlockAssignment(gridHorizontalPosition, gridVerticalPosition);
 		
 		if(assignment!=null) {
@@ -648,7 +648,7 @@ public class Block223Controller {
 		try {
 			foundLevel = game.getLevel(level-1);
 		} catch (IndexOutOfBoundsException e) {
-			throw new InvalidInputException("Level " + level + "does not exist for the game. ");
+			throw new InvalidInputException("Level " + level + " does not exist for the game. ");
 		}
 		List<BlockAssignment> assignments = foundLevel.getBlockAssignments();
 		for(BlockAssignment assignment: assignments) {
