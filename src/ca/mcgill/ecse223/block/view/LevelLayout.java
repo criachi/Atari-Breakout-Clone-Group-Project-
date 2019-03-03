@@ -18,8 +18,8 @@ import javax.swing.JComponent;
 public class LevelLayout extends JComponent {
 	
 	private static final long serialVersionUID = 8753563722302471614L;
-	private HashMap<Rectangle2D, ArrayList<Integer>> grids;
 	private HashMap<ArrayList<Integer>, Rectangle2D> rectangles;
+	private ArrayList<Rectangle2D> fillers;
 	
 	private int level;
 	private List<TOGridCell> blockAssignments;
@@ -38,20 +38,12 @@ public class LevelLayout extends JComponent {
 		Graphics2D g2d = (Graphics2D) g.create();
 		BasicStroke stroke = new BasicStroke(1);
 		g2d.setStroke(stroke);
-		int x = 1;
 		for(int i = 10; i < 390; i = i + 25) {
 			int y = 1;
 			for(int j = 10; j < 337; j = j + 22) {
-				ArrayList<Integer> gridPosition = new ArrayList<Integer>();
-				gridPosition.add(x);
-				gridPosition.add(y);
 				Rectangle2D filler = new Rectangle2D.Double(i, j, 20, 20);
-				//rectangles.put(gridPosition, filler);
-				//grids.put(filler, gridPosition);
 				g2d.draw(filler);
-				y++;
 			}
-			x++;
 		}
 	}
 	

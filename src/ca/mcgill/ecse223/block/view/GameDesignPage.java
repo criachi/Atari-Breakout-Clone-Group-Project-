@@ -40,8 +40,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-
 import java.awt.Canvas;
 import javax.swing.Box;
 import java.awt.event.ItemListener;
@@ -98,7 +96,7 @@ public class GameDesignPage {
 	private JLabel lblNewVerticalPosition;
 	private JTextField newGridVerticalPositionTextField;
 	private JButton btnMoveBlock;
-	private JComponent levelLayout;
+	private JTable table;
 	
 
 
@@ -272,7 +270,7 @@ public class GameDesignPage {
 			}
 		});
 		
-		levelLayout = new LevelLayout();
+		table = new JTable();
 		
 		// DON'T TOUCH: U CHANGE THIS BY DRAGGING AND DROPPING THINGS IN THE DESIGN WINDOW
 		// Group Layout of Page
@@ -321,7 +319,7 @@ public class GameDesignPage {
 											.addComponent(removeBlockAssignmentBtn)
 											.addGap(33)))
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(levelLayout, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE)))
+									.addComponent(table, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE)))
 							.addPreferredGap(ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addGroup(groupLayout.createSequentialGroup()
@@ -412,7 +410,7 @@ public class GameDesignPage {
 										.addComponent(deleteBlockBtn)))
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(levelLayout, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(table, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 										.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 											.addGap(167)
 											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
