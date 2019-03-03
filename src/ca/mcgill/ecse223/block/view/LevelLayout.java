@@ -19,7 +19,6 @@ public class LevelLayout extends JComponent {
 	
 	private HashMap<Rectangle2D, ArrayList<Integer>> grids;
 	private HashMap<ArrayList<Integer>, Rectangle2D> rectangles;
-	private ArrayList<Rectangle2D> fillers;
 	
 	private int level;
 	private int blockId;
@@ -39,7 +38,6 @@ public class LevelLayout extends JComponent {
 				Rectangle2D filler = new Rectangle2D.Double(i, j, 20, 20);
 				grids.put(filler, gridPosition);
 				rectangles.put(gridPosition, filler);
-				fillers.add(filler);
 				g2d.draw(filler);
 				y++;
 			}
@@ -53,7 +51,13 @@ public class LevelLayout extends JComponent {
 				cellPosition.add(h);
 				cellPosition.add(v);
 				Color cellColor = new Color(cell.getRed(), cell.getGreen(), cell.getBlue());
-				
+				Rectangle2D newFiller = rectangles.get(cellPosition);
+				grids.remove(newFiller);
+				g2d.setColor(cellColor);
+				g2d.fill(newFiller);
+				rectangles.put(cellPosition, newFiller);
+				grids.put(newFiller, cellPosition);
+				g2d.draw(newFiller);
 			}
 		}
 	}
