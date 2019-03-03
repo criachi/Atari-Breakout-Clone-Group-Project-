@@ -229,7 +229,6 @@ public class AdminDashBoardPage {
 			errorMessage.setText(e.getMessage());
 			return;
 		}
-		refreshComboBox();
 		frame.dispose();
 		new GameSettingPage();
 		//new Block223Page().setVisible(true);
@@ -263,13 +262,13 @@ public class AdminDashBoardPage {
 			return;
 		} 
 		
-		/*try {
+		try {
 			Block223Controller.selectGame(yourGamesComboBox.getItemAt(selectedGameIndex));
 		}
 		catch(InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 			return;
-		}*/
+		}
 		
 		frame.dispose();
 		new UpdateSettingPage();

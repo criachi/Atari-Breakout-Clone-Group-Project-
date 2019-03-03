@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import ca.mcgill.ecse223.block.controller.Block223Controller;
 import ca.mcgill.ecse223.block.controller.InvalidInputException;
+import ca.mcgill.ecse223.block.controller.TOGame;
 
 import javax.swing.JButton;
 
@@ -60,7 +61,6 @@ public class GameSettingPage {
 
 			public  GameSettingPage() {
 				initComponents();
-				//refreshData(); -> if needed
 			}
 			
 			private void initComponents() {
@@ -223,31 +223,25 @@ public class GameSettingPage {
 						logOutBtnActionPerformed(evt);
 					}
 				});
+				
+				refreshPage();
 			}
-		//if it is needed for save button listener
-		/*	private void refreshData() {
-				// error
-				errorMessage.setText(error);
-				if (error == null || error.length() == 0) {
-					//GameSetting			
-						
-						//Level
-					nrOfLevelsTextField.setText("");
-					currentLevelNumberTextField.setText("");
-					nrOfBlocksPerLevelTextField.setText("");
-									
-						//Ball
-					minBallSpeedXTextField.setText("");
-					minBallSpeedYTextField.setText("");
-					speedIncreaseFactorTextField.setText("");
-									
-						//Paddle
-					minPaddleLengthTextField.setText("");
-					maxPaddleLengthTextField.setText("");
-										
+			
+			private void refreshPage() {
+				try {
+					TOGame currentGame = Block223Controller.getCurrentDesignableGame();
+					nrOfLevelsTextField.setText(String.valueOf(currentGame.getNrLevels()));
+					nrOfBlocksPerLevelTextField.setText(String.valueOf(currentGame.getNrBlocksPerLevel()));
+					minBallSpeedXTextField.setText(String.valueOf(currentGame.getMinBallSpeedX()));
+					minBallSpeedYTextField.setText(String.valueOf(currentGame.getMinBallSpeedY()));
+					speedIncreaseFactorTextField.setText(String.valueOf(currentGame.getBallSpeedIncreaseFactor()));
+					minPaddleLengthTextField.setText(String.valueOf(currentGame.getMinPaddleLength()));
+					maxPaddleLengthTextField.setText(String.valueOf(currentGame.getMaxPaddleLength()));
 				}
+				catch(InvalidInputException e) {
+					errorMessage.setText(e.getMessage());
+				}	
 			}
-			*/ 
 			
 			private void setSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {
 				
@@ -275,9 +269,12 @@ public class GameSettingPage {
 					return; 
 				} catch (InvalidInputException e) {
 						errorMessage.setText(e.getMessage());
+						return;
 				}
+				
+				errorMessage.setText("Game settings set!");
 				// update visuals
-				// refreshData(); -> idk if we need this somewhere in this method
+				//refreshPage(); -> idk if we need this somewhere in this method
 			}
 			private void saveGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
 					errorMessage.setText("");

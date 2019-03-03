@@ -6,11 +6,11 @@ import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.util.ArrayList;
+
 import javax.swing.JTextField;
 
-
-import ca.mcgill.ecse223.block.controller.Block223Controller;
-import ca.mcgill.ecse223.block.controller.InvalidInputException;
+import ca.mcgill.ecse223.block.controller.*;
 
 
 import javax.swing.JButton;
@@ -58,7 +58,7 @@ public class UpdateSettingPage {
 
 			public  UpdateSettingPage() {
 				initComponents();
-				//refreshData(); -> if needed
+				//refreshPage();
 			}
 			
 			private void initComponents()  {
@@ -75,7 +75,7 @@ public class UpdateSettingPage {
 				
 				errorMessage = new JLabel("");
 				errorMessage.setForeground(Color.RED);
-				errorMessage.setFont(new Font("Tahoma", Font.BOLD, 18));
+				errorMessage.setFont(new Font("Tahoma", Font.BOLD, 12));
 				errorMessage.setBounds(25, 48, 376, 28);
 				desktopPane.add(errorMessage);
 				
@@ -230,34 +230,25 @@ public class UpdateSettingPage {
 						nextBtnActionPerformed(evt);
 					}
 				});
+				
+				refreshPage();
 			}
-		//if it is needed for save button listener
-		/*	private void refreshData() {
-				// error
-				errorMessage.setText(error);
-				if (error == null || error.length() == 0) {
-					//GameSetting			
-						
-						//Level
-					nrOfLevelsTextField.setText("");
-					currentLevelNumberTextField.setText("");
-					nrOfBlocksPerLevelTextField.setText("");
-									
-						//Ball
-					minBallSpeedXTextField.setText("");
-					minBallSpeedYTextField.setText("");
-					speedIncreaseFactorTextField.setText("");
-									
-						//Paddle
-					minPaddleLengthTextField.setText("");
-					maxPaddleLengthTextField.setText("");
-										
-				}
-			}
-			*/ 
 			
 			private void refreshPage() {
-				errorMessage.setText("");
+				try {
+					TOGame currentGame = Block223Controller.getCurrentDesignableGame();
+					gameNameTextField.setText(currentGame.getName());
+					nrOfLevelsTextField.setText(String.valueOf(currentGame.getNrLevels()));
+					nrOfBlocksPerLevelTextField.setText(String.valueOf(currentGame.getNrBlocksPerLevel()));
+					minBallSpeedXTextField.setText(String.valueOf(currentGame.getMinBallSpeedX()));
+					minBallSpeedYTextField.setText(String.valueOf(currentGame.getMinBallSpeedY()));
+					speedIncreaseFactorTextField.setText(String.valueOf(currentGame.getBallSpeedIncreaseFactor()));
+					minPaddleLengthTextField.setText(String.valueOf(currentGame.getMinPaddleLength()));
+					maxPaddleLengthTextField.setText(String.valueOf(currentGame.getMaxPaddleLength()));
+				}
+				catch(InvalidInputException e) {
+					errorMessage.setText(e.getMessage());
+				}
 				
 				
 			}
@@ -267,7 +258,6 @@ public class UpdateSettingPage {
 			}
 			
 			private void updateGameSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {
-				errorMessage.setText("");
 				int numLevels;
 				int numBlocks;
 				int minXSpeed;
@@ -279,10 +269,10 @@ public class UpdateSettingPage {
 					numLevels  = Integer.parseInt(nrOfLevelsTextField.getText());
 					numBlocks = Integer.parseInt(nrOfBlocksPerLevelTextField.getText());
 					minXSpeed = Integer.parseInt(minBallSpeedYTextField.getText());
-					minYSpeed = Integer.parseInt(minBallSpeedYLabel.getText());
+					minYSpeed = Integer.parseInt(minBallSpeedYTextField.getText());
 					minLength = Integer.parseInt(minPaddleLengthTextField.getText());
 					maxLength = Integer.parseInt(maxPaddleLengthTextField.getText());
-					speedIncFactor = Integer.parseInt(speedIncreaseFactorTextField.getText());
+					speedIncFactor = Double.parseDouble(speedIncreaseFactorTextField.getText());
 				}
 				catch (NumberFormatException e) {
 					errorMessage.setText("All fields besides name must be numerical values!");
@@ -290,10 +280,14 @@ public class UpdateSettingPage {
 				}
 				try {
 						Block223Controller.updateGame(gameNameTextField.getText(), numLevels, numBlocks, minXSpeed, minYSpeed, speedIncFactor, maxLength, minLength);
-					} catch (InvalidInputException e) {
+					} 
+				catch (InvalidInputException e) {
+					System.out.println("Whoops");
 						errorMessage.setText(e.getMessage());
 						return;
 					}
+				errorMessage.setText("Game updated!");
+
 				}
 			private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
 				frame.dispose();
