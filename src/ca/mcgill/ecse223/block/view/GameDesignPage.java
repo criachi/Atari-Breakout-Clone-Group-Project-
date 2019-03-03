@@ -104,9 +104,9 @@ public class GameDesignPage {
 	 * Create the application.
 	 */
 	public GameDesignPage() {
+		refreshLevels();
 		initialize();
 		refreshBlocks(); //for now it is refresh blocks, but we shld call a global refresh method which refreshes evth in page 
-		refreshLevels();
 		refreshBlockAssignmentComboBox();
 	}
 
@@ -480,6 +480,7 @@ public class GameDesignPage {
 		newGridHorizontalPositionTextField.setText("");
 		newGridVerticalPositionTextField.setText("");
 		blockAssignmentComboBox.removeAllItems();
+		blockAssignmentComboBox.addItem("");
 		blockAssignments = new HashMap<Integer, TOGridCell>();
 		int level = levelComboBox.getSelectedIndex();
 		int index = 0;
@@ -497,20 +498,15 @@ public class GameDesignPage {
 	private void refreshLevels() {
 		errorMessage.setText("");
 		levelComboBox.removeAllItems();
+		levelComboBox.addItem("");
 		try {
 			int nrLevels = Block223Controller.getCurrentDesignableGame().getNrLevels();
 			for(int i = 0; i < nrLevels; i++) {
-				levels.put(i, Block223Controller.getBlocksAtLevelOfCurrentDesignableGame(i+1));
+				//levels.put(i, Block223Controller.getBlocksAtLevelOfCurrentDesignableGame(i+1));
 				levelComboBox.addItem("Level " + (i+1));
 				System.out.println("Level " + (i+1) + " added. ");
 			}
 			levelComboBox.setSelectedIndex(0);
-			/**int index = 0;
-			for(TOGridCell cell: Block223Controller.getBlocksAtLevelOfCurrentDesignableGame(0)) {
-				blockAssignments.put(index, cell);
-				blockAssignmentComboBox.addItem("Red: " + cell.getRed() + " Green: " + cell.getGreen() + " Blue: " + cell.getBlue() + " Points: " + cell.getPoints() + " X: " + cell.getGridHorizontalPosition() + " Y: " + cell.getGridVerticalPosition());
-				index++;
-			}*/
 		} catch(InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 			System.out.println(errorMessage);
