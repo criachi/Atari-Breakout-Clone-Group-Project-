@@ -652,7 +652,7 @@ public class Block223Controller {
 		}
 		List<BlockAssignment> assignments = foundLevel.getBlockAssignments();
 		for(BlockAssignment assignment: assignments) {
-			TOGridCell to = new TOGridCell(assignment.getGridVerticalPosition(), assignment.getGridHorizontalPosition(),
+			TOGridCell to = new TOGridCell(assignment.getGridHorizontalPosition(), assignment.getGridVerticalPosition(),
 					assignment.getBlock().getId(), assignment.getBlock().getRed(), assignment.getBlock().getGreen(),
 					assignment.getBlock().getBlue(), assignment.getBlock().getPoints());
 				result.add(to);
