@@ -21,7 +21,7 @@ public class Block223Controller {
 		 * The method below will check if the user is an admin
 		 */
 		if(!(user instanceof Admin)) {
-			error += "Admin privileges are required to create a game";
+			error += "Admin privileges are required to create a game.";
 			throw new InvalidInputException(error);
 		}
 		
