@@ -678,7 +678,12 @@ public class GameDesignPage {
 			blueTextField.setText(Integer.toString(block.getBlue()));
 			greenTextField.setText(Integer.toString(block.getGreen()));
 			pointsTextField.setText(Integer.toString(block.getPoints()));
-		} 
+		} else { 
+			redTextField.setText("");
+			blueTextField.setText("");
+			greenTextField.setText("");
+			pointsTextField.setText("");
+		}
 	}
 	//comment this out when running the program
 	private void levelComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
@@ -696,6 +701,11 @@ public class GameDesignPage {
 			gridHorizontalPositionTextField.setText(Integer.toString(cell.getGridHorizontalPosition()));
 			gridVerticalPositionTextField.setText(Integer.toString(cell.getGridVerticalPosition()));
 			yourBlocksComboBox.setSelectedIndex(selectedBlockAssignmentIndex-1);
+		} else { 
+			gridHorizontalPositionTextField.setText("");
+			gridVerticalPositionTextField.setText("");
+			newGridVerticalPositionTextField.setText("");
+			newGridHorizontalPositionTextField.setText("");
 		}
 	}
 	
