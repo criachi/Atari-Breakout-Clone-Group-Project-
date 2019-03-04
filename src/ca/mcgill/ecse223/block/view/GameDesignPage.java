@@ -713,6 +713,7 @@ public class GameDesignPage {
 		errorMessage.setText("");
 		try {
 			Block223Controller.saveGame();
+			errorMessage.setText("Save Successful!");
 		} catch (InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 		}
