@@ -422,10 +422,12 @@ public class Block223Controller {
 		if(error.length() > 0) {
 			throw new InvalidInputException(error.trim());
 		}
+		
 		try {
 			foundBA.setGridHorizontalPosition(newGridHorizontalPosition);
 			foundBA.setGridVerticalPosition(newGridVerticalPosition);
 		} catch (RuntimeException e) {
+			foundBA.setGridHorizontalPosition(oldGridHorizontalPosition);
 			throw new InvalidInputException(e.getMessage());
 		}
 	}
