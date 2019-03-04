@@ -502,12 +502,10 @@ public class GameDesignPage {
 			int nrLevels = Block223Controller.getCurrentDesignableGame().getNrLevels();
 			for(int i = 0; i < nrLevels; i++) {
 				levelComboBox.addItem("Level " + (i+1));
-				System.out.println("Level " + (i+1) + " added. ");
 			}
 			levelComboBox.setSelectedIndex(0);
 		} catch(InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
-			System.out.println(errorMessage);
 		}
 	}
 	
@@ -542,18 +540,14 @@ public class GameDesignPage {
 	// Christina
 	private void deleteBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		errorMessage.setText("");
-		//System.out.println("hehe");
 		int selectedBlock = yourBlocksComboBox.getSelectedIndex();
-		//System.out.println("heyo");
 		if (selectedBlock < 1) {
 			errorMessage.setText("A block needs to be selected to be deleted! ");
 			return;
 		}
 			// call the controller 
 			try {
-				//System.out.println("yi");
 				Block223Controller.deleteBlock(gameBlocks.get(selectedBlock-1).getId());
-				//System.out.println("what");
 				//update visuals 
 				refreshBlocks();
 			} catch (InvalidInputException e) {
@@ -566,7 +560,7 @@ public class GameDesignPage {
 	private void updateBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		errorMessage.setText("");
 		int selectedBlockIndex = yourBlocksComboBox.getSelectedIndex();
-		if(selectedBlockIndex < 1) {
+		if(selectedBlockIndex <= 0) {
 			errorMessage.setText("A block needs to be selected to be updated! ");
 			return;
 		}
@@ -589,14 +583,13 @@ public class GameDesignPage {
 	private void positionBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		errorMessage.setText("");
 		int selectedBlockIndex = yourBlocksComboBox.getSelectedIndex();
-		System.out.println("ola");
-		if(selectedBlockIndex < 0) {
+		if(selectedBlockIndex <= 0) {
 			errorMessage.setText("A block needs to be selected to be positioned! ");
 			return;
 		}
 		
 		TOBlock block = gameBlocks.get(selectedBlockIndex-1);
-		System.out.println("ola2");
+
 		try {
 			int h = Integer.parseInt(gridHorizontalPositionTextField.getText());
 			int v = Integer.parseInt(gridVerticalPositionTextField.getText());
@@ -606,15 +599,16 @@ public class GameDesignPage {
 		} catch (InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 		} catch (NumberFormatException e) {
-			errorMessage.setText(e.getMessage());
+			errorMessage.setText("You must have numerical values for the horizontal and vertical positions.");
 		}
 	}
 	
 	private void moveBlockBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		errorMessage.setText("");
 		int selectedBlockAssignmentIndex = blockAssignmentComboBox.getSelectedIndex();
-		if(selectedBlockAssignmentIndex < 0) {
+		if(selectedBlockAssignmentIndex <= 0) {
 			errorMessage.setText("A block assignment has to be selected to move a block! ");
+			return;
 		}
 		
 		TOGridCell cell = blockAssignments.get(selectedBlockAssignmentIndex-1);
@@ -627,7 +621,7 @@ public class GameDesignPage {
 		} catch(InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 		} catch(NumberFormatException e) {
-			errorMessage.setText(e.getMessage());
+			errorMessage.setText("You must have numerical values for your new horizontal and new vertical positions.");
 		}
 	}
 	
@@ -635,8 +629,9 @@ public class GameDesignPage {
 	private void removeBlockAssignmentBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		errorMessage.setText("");
 		int selectedBlockAssignmentIndex = blockAssignmentComboBox.getSelectedIndex();
-		if(selectedBlockAssignmentIndex < 0) {
+		if(selectedBlockAssignmentIndex <= 0) {
 			errorMessage.setText("A block assignment has to be selected to be removed! ");
+			return;
 		}
 		TOGridCell cell = blockAssignments.get(selectedBlockAssignmentIndex-1);
 		try {
@@ -658,16 +653,11 @@ public class GameDesignPage {
 	}
 	// to display the info of the currently selected block in the respective text fields 
 	private void yourBlocksComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-		//System.out.println("im here");
 		int selectedBlockIndex = yourBlocksComboBox.getSelectedIndex();
 		if(selectedBlockIndex>=1) {
-			//System.out.println("hi");
 			TOBlock block = gameBlocks.get(selectedBlockIndex-1);
-			//System.out.println("why");
 			redTextField.setText(Integer.toString(block.getRed()));
-			//System.out.println("after rd");
 			blueTextField.setText(Integer.toString(block.getBlue()));
-			//System.out.println("after green)");
 			greenTextField.setText(Integer.toString(block.getGreen()));
 			pointsTextField.setText(Integer.toString(block.getPoints()));
 		} 
