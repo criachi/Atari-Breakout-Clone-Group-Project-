@@ -40,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+
 import java.awt.Canvas;
 import javax.swing.Box;
 import java.awt.event.ItemListener;
@@ -82,6 +84,7 @@ public class GameDesignPage {
 	private HashMap<Integer, TOBlock> gameBlocks;
 	private HashMap<Integer, List<TOGridCell>> levels;
 	private HashMap<Integer, TOGridCell> blockAssignments;
+	private HashMap<TOBlock, TOGridCell> blocks;
 	private JLabel lblSelectALevel;
 	private JComboBox<String> levelComboBox;
 	private JComboBox<String> blockAssignmentComboBox;
@@ -96,7 +99,7 @@ public class GameDesignPage {
 	private JLabel lblNewVerticalPosition;
 	private JTextField newGridVerticalPositionTextField;
 	private JButton btnMoveBlock;
-	private JTable table;
+	private JComponent levelLayout;
 	
 
 
@@ -270,7 +273,7 @@ public class GameDesignPage {
 			}
 		});
 		
-		table = new JTable();
+		levelLayout = new LevelLayout();
 		
 		// DON'T TOUCH: U CHANGE THIS BY DRAGGING AND DROPPING THINGS IN THE DESIGN WINDOW
 		// Group Layout of Page
@@ -319,7 +322,7 @@ public class GameDesignPage {
 											.addComponent(removeBlockAssignmentBtn)
 											.addGap(33)))
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(table, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE)))
+									.addComponent(levelLayout, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE)))
 							.addPreferredGap(ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addGroup(groupLayout.createSequentialGroup()
@@ -410,7 +413,7 @@ public class GameDesignPage {
 										.addComponent(deleteBlockBtn)))
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(table, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(levelLayout, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 										.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 											.addGap(167)
 											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
@@ -482,11 +485,14 @@ public class GameDesignPage {
 		blockAssignmentComboBox.removeAllItems();
 		blockAssignmentComboBox.addItem("");
 		blockAssignments = new HashMap<Integer, TOGridCell>();
+		blocks = new HashMap<TOBlock, TOGridCell>();
 		int level = levelComboBox.getSelectedIndex();
 		int index = 0;
 		try {
 			for(TOGridCell cell: Block223Controller.getBlocksAtLevelOfCurrentDesignableGame(level + 1)) {
+				TOBlock block = Block223Controller.getBlockOfCurrentDesignableGame(cell.getId());
 				blockAssignments.put(index, cell);
+				blocks.put(block, cell);
 				blockAssignmentComboBox.addItem("R: " + cell.getRed() + " G: " + cell.getGreen() + " B: " + cell.getBlue() + " Points: " + cell.getPoints() + " X: " + cell.getGridHorizontalPosition() + " Y: " + cell.getGridVerticalPosition());
 				index++;
 			}
@@ -494,16 +500,18 @@ public class GameDesignPage {
 			
 		}
 	}
-	//comment this out
 	private void refreshLevels() {
 		errorMessage.setText("");
 		levelComboBox.removeAllItems();
+		levels = new HashMap<Integer, List<TOGridCell>>();
 		try {
 			int nrLevels = Block223Controller.getCurrentDesignableGame().getNrLevels();
 			for(int i = 0; i < nrLevels; i++) {
+				levels.put(i, Block223Controller.getBlocksAtLevelOfCurrentDesignableGame(i+1));
 				levelComboBox.addItem("Level " + (i+1));
 			}
 			levelComboBox.setSelectedIndex(0);
+			((LevelLayout) levelLayout).setLevel(1);
 		} catch(InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 		}
@@ -547,9 +555,14 @@ public class GameDesignPage {
 		}
 			// call the controller 
 			try {
+
+				//TOGridCell cell = blocks.get(gameBlocks.get(selectedBlock-1));
+				//Block223Controller.removeBlock(levelComboBox.getSelectedIndex()+1, cell.getGridHorizontalPosition(), cell.getGridVerticalPosition());
 				Block223Controller.deleteBlock(gameBlocks.get(selectedBlock-1).getId());
 				//update visuals 
 				refreshBlocks();
+				refreshBlockAssignmentComboBox();
+				((LevelLayout) levelLayout).setBlockAssignments();
 			} catch (InvalidInputException e) {
 				errorMessage.setText(e.getMessage());
 			}
@@ -573,6 +586,8 @@ public class GameDesignPage {
 				int points = Integer.parseInt(pointsTextField.getText());
 				Block223Controller.updateBlock(block.getId(), red, green, blue, points);
 				refreshData();
+				refreshBlockAssignmentComboBox();
+				((LevelLayout)levelLayout).setBlockAssignments();
 			} catch (InvalidInputException e) {
 				errorMessage.setText(e.getMessage());
 			} catch (NumberFormatException e) {
@@ -596,6 +611,7 @@ public class GameDesignPage {
 			int level = levelComboBox.getSelectedIndex() + 1;
 			Block223Controller.positionBlock(block.getId(), level, h, v);
 			refreshBlockAssignmentComboBox();
+			((LevelLayout) levelLayout).setBlockAssignments();
 		} catch (InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 		} catch (NumberFormatException e) {
@@ -618,6 +634,7 @@ public class GameDesignPage {
 			int level = levelComboBox.getSelectedIndex() + 1;
 			Block223Controller.moveBlock(level, cell.getGridHorizontalPosition(), cell.getGridVerticalPosition(), newH, newV);
 			refreshBlockAssignmentComboBox();
+			((LevelLayout)levelLayout).setBlockAssignments();
 		} catch(InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 		} catch(NumberFormatException e) {
@@ -638,6 +655,7 @@ public class GameDesignPage {
 			int level = levelComboBox.getSelectedIndex() + 1;
 			Block223Controller.removeBlock(level, cell.getGridHorizontalPosition(), cell.getGridVerticalPosition());
 			refreshBlockAssignmentComboBox();
+			((LevelLayout)levelLayout).setBlockAssignments();
 		}catch(InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 		}catch(NumberFormatException e) {
@@ -667,6 +685,7 @@ public class GameDesignPage {
 		int selectedLevelIndex = levelComboBox.getSelectedIndex();
 		if(selectedLevelIndex >= 0) {
 			refreshBlockAssignmentComboBox();
+			((LevelLayout) levelLayout).setLevel(selectedLevelIndex+1);
 		}
 	}
 	//comment this out when running the program
