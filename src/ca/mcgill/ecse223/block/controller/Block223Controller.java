@@ -431,10 +431,22 @@ public class Block223Controller {
 	}
 
 	public static void removeBlock(int level, int gridHorizontalPosition, int gridVerticalPosition) throws InvalidInputException {
+		String error = "";
+		if(!(Block223Application.getCurrentUserRole() instanceof Admin)) {
+			error = "Admin priviliges are required to access game information. ";
+		}
 		Game game = Block223Application.getCurrentGame();
+		if(Block223Application.getCurrentGame() == null) {
+			error = error + "A game must be selected to access its information. ";
+		}
+		if(Block223Application.getCurrentUserRole() != Block223Application.getCurrentGame().getAdmin()) {
+			error = error + "Only the admin who created the game can access its information. ";
+		}
+		if(error.length() > 0) {
+			throw new InvalidInputException(error.trim());
+		}
 		Level thisLevel = game.getLevel(level-1);
 		BlockAssignment assignment = thisLevel.findBlockAssignment(gridHorizontalPosition, gridVerticalPosition);
-		
 		if(assignment!=null) {
 			assignment.delete();
 		}
@@ -496,7 +508,7 @@ public class Block223Controller {
 	public static void login(String username, String password) throws InvalidInputException {
 		String error = "";
 		//Should be changed back resetBlock223 only once persistence is fixed
-		//At the moment load doesnt really work and it was just making a new 223
+		//At the moment load doesn't really work and it was just making a new 223
 		//block every time I logged in meaning nothing would save between logins.
 		if(Block223Application.getBlock223() == null) {
 			Block223Application.resetBlock223();
