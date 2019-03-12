@@ -21,7 +21,7 @@ public class Block223Controller {
 		 * The method below will check if the user is an admin
 		 */
 		if(!(user instanceof Admin)) {
-			error += "Admin privileges are required to create a game";
+			error += "Admin privileges are required to create a game.";
 			throw new InvalidInputException(error);
 		}
 		
@@ -422,10 +422,12 @@ public class Block223Controller {
 		if(error.length() > 0) {
 			throw new InvalidInputException(error.trim());
 		}
+		
 		try {
 			foundBA.setGridHorizontalPosition(newGridHorizontalPosition);
 			foundBA.setGridVerticalPosition(newGridVerticalPosition);
 		} catch (RuntimeException e) {
+			foundBA.setGridHorizontalPosition(oldGridHorizontalPosition);
 			throw new InvalidInputException(e.getMessage());
 		}
 	}

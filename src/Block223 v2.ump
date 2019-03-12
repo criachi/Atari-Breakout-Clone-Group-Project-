@@ -49,7 +49,7 @@ class Player {
 class Game {
 	before constructor, setName {
 		if(aName == null || aName.length() == 0) {
-			throw new RuntimeException("Name cannot be empty.");
+			throw new RuntimeException("The name of a game must be specified.");
 		}
 	}
 	
@@ -60,11 +60,6 @@ class Game {
    const Integer COLUMNS_PADDING = 5;
    const Integer ROW_PADDING = 2;
    unique name;
-   before constructor, setName {
-    if (aName == null || aName == "") {
-	  throw new RuntimeException("The name of a game must be specified.");
-	}
-  }
    Integer nrBlocksPerLevel;
    before constructor, setNrBlocksPerLevel {
     if (aNrBlocksPerLevel < 0) {
