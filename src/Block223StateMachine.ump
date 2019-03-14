@@ -1,0 +1,59 @@
+class PlayedGame {
+	
+	GameStatus {
+		
+		Paused {
+			start -> Play;
+			resume -> Play;
+		}
+		
+		Play {
+			pause -> Paused;
+			moveBall [isBallOutOfBounds()] && [getNrLives() == 0] -> IsOver;
+			moveBall [isBallOutOfBounds()] && [getNrLives() > 0] -> Paused;
+			moveBall [hitsBlock()] && [getGame().getLevels().size() == getCurrentLevel()] && [getGame().getLevel(getCurrentLevel()-1).getBlockAssignments().size() == 1] -> IsOver;
+			moveBall [hitsBlock()] && [getGame().getLevels().size() != getCurrentLevel()] && [getGame().getLevel(getCurrentLevel()-1).getBlockAssignments().size() == 1] -> Paused;
+		}
+		
+		IsOver {
+			gameOver -> Paused;
+		}
+		
+	}
+	
+	private void start (){
+	
+	}
+	
+	private void resume() {
+	
+	}
+	
+	private void pause(){
+	
+	}
+	
+	private void gameOver() {
+	
+	}
+	
+	private Boolean isBallOutOfBounds(){
+	
+	}
+	
+	private void outOfBounds() {
+	
+	}
+	
+	private Boolean hitsBlock() {
+	
+	}
+	
+	private void moveBall() {
+	
+	}
+	
+	private Boolean hitsPaddleOrWall() {
+	
+	}
+}
