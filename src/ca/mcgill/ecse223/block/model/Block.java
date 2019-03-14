@@ -35,7 +35,6 @@ public class Block implements Serializable
   private int id;
 
   //Block Associations
-  private List<SpecificBlockAssignment> specificBlockAssignments;
   private Game game;
   private List<BlockAssignment> blockAssignments;
 
@@ -64,7 +63,6 @@ public class Block implements Serializable
     blue = aBlue;
     points = aPoints;
     id = nextId++;
-    specificBlockAssignments = new ArrayList<SpecificBlockAssignment>();
     boolean didAddGame = setGame(aGame);
     if (!didAddGame)
     {
@@ -153,36 +151,6 @@ public class Block implements Serializable
   {
     return id;
   }
-  /* Code from template association_GetMany */
-  public SpecificBlockAssignment getSpecificBlockAssignment(int index)
-  {
-    SpecificBlockAssignment aSpecificBlockAssignment = specificBlockAssignments.get(index);
-    return aSpecificBlockAssignment;
-  }
-
-  public List<SpecificBlockAssignment> getSpecificBlockAssignments()
-  {
-    List<SpecificBlockAssignment> newSpecificBlockAssignments = Collections.unmodifiableList(specificBlockAssignments);
-    return newSpecificBlockAssignments;
-  }
-
-  public int numberOfSpecificBlockAssignments()
-  {
-    int number = specificBlockAssignments.size();
-    return number;
-  }
-
-  public boolean hasSpecificBlockAssignments()
-  {
-    boolean has = specificBlockAssignments.size() > 0;
-    return has;
-  }
-
-  public int indexOfSpecificBlockAssignment(SpecificBlockAssignment aSpecificBlockAssignment)
-  {
-    int index = specificBlockAssignments.indexOf(aSpecificBlockAssignment);
-    return index;
-  }
   /* Code from template association_GetOne */
   public Game getGame()
   {
@@ -217,78 +185,6 @@ public class Block implements Serializable
   {
     int index = blockAssignments.indexOf(aBlockAssignment);
     return index;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfSpecificBlockAssignments()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne */
-  public SpecificBlockAssignment addSpecificBlockAssignment(int aPositionX, int aPositionY, PlayedGame aPlayedGame)
-  {
-    return new SpecificBlockAssignment(aPositionX, aPositionY, this, aPlayedGame);
-  }
-
-  public boolean addSpecificBlockAssignment(SpecificBlockAssignment aSpecificBlockAssignment)
-  {
-    boolean wasAdded = false;
-    if (specificBlockAssignments.contains(aSpecificBlockAssignment)) { return false; }
-    Block existingBlock = aSpecificBlockAssignment.getBlock();
-    boolean isNewBlock = existingBlock != null && !this.equals(existingBlock);
-    if (isNewBlock)
-    {
-      aSpecificBlockAssignment.setBlock(this);
-    }
-    else
-    {
-      specificBlockAssignments.add(aSpecificBlockAssignment);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeSpecificBlockAssignment(SpecificBlockAssignment aSpecificBlockAssignment)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aSpecificBlockAssignment, as it must always have a block
-    if (!this.equals(aSpecificBlockAssignment.getBlock()))
-    {
-      specificBlockAssignments.remove(aSpecificBlockAssignment);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addSpecificBlockAssignmentAt(SpecificBlockAssignment aSpecificBlockAssignment, int index)
-  {  
-    boolean wasAdded = false;
-    if(addSpecificBlockAssignment(aSpecificBlockAssignment))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfSpecificBlockAssignments()) { index = numberOfSpecificBlockAssignments() - 1; }
-      specificBlockAssignments.remove(aSpecificBlockAssignment);
-      specificBlockAssignments.add(index, aSpecificBlockAssignment);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveSpecificBlockAssignmentAt(SpecificBlockAssignment aSpecificBlockAssignment, int index)
-  {
-    boolean wasAdded = false;
-    if(specificBlockAssignments.contains(aSpecificBlockAssignment))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfSpecificBlockAssignments()) { index = numberOfSpecificBlockAssignments() - 1; }
-      specificBlockAssignments.remove(aSpecificBlockAssignment);
-      specificBlockAssignments.add(index, aSpecificBlockAssignment);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addSpecificBlockAssignmentAt(aSpecificBlockAssignment, index);
-    }
-    return wasAdded;
   }
   /* Code from template association_SetOneToMany */
   public boolean setGame(Game aGame)
@@ -384,11 +280,6 @@ public class Block implements Serializable
 
   public void delete()
   {
-    for(int i=specificBlockAssignments.size(); i > 0; i--)
-    {
-      SpecificBlockAssignment aSpecificBlockAssignment = specificBlockAssignments.get(i - 1);
-      aSpecificBlockAssignment.delete();
-    }
     Game placeholderGame = game;
     this.game = null;
     if(placeholderGame != null)

@@ -27,10 +27,9 @@ public class SpecificBlockAssignment
   {
     positionX = aPositionX;
     positionY = aPositionY;
-    boolean didAddBlock = setBlock(aBlock);
-    if (!didAddBlock)
+    if (!setBlock(aBlock))
     {
-      throw new RuntimeException("Unable to create specificBlockAssignment due to block");
+      throw new RuntimeException("Unable to create SpecificBlockAssignment due to aBlock");
     }
     boolean didAddPlayedGame = setPlayedGame(aPlayedGame);
     if (!didAddPlayedGame)
@@ -62,23 +61,15 @@ public class SpecificBlockAssignment
   {
     return playedGame;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setBlock(Block aBlock)
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setBlock(Block aNewBlock)
   {
     boolean wasSet = false;
-    if (aBlock == null)
+    if (aNewBlock != null)
     {
-      return wasSet;
+      block = aNewBlock;
+      wasSet = true;
     }
-
-    Block existingBlock = block;
-    block = aBlock;
-    if (existingBlock != null && !existingBlock.equals(aBlock))
-    {
-      existingBlock.removeSpecificBlockAssignment(this);
-    }
-    block.addSpecificBlockAssignment(this);
-    wasSet = true;
     return wasSet;
   }
   /* Code from template association_SetOneToMany */
@@ -103,12 +94,7 @@ public class SpecificBlockAssignment
 
   public void delete()
   {
-    Block placeholderBlock = block;
-    this.block = null;
-    if(placeholderBlock != null)
-    {
-      placeholderBlock.removeSpecificBlockAssignment(this);
-    }
+    block = null;
     PlayedGame placeholderPlayedGame = playedGame;
     this.playedGame = null;
     if(placeholderPlayedGame != null)

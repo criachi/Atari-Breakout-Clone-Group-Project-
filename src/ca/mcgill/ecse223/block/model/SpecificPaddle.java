@@ -24,7 +24,7 @@ public class SpecificPaddle
 
   public SpecificPaddle(Paddle aPaddle, PlayedGame aPlayedGame)
   {
-    posX = 0;
+    posX = 195 - (paddle.getMaxPaddleLength()/2);
     boolean didAddPaddle = setPaddle(aPaddle);
     if (!didAddPaddle)
     {
@@ -39,7 +39,7 @@ public class SpecificPaddle
 
   public SpecificPaddle(Paddle aPaddle, Player aPlayerForPlayedGame, SpecificBall aSpecificBallForPlayedGame, Game aGameForPlayedGame)
   {
-    posX = 0;
+    posX = 195 - (paddle.getMaxPaddleLength()/2);
     boolean didAddPaddle = setPaddle(aPaddle);
     if (!didAddPaddle)
     {
