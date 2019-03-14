@@ -1,0 +1,41 @@
+class Game {
+	1 -- * PlayedGame playedGames;
+	1 -- * ScoreEntry scoreEntries;
+	lazy immutable boolean isPublished; 	
+}
+
+class Player {
+	1 -- * ScoreEntry scoreEntries;
+}
+class  PlayedGame {
+	int nrLives = 3;
+	int currentLevel = 1;
+	autounique id;
+	* -- 1 Player player; 
+	1 <@>- 1 SpecificBall specificBall;
+	1 <@>- 1 SpecificPaddle specificPaddle;
+	1 <@>- * SpecificBlockAssignment specificBlockAssignments;
+	1 -- * ScoreEntry;
+}
+
+class SpecificBall {
+	* -- 1 Ball ball;
+	defaulted Integer posX = 195;
+	defaulted Integer posY = 195; 
+	defaulted Integer directionX = ball.getMinBallSpeedX();
+	defaulted Integer directionY = ball.getMinBallSpeedY();  
+}
+
+class ScoreEntry {
+	lazy Integer score;
+}
+
+class SpecificBlockAssignment {
+	* -- 1 Block block; 
+	immutable Integer positionX; 
+	immutable Integer positionY;
+}
+class SpecificPaddle {
+	* -- 1 Paddle paddle; 
+	Integer posX = 195 - (paddle.getMaxPaddleLength()/2); 
+}

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 3 "../../../../../Block223Persistence.ump"
-// line 5 "../../../../../Block223 v2.ump"
+// line 6 "../../../../../Block223 v2.ump"
 public class Block223 implements Serializable
 {
 
@@ -372,7 +372,7 @@ public class Block223 implements Serializable
     User.reinitializeUniqueUserName(this.getUsers());
   }
 
-  // line 11 "../../../../../Block223 v2.ump"
+  // line 12 "../../../../../Block223 v2.ump"
    public Game findGame(String name){
     for(Game game : getGames()) {
 		  if (game.getName().equals(name)) {
