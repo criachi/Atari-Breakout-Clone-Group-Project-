@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 65 "../../../../../Block223Persistence.ump"
-// line 210 "../../../../../Block223 v2.ump"
+// line 211 "../../../../../Block223 v2.ump"
 public class Paddle implements Serializable
 {
 
@@ -26,6 +26,7 @@ public class Paddle implements Serializable
   private int minPaddleLength;
 
   //Paddle Associations
+  private List<SpecificPaddle> specificPaddles;
   private Game game;
 
   //------------------------
@@ -34,18 +35,19 @@ public class Paddle implements Serializable
 
   public Paddle(int aMaxPaddleLength, int aMinPaddleLength, Game aGame)
   {
-    // line 215 "../../../../../Block223 v2.ump"
+    // line 216 "../../../../../Block223 v2.ump"
     if (aMaxPaddleLength < 0 || aMaxPaddleLength > 400) {
     	  throw new RuntimeException("The maximum length of the paddle must be greater than zero and less than equal to 400.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 221 "../../../../../Block223 v2.ump"
+    // line 222 "../../../../../Block223 v2.ump"
     if (aMinPaddleLength < 0) {
     	  throw new RuntimeException("The minimum length of the paddle must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
     maxPaddleLength = aMaxPaddleLength;
     minPaddleLength = aMinPaddleLength;
+    specificPaddles = new ArrayList<SpecificPaddle>();
     if (aGame == null || aGame.getPaddle() != null)
     {
       throw new RuntimeException("Unable to create Paddle due to aGame");
@@ -55,18 +57,19 @@ public class Paddle implements Serializable
 
   public Paddle(int aMaxPaddleLength, int aMinPaddleLength, String aNameForGame, int aNrBlocksPerLevelForGame, Admin aAdminForGame, Ball aBallForGame, Block223 aBlock223ForGame)
   {
-    // line 215 "../../../../../Block223 v2.ump"
+    // line 216 "../../../../../Block223 v2.ump"
     if (aMaxPaddleLength < 0 || aMaxPaddleLength > 400) {
     	  throw new RuntimeException("The maximum length of the paddle must be greater than zero and less than equal to 400.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 221 "../../../../../Block223 v2.ump"
+    // line 222 "../../../../../Block223 v2.ump"
     if (aMinPaddleLength < 0) {
     	  throw new RuntimeException("The minimum length of the paddle must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
     maxPaddleLength = aMaxPaddleLength;
     minPaddleLength = aMinPaddleLength;
+    specificPaddles = new ArrayList<SpecificPaddle>();
     game = new Game(aNameForGame, aNrBlocksPerLevelForGame, aAdminForGame, aBallForGame, this, aBlock223ForGame);
   }
 
@@ -77,7 +80,7 @@ public class Paddle implements Serializable
   public boolean setMaxPaddleLength(int aMaxPaddleLength)
   {
     boolean wasSet = false;
-    // line 215 "../../../../../Block223 v2.ump"
+    // line 216 "../../../../../Block223 v2.ump"
     if (aMaxPaddleLength < 0 || aMaxPaddleLength > 400) {
     	  throw new RuntimeException("The maximum length of the paddle must be greater than zero and less than equal to 400.");
     	}
@@ -90,7 +93,7 @@ public class Paddle implements Serializable
   public boolean setMinPaddleLength(int aMinPaddleLength)
   {
     boolean wasSet = false;
-    // line 221 "../../../../../Block223 v2.ump"
+    // line 222 "../../../../../Block223 v2.ump"
     if (aMinPaddleLength < 0) {
     	  throw new RuntimeException("The minimum length of the paddle must be greater than zero.");
     	}
@@ -109,14 +112,121 @@ public class Paddle implements Serializable
   {
     return minPaddleLength;
   }
+  /* Code from template association_GetMany */
+  public SpecificPaddle getSpecificPaddle(int index)
+  {
+    SpecificPaddle aSpecificPaddle = specificPaddles.get(index);
+    return aSpecificPaddle;
+  }
+
+  public List<SpecificPaddle> getSpecificPaddles()
+  {
+    List<SpecificPaddle> newSpecificPaddles = Collections.unmodifiableList(specificPaddles);
+    return newSpecificPaddles;
+  }
+
+  public int numberOfSpecificPaddles()
+  {
+    int number = specificPaddles.size();
+    return number;
+  }
+
+  public boolean hasSpecificPaddles()
+  {
+    boolean has = specificPaddles.size() > 0;
+    return has;
+  }
+
+  public int indexOfSpecificPaddle(SpecificPaddle aSpecificPaddle)
+  {
+    int index = specificPaddles.indexOf(aSpecificPaddle);
+    return index;
+  }
   /* Code from template association_GetOne */
   public Game getGame()
   {
     return game;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfSpecificPaddles()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public SpecificPaddle addSpecificPaddle(PlayedGame aPlayedGame)
+  {
+    return new SpecificPaddle(this, aPlayedGame);
+  }
+
+  public boolean addSpecificPaddle(SpecificPaddle aSpecificPaddle)
+  {
+    boolean wasAdded = false;
+    if (specificPaddles.contains(aSpecificPaddle)) { return false; }
+    Paddle existingPaddle = aSpecificPaddle.getPaddle();
+    boolean isNewPaddle = existingPaddle != null && !this.equals(existingPaddle);
+    if (isNewPaddle)
+    {
+      aSpecificPaddle.setPaddle(this);
+    }
+    else
+    {
+      specificPaddles.add(aSpecificPaddle);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeSpecificPaddle(SpecificPaddle aSpecificPaddle)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aSpecificPaddle, as it must always have a paddle
+    if (!this.equals(aSpecificPaddle.getPaddle()))
+    {
+      specificPaddles.remove(aSpecificPaddle);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addSpecificPaddleAt(SpecificPaddle aSpecificPaddle, int index)
+  {  
+    boolean wasAdded = false;
+    if(addSpecificPaddle(aSpecificPaddle))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfSpecificPaddles()) { index = numberOfSpecificPaddles() - 1; }
+      specificPaddles.remove(aSpecificPaddle);
+      specificPaddles.add(index, aSpecificPaddle);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveSpecificPaddleAt(SpecificPaddle aSpecificPaddle, int index)
+  {
+    boolean wasAdded = false;
+    if(specificPaddles.contains(aSpecificPaddle))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfSpecificPaddles()) { index = numberOfSpecificPaddles() - 1; }
+      specificPaddles.remove(aSpecificPaddle);
+      specificPaddles.add(index, aSpecificPaddle);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addSpecificPaddleAt(aSpecificPaddle, index);
+    }
+    return wasAdded;
+  }
 
   public void delete()
   {
+    for(int i=specificPaddles.size(); i > 0; i--)
+    {
+      SpecificPaddle aSpecificPaddle = specificPaddles.get(i - 1);
+      aSpecificPaddle.delete();
+    }
     Game existingGame = game;
     game = null;
     if (existingGame != null)

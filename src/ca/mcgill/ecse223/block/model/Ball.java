@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 22 "../../../../../Block223Persistence.ump"
-// line 187 "../../../../../Block223 v2.ump"
+// line 188 "../../../../../Block223 v2.ump"
 public class Ball implements Serializable
 {
 
@@ -26,6 +26,7 @@ public class Ball implements Serializable
   private double ballSpeedIncreaseFactor;
 
   //Ball Associations
+  private List<SpecificBall> specificBalls;
   private Game game;
 
   //------------------------
@@ -34,17 +35,17 @@ public class Ball implements Serializable
 
   public Ball(int aMinBallSpeedX, int aMinBallSpeedY, double aBallSpeedIncreaseFactor, Game aGame)
   {
-    // line 191 "../../../../../Block223 v2.ump"
+    // line 192 "../../../../../Block223 v2.ump"
     if (aMinBallSpeedX < 0) {
     	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 197 "../../../../../Block223 v2.ump"
+    // line 198 "../../../../../Block223 v2.ump"
     if (aMinBallSpeedY < 0) {
     	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 203 "../../../../../Block223 v2.ump"
+    // line 204 "../../../../../Block223 v2.ump"
     if (aBallSpeedIncreaseFactor < 0) {
     	  throw new RuntimeException("The speed increase factor of the ball must be greater than zero.");
     	}
@@ -52,6 +53,7 @@ public class Ball implements Serializable
     minBallSpeedX = aMinBallSpeedX;
     minBallSpeedY = aMinBallSpeedY;
     ballSpeedIncreaseFactor = aBallSpeedIncreaseFactor;
+    specificBalls = new ArrayList<SpecificBall>();
     if (aGame == null || aGame.getBall() != null)
     {
       throw new RuntimeException("Unable to create Ball due to aGame");
@@ -61,17 +63,17 @@ public class Ball implements Serializable
 
   public Ball(int aMinBallSpeedX, int aMinBallSpeedY, double aBallSpeedIncreaseFactor, String aNameForGame, int aNrBlocksPerLevelForGame, Admin aAdminForGame, Paddle aPaddleForGame, Block223 aBlock223ForGame)
   {
-    // line 191 "../../../../../Block223 v2.ump"
+    // line 192 "../../../../../Block223 v2.ump"
     if (aMinBallSpeedX < 0) {
     	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 197 "../../../../../Block223 v2.ump"
+    // line 198 "../../../../../Block223 v2.ump"
     if (aMinBallSpeedY < 0) {
     	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 203 "../../../../../Block223 v2.ump"
+    // line 204 "../../../../../Block223 v2.ump"
     if (aBallSpeedIncreaseFactor < 0) {
     	  throw new RuntimeException("The speed increase factor of the ball must be greater than zero.");
     	}
@@ -79,6 +81,7 @@ public class Ball implements Serializable
     minBallSpeedX = aMinBallSpeedX;
     minBallSpeedY = aMinBallSpeedY;
     ballSpeedIncreaseFactor = aBallSpeedIncreaseFactor;
+    specificBalls = new ArrayList<SpecificBall>();
     game = new Game(aNameForGame, aNrBlocksPerLevelForGame, aAdminForGame, this, aPaddleForGame, aBlock223ForGame);
   }
 
@@ -89,7 +92,7 @@ public class Ball implements Serializable
   public boolean setMinBallSpeedX(int aMinBallSpeedX)
   {
     boolean wasSet = false;
-    // line 191 "../../../../../Block223 v2.ump"
+    // line 192 "../../../../../Block223 v2.ump"
     if (aMinBallSpeedX < 0) {
     	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
     	}
@@ -102,7 +105,7 @@ public class Ball implements Serializable
   public boolean setMinBallSpeedY(int aMinBallSpeedY)
   {
     boolean wasSet = false;
-    // line 197 "../../../../../Block223 v2.ump"
+    // line 198 "../../../../../Block223 v2.ump"
     if (aMinBallSpeedY < 0) {
     	  throw new RuntimeException("The minimum speed of the ball must be greater than zero.");
     	}
@@ -115,7 +118,7 @@ public class Ball implements Serializable
   public boolean setBallSpeedIncreaseFactor(double aBallSpeedIncreaseFactor)
   {
     boolean wasSet = false;
-    // line 203 "../../../../../Block223 v2.ump"
+    // line 204 "../../../../../Block223 v2.ump"
     if (aBallSpeedIncreaseFactor < 0) {
     	  throw new RuntimeException("The speed increase factor of the ball must be greater than zero.");
     	}
@@ -139,14 +142,121 @@ public class Ball implements Serializable
   {
     return ballSpeedIncreaseFactor;
   }
+  /* Code from template association_GetMany */
+  public SpecificBall getSpecificBall(int index)
+  {
+    SpecificBall aSpecificBall = specificBalls.get(index);
+    return aSpecificBall;
+  }
+
+  public List<SpecificBall> getSpecificBalls()
+  {
+    List<SpecificBall> newSpecificBalls = Collections.unmodifiableList(specificBalls);
+    return newSpecificBalls;
+  }
+
+  public int numberOfSpecificBalls()
+  {
+    int number = specificBalls.size();
+    return number;
+  }
+
+  public boolean hasSpecificBalls()
+  {
+    boolean has = specificBalls.size() > 0;
+    return has;
+  }
+
+  public int indexOfSpecificBall(SpecificBall aSpecificBall)
+  {
+    int index = specificBalls.indexOf(aSpecificBall);
+    return index;
+  }
   /* Code from template association_GetOne */
   public Game getGame()
   {
     return game;
   }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfSpecificBalls()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public SpecificBall addSpecificBall(PlayedGame aPlayedGame)
+  {
+    return new SpecificBall(this, aPlayedGame);
+  }
+
+  public boolean addSpecificBall(SpecificBall aSpecificBall)
+  {
+    boolean wasAdded = false;
+    if (specificBalls.contains(aSpecificBall)) { return false; }
+    Ball existingBall = aSpecificBall.getBall();
+    boolean isNewBall = existingBall != null && !this.equals(existingBall);
+    if (isNewBall)
+    {
+      aSpecificBall.setBall(this);
+    }
+    else
+    {
+      specificBalls.add(aSpecificBall);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeSpecificBall(SpecificBall aSpecificBall)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aSpecificBall, as it must always have a ball
+    if (!this.equals(aSpecificBall.getBall()))
+    {
+      specificBalls.remove(aSpecificBall);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addSpecificBallAt(SpecificBall aSpecificBall, int index)
+  {  
+    boolean wasAdded = false;
+    if(addSpecificBall(aSpecificBall))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfSpecificBalls()) { index = numberOfSpecificBalls() - 1; }
+      specificBalls.remove(aSpecificBall);
+      specificBalls.add(index, aSpecificBall);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveSpecificBallAt(SpecificBall aSpecificBall, int index)
+  {
+    boolean wasAdded = false;
+    if(specificBalls.contains(aSpecificBall))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfSpecificBalls()) { index = numberOfSpecificBalls() - 1; }
+      specificBalls.remove(aSpecificBall);
+      specificBalls.add(index, aSpecificBall);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addSpecificBallAt(aSpecificBall, index);
+    }
+    return wasAdded;
+  }
 
   public void delete()
   {
+    for(int i=specificBalls.size(); i > 0; i--)
+    {
+      SpecificBall aSpecificBall = specificBalls.get(i - 1);
+      aSpecificBall.delete();
+    }
     Game existingGame = game;
     game = null;
     if (existingGame != null)
