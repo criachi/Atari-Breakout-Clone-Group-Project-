@@ -35,7 +35,6 @@ public class PlayedGame
   private SpecificBall specificBall;
   private SpecificPaddle specificPaddle;
   private List<SpecificBlockAssignment> specificBlockAssignments;
-  private List<ScoreEntry> scoreEntries;
   private Game game;
   private Block223 block223;
 
@@ -64,7 +63,6 @@ public class PlayedGame
     }
     specificPaddle = aSpecificPaddle;
     specificBlockAssignments = new ArrayList<SpecificBlockAssignment>();
-    scoreEntries = new ArrayList<ScoreEntry>();
     boolean didAddGame = setGame(aGame);
     if (!didAddGame)
     {
@@ -91,7 +89,6 @@ public class PlayedGame
     specificBall = new SpecificBall(aBallForSpecificBall, this);
     specificPaddle = new SpecificPaddle(aPaddleForSpecificPaddle, this);
     specificBlockAssignments = new ArrayList<SpecificBlockAssignment>();
-    scoreEntries = new ArrayList<ScoreEntry>();
     boolean didAddGame = setGame(aGame);
     if (!didAddGame)
     {
@@ -150,6 +147,7 @@ public class PlayedGame
     return gameStatus;
   }
 
+<<<<<<< HEAD
   public boolean beginGame()
   {
     boolean wasEventProcessed = false;
@@ -183,6 +181,8 @@ public class PlayedGame
     return wasEventProcessed;
   }
 
+=======
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
   public boolean pause()
   {
     boolean wasEventProcessed = false;
@@ -211,7 +211,11 @@ public class PlayedGame
       case Play:
         if (isPaddleHit())
         {
+<<<<<<< HEAD
         // line 17 "../../../../../Block223StateMachine.ump"
+=======
+        // line 21 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
           bounceBackFromPaddle(getSpecificBall());
           setGameStatus(GameStatus.Play);
           wasEventProcessed = true;
@@ -219,15 +223,24 @@ public class PlayedGame
         }
         if (isWallHit())
         {
+<<<<<<< HEAD
         // line 18 "../../../../../Block223StateMachine.ump"
           bounceBackFromWall(getSpecificBall();
+=======
+        // line 22 "../../../../../Block223StateMachine.ump"
+          bounceBackFromWall(getSpecificBall());
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
           setGameStatus(GameStatus.Play);
           wasEventProcessed = true;
           break;
         }
         if (isBlockHit()&&isLastBlock()&&isLastLevel())
         {
+<<<<<<< HEAD
         // line 19 "../../../../../Block223StateMachine.ump"
+=======
+        // line 23 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
           updateScore(); deleteSpecificBlock();
           setGameStatus(GameStatus.Done);
           wasEventProcessed = true;
@@ -235,7 +248,11 @@ public class PlayedGame
         }
         if (isBlockHit()&&isLastBlock())
         {
+<<<<<<< HEAD
         // line 20 "../../../../../Block223StateMachine.ump"
+=======
+        // line 24 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
           updateScore(); deleteSpecificBlock(); increaseLevel();
           setGameStatus(GameStatus.Pause);
           wasEventProcessed = true;
@@ -243,23 +260,35 @@ public class PlayedGame
         }
         if (isBlockHit())
         {
+<<<<<<< HEAD
         // line 21 "../../../../../Block223StateMachine.ump"
+=======
+        // line 25 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
           bounceBackFromBlock(getSpecificBall()); updateScore(); deleteSpecificBlock();
           setGameStatus(GameStatus.Play);
           wasEventProcessed = true;
           break;
         }
-        if (isBallOutOfBounds()&&(getNrLives()==1))
+        if (isBallOutOfBounds()&&(hasOneLifeRemaining()))
         {
+<<<<<<< HEAD
         // line 22 "../../../../../Block223StateMachine.ump"
+=======
+        // line 26 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
           decrementLives(); resetBallandPaddle();
           setGameStatus(GameStatus.Done);
           wasEventProcessed = true;
           break;
         }
-        if (isBallOutOfBounds()&&(getNrLives()>=2))
+        if (isBallOutOfBounds())
         {
+<<<<<<< HEAD
         // line 23 "../../../../../Block223StateMachine.ump"
+=======
+        // line 27 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
           decrementLives();
           setGameStatus(GameStatus.Pause);
           wasEventProcessed = true;
@@ -301,6 +330,7 @@ public class PlayedGame
     switch(gameStatus)
     {
       case Paused:
+<<<<<<< HEAD
         // line 27 "../../../../../Block223StateMachine.ump"
         savePlayedGame();
         break;
@@ -308,6 +338,14 @@ public class PlayedGame
         // line 33 "../../../../../Block223StateMachine.ump"
         saveScore();
 				deletePlayedGame();
+=======
+        // line 30 "../../../../../Block223StateMachine.ump"
+        savePlayedGame();
+        break;
+      case Done:
+        // line 36 "../../../../../Block223StateMachine.ump"
+        deletePlayedGame();
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
         break;
     }
   }
@@ -354,36 +392,6 @@ public class PlayedGame
   public int indexOfSpecificBlockAssignment(SpecificBlockAssignment aSpecificBlockAssignment)
   {
     int index = specificBlockAssignments.indexOf(aSpecificBlockAssignment);
-    return index;
-  }
-  /* Code from template association_GetMany */
-  public ScoreEntry getScoreEntry(int index)
-  {
-    ScoreEntry aScoreEntry = scoreEntries.get(index);
-    return aScoreEntry;
-  }
-
-  public List<ScoreEntry> getScoreEntries()
-  {
-    List<ScoreEntry> newScoreEntries = Collections.unmodifiableList(scoreEntries);
-    return newScoreEntries;
-  }
-
-  public int numberOfScoreEntries()
-  {
-    int number = scoreEntries.size();
-    return number;
-  }
-
-  public boolean hasScoreEntries()
-  {
-    boolean has = scoreEntries.size() > 0;
-    return has;
-  }
-
-  public int indexOfScoreEntry(ScoreEntry aScoreEntry)
-  {
-    int index = scoreEntries.indexOf(aScoreEntry);
     return index;
   }
   /* Code from template association_GetOne */
@@ -487,6 +495,7 @@ public class PlayedGame
     }
     return wasAdded;
   }
+<<<<<<< HEAD
   /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfScoreEntries()
   {
@@ -559,6 +568,8 @@ public class PlayedGame
     }
     return wasAdded;
   }
+=======
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
   /* Code from template association_SetOneToMany */
   public boolean setGame(Game aGame)
   {
@@ -625,11 +636,6 @@ public class PlayedGame
       specificBlockAssignments.remove(aSpecificBlockAssignment);
     }
     
-    for(int i=scoreEntries.size(); i > 0; i--)
-    {
-      ScoreEntry aScoreEntry = scoreEntries.get(i - 1);
-      aScoreEntry.delete();
-    }
     Game placeholderGame = game;
     this.game = null;
     if(placeholderGame != null)
@@ -644,6 +650,7 @@ public class PlayedGame
     }
   }
 
+<<<<<<< HEAD
   // line 43 "../../../../../Block223StateMachine.ump"
    private void saveScore(){
     
@@ -655,51 +662,156 @@ public class PlayedGame
   }
 
   // line 55 "../../../../../Block223StateMachine.ump"
-   private void start(){
+=======
+  // line 47 "../../../../../Block223StateMachine.ump"
+   private Boolean hasOneLifeRemaining(){
+    
+  }
+
+  // line 51 "../../../../../Block223StateMachine.ump"
+   private Boolean isBallOutOfBounds(){
+    
+  }
+
+  // line 55 "../../../../../Block223StateMachine.ump"
+   private Boolean isBlockHit(){
     
   }
 
   // line 59 "../../../../../Block223StateMachine.ump"
-   private void resume(){
+   private void bounceBackFromBlock(SpecificBall aBall){
     
   }
 
   // line 63 "../../../../../Block223StateMachine.ump"
-   private Boolean isLastBlock(){
+   private void decrementLives(){
     
   }
 
   // line 67 "../../../../../Block223StateMachine.ump"
-   private void pause(){
+   private void resetBallandPaddle(){
     
   }
 
   // line 71 "../../../../../Block223StateMachine.ump"
+   private Boolean isPaddleHit(){
+    
+  }
+
+  // line 75 "../../../../../Block223StateMachine.ump"
+   private Boolean isWallHit(){
+    
+  }
+
+  // line 79 "../../../../../Block223StateMachine.ump"
+   private void bounceBackFromPaddle(SpecificBall aBall){
+    
+  }
+
+  // line 83 "../../../../../Block223StateMachine.ump"
+   private void bounceBackFromWall(SpecificBall aBall){
+    
+  }
+
+  // line 87 "../../../../../Block223StateMachine.ump"
+   private void updateScore(){
+    
+  }
+
+  // line 91 "../../../../../Block223StateMachine.ump"
+   private void deleteSpecificBlock(){
+    
+  }
+
+  // line 95 "../../../../../Block223StateMachine.ump"
+   private void increaseLevel(){
+    
+  }
+
+  // line 99 "../../../../../Block223StateMachine.ump"
+   private Boolean isLastLevel(){
+    
+  }
+
+  // line 103 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
+   private void start(){
+    
+  }
+
+<<<<<<< HEAD
+  // line 59 "../../../../../Block223StateMachine.ump"
+=======
+  // line 107 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
+   private void resume(){
+    
+  }
+
+<<<<<<< HEAD
+  // line 63 "../../../../../Block223StateMachine.ump"
+=======
+  // line 111 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
+   private Boolean isLastBlock(){
+    
+  }
+
+<<<<<<< HEAD
+  // line 67 "../../../../../Block223StateMachine.ump"
+=======
+  // line 115 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
+   private void pause(){
+    
+  }
+
+<<<<<<< HEAD
+  // line 71 "../../../../../Block223StateMachine.ump"
+=======
+  // line 119 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
    private void gameOver(){
     
   }
 
+<<<<<<< HEAD
   // line 75 "../../../../../Block223StateMachine.ump"
    private Boolean isBallOutOfBounds(){
     
   }
 
   // line 79 "../../../../../Block223StateMachine.ump"
+=======
+  // line 123 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
    private void outOfBounds(){
     
   }
 
+<<<<<<< HEAD
   // line 83 "../../../../../Block223StateMachine.ump"
+=======
+  // line 127 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
    private Boolean hitsBlock(){
     
   }
 
+<<<<<<< HEAD
   // line 87 "../../../../../Block223StateMachine.ump"
+=======
+  // line 131 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
    private void moveBall(){
     
   }
 
+<<<<<<< HEAD
   // line 91 "../../../../../Block223StateMachine.ump"
+=======
+  // line 135 "../../../../../Block223StateMachine.ump"
+>>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
    private Boolean hitsPaddleOrWall(){
     
   }
