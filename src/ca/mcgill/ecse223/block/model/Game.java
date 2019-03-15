@@ -456,15 +456,9 @@ public class Game implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-<<<<<<< HEAD
-  public ScoreEntry addScoreEntry(Player aPlayer, PlayedGame aPlayedGame, Block223 aBlock223)
+  public ScoreEntry addScoreEntry(Player aPlayer, Block223 aBlock223)
   {
-    return new ScoreEntry(this, aPlayer, aPlayedGame, aBlock223);
-=======
-  public ScoreEntry addScoreEntry(Player aPlayer)
-  {
-    return new ScoreEntry(this, aPlayer);
->>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
+    return new ScoreEntry(this, aPlayer, aBlock223);
   }
 
   public boolean addScoreEntry(ScoreEntry aScoreEntry)

@@ -17,21 +17,13 @@ public class ScoreEntry
   //ScoreEntry Associations
   private Game game;
   private Player player;
-<<<<<<< HEAD
-  private PlayedGame playedGame;
   private Block223 block223;
-=======
->>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-<<<<<<< HEAD
-  public ScoreEntry(Game aGame, Player aPlayer, PlayedGame aPlayedGame, Block223 aBlock223)
-=======
-  public ScoreEntry(Game aGame, Player aPlayer)
->>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
+  public ScoreEntry(Game aGame, Player aPlayer, Block223 aBlock223)
   {
     score = 0;
     boolean didAddGame = setGame(aGame);
@@ -44,19 +36,11 @@ public class ScoreEntry
     {
       throw new RuntimeException("Unable to create scoreEntry due to player");
     }
-<<<<<<< HEAD
-    boolean didAddPlayedGame = setPlayedGame(aPlayedGame);
-    if (!didAddPlayedGame)
-    {
-      throw new RuntimeException("Unable to create scoreEntry due to playedGame");
-    }
     boolean didAddBlock223 = setBlock223(aBlock223);
     if (!didAddBlock223)
     {
       throw new RuntimeException("Unable to create scoreEntry due to block223");
     }
-=======
->>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
   }
 
   //------------------------
@@ -85,19 +69,11 @@ public class ScoreEntry
   {
     return player;
   }
-<<<<<<< HEAD
-  /* Code from template association_GetOne */
-  public PlayedGame getPlayedGame()
-  {
-    return playedGame;
-  }
   /* Code from template association_GetOne */
   public Block223 getBlock223()
   {
     return block223;
   }
-=======
->>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
   /* Code from template association_SetOneToMany */
   public boolean setGame(Game aGame)
   {
@@ -136,26 +112,6 @@ public class ScoreEntry
     wasSet = true;
     return wasSet;
   }
-<<<<<<< HEAD
-  /* Code from template association_SetOneToMany */
-  public boolean setPlayedGame(PlayedGame aPlayedGame)
-  {
-    boolean wasSet = false;
-    if (aPlayedGame == null)
-    {
-      return wasSet;
-    }
-
-    PlayedGame existingPlayedGame = playedGame;
-    playedGame = aPlayedGame;
-    if (existingPlayedGame != null && !existingPlayedGame.equals(aPlayedGame))
-    {
-      existingPlayedGame.removeScoreEntry(this);
-    }
-    playedGame.addScoreEntry(this);
-    wasSet = true;
-    return wasSet;
-  }
   /* Code from template association_SetOneToMany */
   public boolean setBlock223(Block223 aBlock223)
   {
@@ -175,8 +131,6 @@ public class ScoreEntry
     wasSet = true;
     return wasSet;
   }
-=======
->>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
 
   public void delete()
   {
@@ -192,21 +146,12 @@ public class ScoreEntry
     {
       placeholderPlayer.removeScoreEntry(this);
     }
-<<<<<<< HEAD
-    PlayedGame placeholderPlayedGame = playedGame;
-    this.playedGame = null;
-    if(placeholderPlayedGame != null)
-    {
-      placeholderPlayedGame.removeScoreEntry(this);
-    }
     Block223 placeholderBlock223 = block223;
     this.block223 = null;
     if(placeholderBlock223 != null)
     {
       placeholderBlock223.removeScoreEntry(this);
     }
-=======
->>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
   }
 
 
@@ -215,12 +160,7 @@ public class ScoreEntry
     return super.toString() + "["+
             "score" + ":" + getScore()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
-<<<<<<< HEAD
             "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "playedGame = "+(getPlayedGame()!=null?Integer.toHexString(System.identityHashCode(getPlayedGame())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "block223 = "+(getBlock223()!=null?Integer.toHexString(System.identityHashCode(getBlock223())):"null");
-=======
-            "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null");
->>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
   }
 }

@@ -478,9 +478,9 @@ public class Block223 implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public ScoreEntry addScoreEntry(Game aGame, Player aPlayer, PlayedGame aPlayedGame)
+  public ScoreEntry addScoreEntry(Game aGame, Player aPlayer)
   {
-    return new ScoreEntry(aGame, aPlayer, aPlayedGame, this);
+    return new ScoreEntry(aGame, aPlayer, this);
   }
 
   public boolean addScoreEntry(ScoreEntry aScoreEntry)

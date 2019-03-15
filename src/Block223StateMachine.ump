@@ -23,14 +23,8 @@ class PlayedGame {
 			moveBall [isBlockHit() && isLastBlock() && isLastLevel()] / { updateScore(); deleteSpecificBlock(); } -> Done; //u will have helper method that gets reference of the specific block assignment whose pos coincides w/ ball's 
 			moveBall [isBlockHit() && isLastBlock()] / { updateScore(); deleteSpecificBlock(); increaseLevel(); } -> Pause; //come back to this
 			moveBall [isBlockHit()] / { bounceBackFromBlock(getSpecificBall()); updateScore(); deleteSpecificBlock(); } -> Play; // come back 
-<<<<<<< HEAD
-			moveBall [isBallOutOfBounds() && (getNrLives() == 1)] / {decrementLives(); resetBallandPaddle(); } -> Done;
-			moveBall [isBallOutOfBounds() && (getNrLives() >= 2)] / {decrementLives(); } -> Pause;
-			moveBall -> Play;
-=======
 			moveBall [isBallOutOfBounds() && (hasOneLifeRemaining())] / {decrementLives(); resetBallandPaddle(); } -> Done;
 			moveBall [isBallOutOfBounds()] / {decrementLives(); } -> Pause;
->>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
 		}
 		Paused {
 			entry / {
@@ -51,10 +45,7 @@ class PlayedGame {
 	private void saveScore() {
 	}
 	
-<<<<<<< HEAD
-	private Boolean isLastLevel(){
-		return currentLevel == getGame().getLevels().size();
-=======
+
 	private Boolean hasOneLifeRemaining() {
 	
 	}
@@ -73,7 +64,6 @@ class PlayedGame {
 	
 	private void decrementLives() {
 	
->>>>>>> e4867381e59ef1bd73d2da6c40a2d68715ccd6a8
 	}
 	
 	private void resetBallandPaddle() {
