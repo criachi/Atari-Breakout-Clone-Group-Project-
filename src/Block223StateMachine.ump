@@ -1,7 +1,19 @@
 class PlayedGame {
-	
-	GameStatus {
-		
+	// attribute name for state machine 
+	gameStatus {
+		// initial default state we go into 
+		Idle {
+			beginGame() [hasEnoughBlockAssignments()] / {
+				initializeBlockAssignments(); //this copies over info from EXISTING blockAssignments to specificBlockAssignments	
+			} -> Play;
+			beginGame() [!hasEnoughBlockAssignments()] / {
+				initializeBlockAssignments();
+				putRandomBlocks();
+			} -> Play;
+		}
+		Play {
+			
+		}
 		Paused {
 			start -> Play;
 			resume -> Play;
@@ -25,7 +37,7 @@ class PlayedGame {
 	
 	}
 	
-	private void resume() {
+	/*private void resume() {
 	
 	}
 	
@@ -55,5 +67,5 @@ class PlayedGame {
 	
 	private Boolean hitsPaddleOrWall() {
 	
-	}
+	}*/
 }

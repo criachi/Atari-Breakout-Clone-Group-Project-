@@ -19,7 +19,7 @@ class  PlayedGame {
 }
 
 class SpecificBall {
-	* -- 1 Ball ball;
+	* -> 1 Ball ball;
 	defaulted Integer posX = 195;
 	defaulted Integer posY = 195; 
 	defaulted Integer directionX = ball.getMinBallSpeedX();
@@ -36,6 +36,6 @@ class SpecificBlockAssignment {
 	immutable Integer positionY;
 }
 class SpecificPaddle {
-	* -- 1 Paddle paddle; 
+	* -> 1 Paddle paddle; 
 	Integer posX = 195 - (paddle.getMaxPaddleLength()/2); 
 }

@@ -25,10 +25,9 @@ public class SpecificPaddle
   public SpecificPaddle(Paddle aPaddle, PlayedGame aPlayedGame)
   {
     posX = 195 - (paddle.getMaxPaddleLength()/2);
-    boolean didAddPaddle = setPaddle(aPaddle);
-    if (!didAddPaddle)
+    if (!setPaddle(aPaddle))
     {
-      throw new RuntimeException("Unable to create specificPaddle due to paddle");
+      throw new RuntimeException("Unable to create SpecificPaddle due to aPaddle");
     }
     if (aPlayedGame == null || aPlayedGame.getSpecificPaddle() != null)
     {
@@ -74,34 +73,21 @@ public class SpecificPaddle
   {
     return playedGame;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setPaddle(Paddle aPaddle)
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setPaddle(Paddle aNewPaddle)
   {
     boolean wasSet = false;
-    if (aPaddle == null)
+    if (aNewPaddle != null)
     {
-      return wasSet;
+      paddle = aNewPaddle;
+      wasSet = true;
     }
-
-    Paddle existingPaddle = paddle;
-    paddle = aPaddle;
-    if (existingPaddle != null && !existingPaddle.equals(aPaddle))
-    {
-      existingPaddle.removeSpecificPaddle(this);
-    }
-    paddle.addSpecificPaddle(this);
-    wasSet = true;
     return wasSet;
   }
 
   public void delete()
   {
-    Paddle placeholderPaddle = paddle;
-    this.paddle = null;
-    if(placeholderPaddle != null)
-    {
-      placeholderPaddle.removeSpecificPaddle(this);
-    }
+    paddle = null;
     PlayedGame existingPlayedGame = playedGame;
     playedGame = null;
     if (existingPlayedGame != null)

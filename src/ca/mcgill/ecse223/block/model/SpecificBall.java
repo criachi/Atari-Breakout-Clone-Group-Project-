@@ -31,10 +31,9 @@ public class SpecificBall
     resetPosY();
     resetDirectionX();
     resetDirectionY();
-    boolean didAddBall = setBall(aBall);
-    if (!didAddBall)
+    if (!setBall(aBall))
     {
-      throw new RuntimeException("Unable to create specificBall due to ball");
+      throw new RuntimeException("Unable to create SpecificBall due to aBall");
     }
     if (aPlayedGame == null || aPlayedGame.getSpecificBall() != null)
     {
@@ -174,34 +173,21 @@ public class SpecificBall
   {
     return playedGame;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setBall(Ball aBall)
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setBall(Ball aNewBall)
   {
     boolean wasSet = false;
-    if (aBall == null)
+    if (aNewBall != null)
     {
-      return wasSet;
+      ball = aNewBall;
+      wasSet = true;
     }
-
-    Ball existingBall = ball;
-    ball = aBall;
-    if (existingBall != null && !existingBall.equals(aBall))
-    {
-      existingBall.removeSpecificBall(this);
-    }
-    ball.addSpecificBall(this);
-    wasSet = true;
     return wasSet;
   }
 
   public void delete()
   {
-    Ball placeholderBall = ball;
-    this.ball = null;
-    if(placeholderBall != null)
-    {
-      placeholderBall.removeSpecificBall(this);
-    }
+    ball = null;
     PlayedGame existingPlayedGame = playedGame;
     playedGame = null;
     if (existingPlayedGame != null)
