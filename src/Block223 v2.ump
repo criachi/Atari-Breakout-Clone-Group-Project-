@@ -8,7 +8,8 @@ class Block223 {
    1 <@>- * User users;
    1 <@>- * UserRole roles;
    1 <@>- * Game games;
-   
+   1 <@>- * PlayedGame playedGame;
+   1 <@>- * ScoreEntry scoreEntry;
    public Game findGame(String name) {
 	  for(Game game : getGames()) {
 		  if (game.getName().equals(name)) {

@@ -37,12 +37,13 @@ public class PlayedGame
   private List<SpecificBlockAssignment> specificBlockAssignments;
   private List<ScoreEntry> scoreEntries;
   private Game game;
+  private Block223 block223;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public PlayedGame(Player aPlayer, SpecificBall aSpecificBall, SpecificPaddle aSpecificPaddle, Game aGame)
+  public PlayedGame(Player aPlayer, SpecificBall aSpecificBall, SpecificPaddle aSpecificPaddle, Game aGame, Block223 aBlock223)
   {
     nrLives = 3;
     currentLevel = 1;
@@ -69,10 +70,15 @@ public class PlayedGame
     {
       throw new RuntimeException("Unable to create playedGame due to game");
     }
+    boolean didAddBlock223 = setBlock223(aBlock223);
+    if (!didAddBlock223)
+    {
+      throw new RuntimeException("Unable to create playedGame due to block223");
+    }
     setGameStatus(GameStatus.Idle);
   }
 
-  public PlayedGame(Player aPlayer, Ball aBallForSpecificBall, Paddle aPaddleForSpecificPaddle, Game aGame)
+  public PlayedGame(Player aPlayer, Ball aBallForSpecificBall, Paddle aPaddleForSpecificPaddle, Game aGame, Block223 aBlock223)
   {
     nrLives = 3;
     currentLevel = 1;
@@ -90,6 +96,11 @@ public class PlayedGame
     if (!didAddGame)
     {
       throw new RuntimeException("Unable to create playedGame due to game");
+    }
+    boolean didAddBlock223 = setBlock223(aBlock223);
+    if (!didAddBlock223)
+    {
+      throw new RuntimeException("Unable to create playedGame due to block223");
     }
   }
 
@@ -157,7 +168,7 @@ public class PlayedGame
         }
         if (!(hasEnoughBlockAssignments()))
         {
-        // line 9 "../../../../../Block223StateMachine.ump"
+        // line 10 "../../../../../Block223StateMachine.ump"
           initializeBlockAssignments();
 				putRandomBlocks();
           setGameStatus(GameStatus.Play);
@@ -200,7 +211,7 @@ public class PlayedGame
       case Play:
         if (isPaddleHit())
         {
-        // line 16 "../../../../../Block223StateMachine.ump"
+        // line 17 "../../../../../Block223StateMachine.ump"
           bounceBackFromPaddle(getSpecificBall());
           setGameStatus(GameStatus.Play);
           wasEventProcessed = true;
@@ -208,7 +219,7 @@ public class PlayedGame
         }
         if (isWallHit())
         {
-        // line 17 "../../../../../Block223StateMachine.ump"
+        // line 18 "../../../../../Block223StateMachine.ump"
           bounceBackFromWall(getSpecificBall();
           setGameStatus(GameStatus.Play);
           wasEventProcessed = true;
@@ -216,7 +227,7 @@ public class PlayedGame
         }
         if (isBlockHit()&&isLastBlock()&&isLastLevel())
         {
-        // line 18 "../../../../../Block223StateMachine.ump"
+        // line 19 "../../../../../Block223StateMachine.ump"
           updateScore(); deleteSpecificBlock();
           setGameStatus(GameStatus.Done);
           wasEventProcessed = true;
@@ -224,15 +235,15 @@ public class PlayedGame
         }
         if (isBlockHit()&&isLastBlock())
         {
-        // line 19 "../../../../../Block223StateMachine.ump"
-          updateScore(); deleteSpecificBlock(); increaseLeve();
+        // line 20 "../../../../../Block223StateMachine.ump"
+          updateScore(); deleteSpecificBlock(); increaseLevel();
           setGameStatus(GameStatus.Pause);
           wasEventProcessed = true;
           break;
         }
         if (isBlockHit())
         {
-        // line 20 "../../../../../Block223StateMachine.ump"
+        // line 21 "../../../../../Block223StateMachine.ump"
           bounceBackFromBlock(getSpecificBall()); updateScore(); deleteSpecificBlock();
           setGameStatus(GameStatus.Play);
           wasEventProcessed = true;
@@ -240,20 +251,22 @@ public class PlayedGame
         }
         if (isBallOutOfBounds()&&(getNrLives()==1))
         {
-        // line 21 "../../../../../Block223StateMachine.ump"
-          decrementLives();
+        // line 22 "../../../../../Block223StateMachine.ump"
+          decrementLives(); resetBallandPaddle();
           setGameStatus(GameStatus.Done);
           wasEventProcessed = true;
           break;
         }
         if (isBallOutOfBounds()&&(getNrLives()>=2))
         {
-        // line 22 "../../../../../Block223StateMachine.ump"
+        // line 23 "../../../../../Block223StateMachine.ump"
           decrementLives();
           setGameStatus(GameStatus.Pause);
           wasEventProcessed = true;
           break;
         }
+        setGameStatus(GameStatus.Play);
+        wasEventProcessed = true;
         break;
       default:
         // Other states do respond to this event
@@ -283,6 +296,20 @@ public class PlayedGame
   private void setGameStatus(GameStatus aGameStatus)
   {
     gameStatus = aGameStatus;
+
+    // entry actions and do activities
+    switch(gameStatus)
+    {
+      case Paused:
+        // line 27 "../../../../../Block223StateMachine.ump"
+        savePlayedGame();
+        break;
+      case Done:
+        // line 33 "../../../../../Block223StateMachine.ump"
+        saveScore();
+				deletePlayedGame();
+        break;
+    }
   }
   /* Code from template association_GetOne */
   public Player getPlayer()
@@ -363,6 +390,11 @@ public class PlayedGame
   public Game getGame()
   {
     return game;
+  }
+  /* Code from template association_GetOne */
+  public Block223 getBlock223()
+  {
+    return block223;
   }
   /* Code from template association_SetOneToMany */
   public boolean setPlayer(Player aPlayer)
@@ -461,9 +493,9 @@ public class PlayedGame
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public ScoreEntry addScoreEntry(Game aGame, Player aPlayer)
+  public ScoreEntry addScoreEntry(Game aGame, Player aPlayer, Block223 aBlock223)
   {
-    return new ScoreEntry(aGame, aPlayer, this);
+    return new ScoreEntry(aGame, aPlayer, this, aBlock223);
   }
 
   public boolean addScoreEntry(ScoreEntry aScoreEntry)
@@ -546,6 +578,25 @@ public class PlayedGame
     wasSet = true;
     return wasSet;
   }
+  /* Code from template association_SetOneToMany */
+  public boolean setBlock223(Block223 aBlock223)
+  {
+    boolean wasSet = false;
+    if (aBlock223 == null)
+    {
+      return wasSet;
+    }
+
+    Block223 existingBlock223 = block223;
+    block223 = aBlock223;
+    if (existingBlock223 != null && !existingBlock223.equals(aBlock223))
+    {
+      existingBlock223.removePlayedGame(this);
+    }
+    block223.addPlayedGame(this);
+    wasSet = true;
+    return wasSet;
+  }
 
   public void delete()
   {
@@ -585,59 +636,70 @@ public class PlayedGame
     {
       placeholderGame.removePlayedGame(this);
     }
+    Block223 placeholderBlock223 = block223;
+    this.block223 = null;
+    if(placeholderBlock223 != null)
+    {
+      placeholderBlock223.removePlayedGame(this);
+    }
   }
 
-  // line 34 "../../../../../Block223StateMachine.ump"
-   private Boolean isLastLevel(){
-    
-  }
-
-  // line 42 "../../../../../Block223StateMachine.ump"
-   private void start(){
+  // line 43 "../../../../../Block223StateMachine.ump"
+   private void saveScore(){
     
   }
 
   // line 46 "../../../../../Block223StateMachine.ump"
+   private Boolean isLastLevel(){
+    return currentLevel == getGame().getLevels().size();
+  }
+
+  // line 55 "../../../../../Block223StateMachine.ump"
+   private void start(){
+    
+  }
+
+  // line 59 "../../../../../Block223StateMachine.ump"
    private void resume(){
     
   }
 
-  // line 50 "../../../../../Block223StateMachine.ump"
+  // line 63 "../../../../../Block223StateMachine.ump"
    private Boolean isLastBlock(){
     
   }
 
-  // line 54 "../../../../../Block223StateMachine.ump"
+  // line 67 "../../../../../Block223StateMachine.ump"
    private void pause(){
     
   }
 
-  // line 58 "../../../../../Block223StateMachine.ump"
+  // line 71 "../../../../../Block223StateMachine.ump"
    private void gameOver(){
     
   }
 
-  // line 62 "../../../../../Block223StateMachine.ump"
+  // line 75 "../../../../../Block223StateMachine.ump"
    private Boolean isBallOutOfBounds(){
     
   }
 
-  // line 66 "../../../../../Block223StateMachine.ump"
+  // line 79 "../../../../../Block223StateMachine.ump"
    private void outOfBounds(){
     
   }
 
-  // line 70 "../../../../../Block223StateMachine.ump"
+  // line 83 "../../../../../Block223StateMachine.ump"
    private Boolean hitsBlock(){
     
   }
 
-  // line 74 "../../../../../Block223StateMachine.ump"
+  // line 87 "../../../../../Block223StateMachine.ump"
    private void moveBall(){
     
   }
 
-  // line 78 "../../../../../Block223StateMachine.ump"
+  // line 91 "../../../../../Block223StateMachine.ump"
    private Boolean hitsPaddleOrWall(){
     
   }
@@ -652,6 +714,7 @@ public class PlayedGame
             "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "specificBall = "+(getSpecificBall()!=null?Integer.toHexString(System.identityHashCode(getSpecificBall())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "specificPaddle = "+(getSpecificPaddle()!=null?Integer.toHexString(System.identityHashCode(getSpecificPaddle())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null");
+            "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "block223 = "+(getBlock223()!=null?Integer.toHexString(System.identityHashCode(getBlock223())):"null");
   }
 }

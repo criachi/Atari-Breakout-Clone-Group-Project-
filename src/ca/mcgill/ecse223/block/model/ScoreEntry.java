@@ -18,12 +18,13 @@ public class ScoreEntry
   private Game game;
   private Player player;
   private PlayedGame playedGame;
+  private Block223 block223;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public ScoreEntry(Game aGame, Player aPlayer, PlayedGame aPlayedGame)
+  public ScoreEntry(Game aGame, Player aPlayer, PlayedGame aPlayedGame, Block223 aBlock223)
   {
     score = 0;
     boolean didAddGame = setGame(aGame);
@@ -40,6 +41,11 @@ public class ScoreEntry
     if (!didAddPlayedGame)
     {
       throw new RuntimeException("Unable to create scoreEntry due to playedGame");
+    }
+    boolean didAddBlock223 = setBlock223(aBlock223);
+    if (!didAddBlock223)
+    {
+      throw new RuntimeException("Unable to create scoreEntry due to block223");
     }
   }
 
@@ -73,6 +79,11 @@ public class ScoreEntry
   public PlayedGame getPlayedGame()
   {
     return playedGame;
+  }
+  /* Code from template association_GetOne */
+  public Block223 getBlock223()
+  {
+    return block223;
   }
   /* Code from template association_SetOneToMany */
   public boolean setGame(Game aGame)
@@ -131,6 +142,25 @@ public class ScoreEntry
     wasSet = true;
     return wasSet;
   }
+  /* Code from template association_SetOneToMany */
+  public boolean setBlock223(Block223 aBlock223)
+  {
+    boolean wasSet = false;
+    if (aBlock223 == null)
+    {
+      return wasSet;
+    }
+
+    Block223 existingBlock223 = block223;
+    block223 = aBlock223;
+    if (existingBlock223 != null && !existingBlock223.equals(aBlock223))
+    {
+      existingBlock223.removeScoreEntry(this);
+    }
+    block223.addScoreEntry(this);
+    wasSet = true;
+    return wasSet;
+  }
 
   public void delete()
   {
@@ -152,6 +182,12 @@ public class ScoreEntry
     {
       placeholderPlayedGame.removeScoreEntry(this);
     }
+    Block223 placeholderBlock223 = block223;
+    this.block223 = null;
+    if(placeholderBlock223 != null)
+    {
+      placeholderBlock223.removeScoreEntry(this);
+    }
   }
 
 
@@ -161,6 +197,7 @@ public class ScoreEntry
             "score" + ":" + getScore()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "playedGame = "+(getPlayedGame()!=null?Integer.toHexString(System.identityHashCode(getPlayedGame())):"null");
+            "  " + "playedGame = "+(getPlayedGame()!=null?Integer.toHexString(System.identityHashCode(getPlayedGame())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "block223 = "+(getBlock223()!=null?Integer.toHexString(System.identityHashCode(getBlock223())):"null");
   }
 }

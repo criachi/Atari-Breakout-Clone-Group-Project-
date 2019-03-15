@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 27 "../../../../../Block223Persistence.ump"
-// line 89 "../../../../../Block223 v2.ump"
+// line 90 "../../../../../Block223 v2.ump"
 public class Block implements Serializable
 {
 
@@ -44,7 +44,7 @@ public class Block implements Serializable
 
   public Block(int aRed, int aGreen, int aBlue, int aPoints, Game aGame)
   {
-    // line 91 "../../../../../Block223 v2.ump"
+    // line 92 "../../../../../Block223 v2.ump"
     if (aRed<0 || aRed>255) {
     	  throw new RuntimeException("Red must be between 0 and 255");
     	}
@@ -78,7 +78,7 @@ public class Block implements Serializable
   public boolean setRed(int aRed)
   {
     boolean wasSet = false;
-    // line 105 "../../../../../Block223 v2.ump"
+    // line 106 "../../../../../Block223 v2.ump"
     if(aRed<0 || aRed>255) {
         	throw new RuntimeException("Red must be between 0 and 255");
         }
@@ -91,7 +91,7 @@ public class Block implements Serializable
   public boolean setGreen(int aGreen)
   {
     boolean wasSet = false;
-    // line 110 "../../../../../Block223 v2.ump"
+    // line 111 "../../../../../Block223 v2.ump"
     if(aGreen<0 || aGreen>255) {
        		throw new RuntimeException("Green must be between 0 and 255");
        	}
@@ -104,7 +104,7 @@ public class Block implements Serializable
   public boolean setBlue(int aBlue)
   {
     boolean wasSet = false;
-    // line 115 "../../../../../Block223 v2.ump"
+    // line 116 "../../../../../Block223 v2.ump"
     if(aBlue<0 || aBlue>255) {
         	throw new RuntimeException("Blue must be between 0 and 255");
         }
@@ -117,7 +117,7 @@ public class Block implements Serializable
   public boolean setPoints(int aPoints)
   {
     boolean wasSet = false;
-    // line 120 "../../../../../Block223 v2.ump"
+    // line 121 "../../../../../Block223 v2.ump"
     if (aPoints<1 || aPoints>1000) {
        		throw new RuntimeException("Points must be between 1 and 1000");
        	}

@@ -7,7 +7,7 @@ import java.util.*;
 
 // line 70 "../../../../../Block223Persistence.ump"
 // line 7 "../../../../../Block223PlayGame.ump"
-// line 47 "../../../../../Block223 v2.ump"
+// line 48 "../../../../../Block223 v2.ump"
 public class Player extends UserRole implements Serializable
 {
 
@@ -99,9 +99,9 @@ public class Player extends UserRole implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public ScoreEntry addScoreEntry(Game aGame, PlayedGame aPlayedGame)
+  public ScoreEntry addScoreEntry(Game aGame, PlayedGame aPlayedGame, Block223 aBlock223)
   {
-    return new ScoreEntry(aGame, this, aPlayedGame);
+    return new ScoreEntry(aGame, this, aPlayedGame, aBlock223);
   }
 
   public boolean addScoreEntry(ScoreEntry aScoreEntry)
@@ -171,9 +171,9 @@ public class Player extends UserRole implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public PlayedGame addPlayedGame(SpecificBall aSpecificBall, SpecificPaddle aSpecificPaddle, Game aGame)
+  public PlayedGame addPlayedGame(SpecificBall aSpecificBall, SpecificPaddle aSpecificPaddle, Game aGame, Block223 aBlock223)
   {
-    return new PlayedGame(this, aSpecificBall, aSpecificPaddle, aGame);
+    return new PlayedGame(this, aSpecificBall, aSpecificPaddle, aGame, aBlock223);
   }
 
   public boolean addPlayedGame(PlayedGame aPlayedGame)

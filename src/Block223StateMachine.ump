@@ -21,6 +21,7 @@ class PlayedGame {
 			moveBall [isBlockHit()] / { bounceBackFromBlock(getSpecificBall()); updateScore(); deleteSpecificBlock(); } -> Play; // come back 
 			moveBall [isBallOutOfBounds() && (getNrLives() == 1)] / {decrementLives(); resetBallandPaddle(); } -> Done;
 			moveBall [isBallOutOfBounds() && (getNrLives() >= 2)] / {decrementLives(); } -> Pause;
+			moveBall -> Play;
 		}
 		Paused {
 			entry / {
@@ -30,6 +31,7 @@ class PlayedGame {
 		}
 		Done {
 			entry / {
+				saveScore();
 				deletePlayedGame();
 			}
 		}
@@ -37,9 +39,11 @@ class PlayedGame {
 		
 		
 	}
+	private void saveScore() {
+	}
 	
 	private Boolean isLastLevel(){
-	
+		return currentLevel == getGame().getLevels().size();
 	}
 	
 	private int getNrLives() {
@@ -55,7 +59,7 @@ class PlayedGame {
 	}
 	
 	private Boolean isLastBlock() {
-	
+		
 	}
 	
 	private void pause(){
@@ -86,3 +90,4 @@ class PlayedGame {
 	
 	}
 }
+
