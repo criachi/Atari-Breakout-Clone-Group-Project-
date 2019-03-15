@@ -85,7 +85,7 @@ public class RegisterWindow {
 		error = new JLabel("");
 		error.setForeground(Color.RED);
 		error.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		error.setBounds(85, 11, 300, 20);
+		error.setBounds(15, 11, 413, 25);
 		desktopPane.add(error);
 		
 		JButton btnCancel = new JButton("Cancel");

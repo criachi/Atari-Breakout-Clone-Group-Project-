@@ -6,11 +6,11 @@ import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.util.ArrayList;
+
 import javax.swing.JTextField;
 
-
-import ca.mcgill.ecse223.block.controller.Block223Controller;
-import ca.mcgill.ecse223.block.controller.InvalidInputException;
+import ca.mcgill.ecse223.block.controller.*;
 
 
 import javax.swing.JButton;
@@ -52,19 +52,20 @@ public class UpdateSettingPage {
 			private JTextField maxPaddleLengthTextField;
 			private JLabel maxPaddleLengthLabel;
 			
-			private JButton saveGameSettingButton;
-			private JButton btnBack;
+			private JButton updateGameSettingButton;
+			private JButton backBtn;
+			private JButton saveChangesBtn;
 
 			public  UpdateSettingPage() {
 				initComponents();
-				//refreshData(); -> if needed
+				//refreshPage();
 			}
 			
 			private void initComponents()  {
 						
 				//Frame
 				frame = new JFrame();
-				frame.setBounds(100, 100, 607, 483);
+				frame.setBounds(100, 100, 700, 548);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setVisible(true);
 				
@@ -74,140 +75,148 @@ public class UpdateSettingPage {
 				
 				errorMessage = new JLabel("");
 				errorMessage.setForeground(Color.RED);
-				errorMessage.setFont(new Font("Tahoma", Font.BOLD, 18));
-				errorMessage.setBounds(15, 377, 376, 28);
+				errorMessage.setFont(new Font("Tahoma", Font.BOLD, 12));
+				errorMessage.setBounds(25, 48, 376, 28);
 				desktopPane.add(errorMessage);
 				
 				//elements for Game Settings
 				gameSettingLabel = new JLabel("Update Game Settings ");
-				gameSettingLabel.setBounds(15, 12, 376, 32);
+				gameSettingLabel.setBounds(15, 10, 376, 32);
 				gameSettingLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 				desktopPane.add(gameSettingLabel);
 				
-				saveGameSettingButton = new JButton("Update Game");
-				saveGameSettingButton.setBounds(442, 341, 133, 28);
-				saveGameSettingButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
-				desktopPane.add(saveGameSettingButton);
+				updateGameSettingButton = new JButton("Update Game");
+				updateGameSettingButton.setBounds(530, 358, 133, 28);
+				updateGameSettingButton.setFont(new Font("Tahoma", Font.PLAIN, 16));
+				desktopPane.add(updateGameSettingButton);
 				
 				logOutBtn = new JButton("Log Out");
-				logOutBtn.setBounds(442, 16, 133, 28);
+				logOutBtn.setBounds(530, 16, 133, 28);
 				desktopPane.add(logOutBtn);
 				
 				nextBtn = new JButton("Next");
-				nextBtn.setBounds(442, 377, 133, 28);
+				nextBtn.setBounds(530, 447, 133, 28);
 				desktopPane.add(nextBtn);
 				
 				gameName = new JLabel("Name:  ");
-				gameName.setBounds(15, 41, 202, 28);
+				gameName.setBounds(15, 87, 202, 28);
 				gameName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				desktopPane.add(gameName);
 				
 				gameNameTextField = new JTextField();
-				gameNameTextField.setBounds(312, 45, 94, 20);
+				gameNameTextField.setBounds(312, 87, 94, 20);
 				desktopPane.add(gameNameTextField);
 				gameNameTextField.setColumns(10);
 				
 							
 					//elements for Level
 				nrOfLevelsTextField = new JTextField();
-				nrOfLevelsTextField.setBounds(312, 74, 94, 20);
+				nrOfLevelsTextField.setBounds(312, 119, 94, 20);
 				desktopPane.add(nrOfLevelsTextField);
 				nrOfLevelsTextField.setColumns(10);
 				
 				nrOfLevelsLabel = new JLabel("Number Of Levels");
-				nrOfLevelsLabel.setBounds(15, 73, 202, 23);
+				nrOfLevelsLabel.setBounds(15, 118, 202, 23);
 				nrOfLevelsLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				desktopPane.add(nrOfLevelsLabel);
 				
 				nrOfBlocksPerLevelTextField = new JTextField();
-				nrOfBlocksPerLevelTextField.setBounds(312, 98, 94, 20);
+				nrOfBlocksPerLevelTextField.setBounds(312, 155, 94, 20);
 				desktopPane.add(nrOfBlocksPerLevelTextField);
 				nrOfBlocksPerLevelTextField.setColumns(10);
 				
 				nrOfBlocksPerLevelLabel = new JLabel("Number of Block Per Level");
-				nrOfBlocksPerLevelLabel.setBounds(15, 98, 196, 20);
+				nrOfBlocksPerLevelLabel.setBounds(15, 155, 196, 20);
 				nrOfBlocksPerLevelLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				desktopPane.add(nrOfBlocksPerLevelLabel);
 				
 							
 					//elements for Ball
 				ballLabel = new JLabel("Ball:");
-				ballLabel.setBounds(15, 134, 94, 16);
+				ballLabel.setBounds(15, 191, 94, 16);
 				ballLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 				desktopPane.add(ballLabel);
 				
 				minBallSpeedXTextField = new JTextField();
-				minBallSpeedXTextField.setBounds(312, 162, 94, 20);
+				minBallSpeedXTextField.setBounds(312, 219, 94, 20);
 				desktopPane.add(minBallSpeedXTextField);
 				minBallSpeedXTextField.setColumns(10);
 				
 				minBallSpeedXLabel = new JLabel("Minimum Ball Speed for X Coordinate");
-				minBallSpeedXLabel.setBounds(15, 153, 270, 39);
+				minBallSpeedXLabel.setBounds(15, 210, 270, 39);
 				minBallSpeedXLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				desktopPane.add(minBallSpeedXLabel);
 				
 				minBallSpeedYTextField = new JTextField();
-				minBallSpeedYTextField.setBounds(312, 188, 94, 20);
+				minBallSpeedYTextField.setBounds(312, 254, 94, 20);
 				desktopPane.add(minBallSpeedYTextField);
 				minBallSpeedYTextField.setColumns(10);
 				
 				minBallSpeedYLabel = new JLabel("Minimum Ball Speed for Y Coordinate");
-				minBallSpeedYLabel.setBounds(15, 188, 270, 20);
+				minBallSpeedYLabel.setBounds(15, 254, 270, 20);
 				minBallSpeedYLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				desktopPane.add(minBallSpeedYLabel);
 				
 				speedIncreaseFactorTextField = new JTextField();
-				speedIncreaseFactorTextField.setBounds(312, 212, 94, 20);
+				speedIncreaseFactorTextField.setBounds(312, 290, 94, 20);
 				desktopPane.add(speedIncreaseFactorTextField);
 				speedIncreaseFactorTextField.setColumns(10);
 				
 				speedIncreaseFactorLabel = new JLabel("Speed Increasing Factor");
-				speedIncreaseFactorLabel.setBounds(15, 212, 257, 20);
+				speedIncreaseFactorLabel.setBounds(15, 290, 257, 20);
 				speedIncreaseFactorLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				desktopPane.add(speedIncreaseFactorLabel);
 				
 				
 					//elements for Paddle
 				paddleLabel = new JLabel("Paddle: ");
-				paddleLabel.setBounds(15, 263, 82, 20);
+				paddleLabel.setBounds(15, 326, 82, 20);
 				paddleLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 				desktopPane.add(paddleLabel);
 				
 				minPaddleLengthTextField = new JTextField();
-				minPaddleLengthTextField.setBounds(312, 288, 94, 20);
+				minPaddleLengthTextField.setBounds(312, 362, 94, 20);
 				desktopPane.add(minPaddleLengthTextField);
 				minPaddleLengthTextField.setColumns(10);
 				
 				minPaddleLengthLabel = new JLabel("Minimum Paddle Length");
-				minPaddleLengthLabel.setBounds(15, 288, 257, 20);
+				minPaddleLengthLabel.setBounds(15, 362, 257, 20);
 				minPaddleLengthLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				desktopPane.add(minPaddleLengthLabel);
 				
 				maxPaddleLengthTextField = new JTextField();
-				maxPaddleLengthTextField.setBounds(312, 312, 94, 20);
+				maxPaddleLengthTextField.setBounds(312, 393, 94, 20);
 				desktopPane.add(maxPaddleLengthTextField);
 				maxPaddleLengthTextField.setColumns(10);
 				
 				maxPaddleLengthLabel = new JLabel("Maximum Paddle Length");
-				maxPaddleLengthLabel.setBounds(15, 312, 207, 20);
+				maxPaddleLengthLabel.setBounds(15, 393, 207, 20);
 				maxPaddleLengthLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				desktopPane.add(maxPaddleLengthLabel);
 				
-				btnBack = new JButton("Back");
-				btnBack.setBounds(15, 376, 115, 29);
-				desktopPane.add(btnBack);
-			
+				backBtn = new JButton("Back");
+				backBtn.setBounds(15, 447, 115, 29);
+				desktopPane.add(backBtn);
 				
+				saveChangesBtn = new JButton("Save Changes");
+				saveChangesBtn.setBounds(530, 402, 133, 29);
+				desktopPane.add(saveChangesBtn);
+			
 				//listeners for Game Settings
-				btnBack.addActionListener(new java.awt.event.ActionListener() {
+				saveChangesBtn.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						saveChangesBtnActionPerformed(evt);
+					}
+				});
+				backBtn.addActionListener(new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
 						btnBackActionPerformed(evt);
 					}
 				});
 				
-				saveGameSettingButton.addActionListener(new java.awt.event.ActionListener() {
+				updateGameSettingButton.addActionListener(new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						saveGameSettingButtonActionPerformed(evt);
+						updateGameSettingButtonActionPerformed(evt);
 					}
 				});
 				
@@ -221,110 +230,64 @@ public class UpdateSettingPage {
 						nextBtnActionPerformed(evt);
 					}
 				});
+				
+				refreshPage();
 			}
-		//if it is needed for save button listener
-		/*	private void refreshData() {
-				// error
-				errorMessage.setText(error);
-				if (error == null || error.length() == 0) {
-					//GameSetting			
-						
-						//Level
-					nrOfLevelsTextField.setText("");
-					currentLevelNumberTextField.setText("");
-					nrOfBlocksPerLevelTextField.setText("");
-									
-						//Ball
-					minBallSpeedXTextField.setText("");
-					minBallSpeedYTextField.setText("");
-					speedIncreaseFactorTextField.setText("");
-									
-						//Paddle
-					minPaddleLengthTextField.setText("");
-					maxPaddleLengthTextField.setText("");
-										
+			
+			private void refreshPage() {
+				try {
+					TOGame currentGame = Block223Controller.getCurrentDesignableGame();
+					gameNameTextField.setText(currentGame.getName());
+					nrOfLevelsTextField.setText(String.valueOf(currentGame.getNrLevels()));
+					nrOfBlocksPerLevelTextField.setText(String.valueOf(currentGame.getNrBlocksPerLevel()));
+					minBallSpeedXTextField.setText(String.valueOf(currentGame.getMinBallSpeedX()));
+					minBallSpeedYTextField.setText(String.valueOf(currentGame.getMinBallSpeedY()));
+					speedIncreaseFactorTextField.setText(String.valueOf(currentGame.getBallSpeedIncreaseFactor()));
+					minPaddleLengthTextField.setText(String.valueOf(currentGame.getMinPaddleLength()));
+					maxPaddleLengthTextField.setText(String.valueOf(currentGame.getMaxPaddleLength()));
 				}
+				catch(InvalidInputException e) {
+					errorMessage.setText(e.getMessage());
+				}
+				
+				
 			}
-			*/ 
 			private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {
 				frame.dispose();
 				new AdminDashBoardPage();
 			}
 			
-			private void saveGameSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {
-				
-				String error = null;
-				String name = null;
+			private void updateGameSettingButtonActionPerformed(java.awt.event.ActionEvent evt) {
+				int numLevels;
+				int numBlocks;
+				int minXSpeed;
+				int minYSpeed;
+				int minLength;
+				int maxLength; 
+				double speedIncFactor; 
 				try {
-					name =gameNameTextField.getText();
+					numLevels  = Integer.parseInt(nrOfLevelsTextField.getText());
+					numBlocks = Integer.parseInt(nrOfBlocksPerLevelTextField.getText());
+					minXSpeed = Integer.parseInt(minBallSpeedYTextField.getText());
+					minYSpeed = Integer.parseInt(minBallSpeedYTextField.getText());
+					minLength = Integer.parseInt(minPaddleLengthTextField.getText());
+					maxLength = Integer.parseInt(maxPaddleLengthTextField.getText());
+					speedIncFactor = Double.parseDouble(speedIncreaseFactorTextField.getText());
 				}
 				catch (NumberFormatException e) {
-					error = "Name needs to be a word cannot be numbers!";
-				}				
-				int nrLevels = 0;
+					errorMessage.setText("All fields besides name must be numerical values!");
+					return;
+				}
 				try {
-					nrLevels = Integer.parseInt(nrOfLevelsTextField.getText());
-				}
-				catch (NumberFormatException e) {
-					error = "Number of levels needs to be a numerical value!";
-				}
-				int nrBlocksPerLevel = 0;
-				try {
-					nrBlocksPerLevel = Integer.parseInt(nrOfBlocksPerLevelTextField.getText());
-				}
-				catch (NumberFormatException e) {
-					error = error + "Number of blocks per level needs to be a numerical value!";
-				}
-				int minBallSpeedX = 0;
-				try {
-					minBallSpeedX = Integer.parseInt(minBallSpeedXTextField.getText());
-				}
-				catch (NumberFormatException e) {
-					error = error + "Minimum ball speed for X coordinate needs to be a numerical value!";
-				}
-				int minBallSpeedY = 0;
-				try {
-					minBallSpeedY = Integer.parseInt(minBallSpeedYTextField.getText());
-				}
-				catch (NumberFormatException e) {
-					error = error + "Minimum ball speed for Y coordinate needs to be a numerical value!";
-				}
-				double ballSpeedIncreaseFactor = 0;
-				try {
-					ballSpeedIncreaseFactor = Double.parseDouble(speedIncreaseFactorTextField.getText());
-				}
-				catch (NumberFormatException e) {
-					error = error + "Speed increase factor needs to be a numerical value!";
-				}
-				int maxPaddleLength = 0;
-				try {
-					maxPaddleLength = Integer.parseInt(maxPaddleLengthTextField.getText());
-				}
-				catch (NumberFormatException e) {
-					error = error + "Maximum paddle length needs to be a numerical value!";
-				}
-				int minPaddleLength = 0;
-				try {
-					minPaddleLength = Integer.parseInt(minPaddleLengthTextField.getText());
-				}
-				catch (NumberFormatException e) {
-					error = error + "Minimum paddle length needs to be a numerical value!";
-				}
-				
-				error.trim();
-				
-				if (error.length() == 0) {
-				
-					try {
-						//TODO: get name from Anthony's page
-						Block223Controller.updateGame(name, nrLevels, nrBlocksPerLevel, minBallSpeedX, minBallSpeedY, ballSpeedIncreaseFactor, maxPaddleLength, minPaddleLength);
-					} catch (InvalidInputException e) {
-						error = e.getMessage();
+						Block223Controller.updateGame(gameNameTextField.getText(), numLevels, numBlocks, minXSpeed, minYSpeed, speedIncFactor, maxLength, minLength);
+					} 
+				catch (InvalidInputException e) {
+						errorMessage.setText(e.getMessage());
+						return;
 					}
+				errorMessage.setText("Game updated!");
+
 				}
-				
-			
-			}
 			private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
 				frame.dispose();
 				new WelcomeWindow();
@@ -335,5 +298,13 @@ public class UpdateSettingPage {
 				new GameDesignPage();
 				
 			}
-			
+			private void saveChangesBtnActionPerformed(java.awt.event.ActionEvent evt) {
+				errorMessage.setText("");
+				try {
+					Block223Controller.saveGame();
+				} catch (InvalidInputException e) {
+					errorMessage.setText(e.getMessage());
+				}
+				
+			}
 }

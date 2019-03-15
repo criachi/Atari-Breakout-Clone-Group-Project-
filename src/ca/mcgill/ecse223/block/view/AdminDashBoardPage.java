@@ -12,10 +12,10 @@
 // all these methods im asking u to check are in gameDesignPage... 
 
 
-
-
+//chekc update game action performed method i commented sth out bc when it is uncommented, it gives a nullpointer exception on the console!! and dsnt take us to the next pg
 package ca.mcgill.ecse223.block.view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -24,6 +24,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -50,6 +52,7 @@ public class AdminDashBoardPage {
 	private JButton updateGameBtn;
 	private JComboBox<String> yourGamesComboBox;
 	private int gameListSize;
+	private HashMap<Integer, TOGame> yourGames;
 
 	/**
 	 * Create the application.
@@ -102,7 +105,7 @@ public class AdminDashBoardPage {
 			}
 		});
 		yourGamesComboBox = new JComboBox();
-		
+		yourGamesComboBox.addItem("");
 		lblOr = new JLabel("OR:");
 		lblOr.setFont(new Font("Tahoma", Font.BOLD, 25));
 		
@@ -113,6 +116,7 @@ public class AdminDashBoardPage {
 		textField.setColumns(10);
 		
 		errorMessage = new JLabel("");
+		errorMessage.setForeground(Color.RED);
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -174,8 +178,23 @@ public class AdminDashBoardPage {
 					.addGap(72))
 		);
 		frame.getContentPane().setLayout(groupLayout);
+		refreshComboBox();
+		}
+	private void refreshComboBox() {
+		errorMessage.setText("");
+			try {
+				List<TOGame> availableGames = Block223Controller.getDesignableGames();
+				yourGamesComboBox.removeAllItems();
+				yourGamesComboBox.addItem("");
+				for(TOGame game : availableGames) {
+					yourGamesComboBox.addItem(game.getName());
+				}
+			} catch (InvalidInputException e) {
+				errorMessage.setText(e.getMessage());
+			}
 		
-		ArrayList<TOGame> availableGames = new ArrayList<TOGame>();
+		//hacky way to do things 
+		/*ArrayList<TOGame> availableGames = new ArrayList<TOGame>();
 		try {
 			availableGames = (ArrayList<TOGame>) Block223Controller.getDesignableGames();
 		}
@@ -189,7 +208,7 @@ public class AdminDashBoardPage {
 		
 		for(int i = 0; i < gameListSize; i++) {
 			yourGamesComboBox.addItem(availableGames.get(i).getName());
-		}
+		} */
 		
 	}
 	private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,6 +218,7 @@ public class AdminDashBoardPage {
 		new WelcomeWindow();
 		//new Block223Page().setVisible(true);
 	}
+	
 	private void createGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		//frame.dispose() will delete the current page (from what i understand)
 		
@@ -206,30 +226,31 @@ public class AdminDashBoardPage {
 			Block223Controller.createGame(textField.getText());
 		}
 		catch(InvalidInputException e) {
-			System.out.println(e.getMessage());
-			//errorMessage.setText(e.getMessage());
+			errorMessage.setText(e.getMessage());
 			return;
 		}
-		
-		
-		
 		frame.dispose();
 		new GameSettingPage();
 		//new Block223Page().setVisible(true);
 	}
 	private void deleteGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		int selectedGame = yourGamesComboBox.getSelectedIndex();
+		if (selectedGame < 1) {
+			errorMessage.setText("A game needs to be selected to be deleted! ");
+			return;
+		}
 		try {
 			Block223Controller.deleteGame(yourGamesComboBox.getItemAt(yourGamesComboBox.getSelectedIndex()));
 		}
 		catch(InvalidInputException e) {
-			System.out.println(e.getMessage());
-			//errorMessage.setText(e.getMessage());
+			//System.out.println(e.getMessage());
+			errorMessage.setText(e.getMessage());
 			return;
 		}
-		
-		yourGamesComboBox.remove(yourGamesComboBox.getSelectedIndex());
-		yourGamesComboBox.updateUI();
-	}
+		refreshComboBox();
+		//yourGamesComboBox.remove(yourGamesComboBox.getSelectedIndex());
+		//yourGamesComboBox.updateUI();
+	} 
 	// here set up mechanism to take the game name from the previous page and then on the update settings page start it out with the textfields alrdy filled out w/ the characteristics of the game
     // use the select game method in the feature
 	private void updateGameBtnActionPerformed(java.awt.event.ActionEvent evt) {

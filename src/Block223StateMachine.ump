@@ -1,0 +1,141 @@
+class PlayedGame {
+	// attribute name for state machine 
+	gameStatus {
+		// initial default state we go into 
+		Idle {
+			beginGame() [] / {
+			
+			}
+		
+			beginGame() [hasEnoughBlockAssignments()] / {
+				initializeBlockAssignments(); //this copies over info from EXISTING blockAssignments to specificBlockAssignments	
+				
+			} -> Play;
+			beginGame() [!hasEnoughBlockAssignments()] / {
+				initializeBlockAssignments();
+				putRandomBlocks();
+			} -> Play;
+		}
+		Play {
+			pause() -> Paused;
+			moveBall [isPaddleHit()] / {bounceBackFromPaddle(getSpecificBall());} -> Play;
+			moveBall [isWallHit()] / {bounceBackFromWall(getSpecificBall());} -> Play;
+			moveBall [isBlockHit() && isLastBlock() && isLastLevel()] / { updateScore(); deleteSpecificBlock(); } -> Done; //u will have helper method that gets reference of the specific block assignment whose pos coincides w/ ball's 
+			moveBall [isBlockHit() && isLastBlock()] / { updateScore(); deleteSpecificBlock(); increaseLevel(); } -> Pause; //come back to this
+			moveBall [isBlockHit()] / { bounceBackFromBlock(getSpecificBall()); updateScore(); deleteSpecificBlock(); } -> Play; // come back 
+			moveBall [isBallOutOfBounds() && (hasOneLifeRemaining())] / {decrementLives(); resetBallandPaddle(); } -> Done;
+			moveBall [isBallOutOfBounds()] / {decrementLives(); } -> Pause;
+		}
+		Paused {
+			entry / {
+				savePlayedGame();
+			}
+			resume() -> Play;
+		}
+		Done {
+			entry / {
+				saveScore();
+				deletePlayedGame();
+			}
+		}
+		
+		
+		
+	}
+	private void saveScore() {
+	}
+	
+
+	private Boolean hasOneLifeRemaining() {
+	
+	}
+	
+	private Boolean isBallOutOfBounds() {
+	
+	}
+	
+	private Boolean isBlockHit() {
+	
+	}
+	
+	private void bounceBackFromBlock(SpecificBall aBall){
+	
+	}
+	
+	private void decrementLives() {
+	
+	}
+	
+	private void resetBallandPaddle() {
+	
+	}
+	
+	private Boolean isPaddleHit() {
+	
+	}
+	
+	private Boolean isWallHit() {
+	
+	}
+	
+	private void bounceBackFromPaddle(SpecificBall aBall) {
+	
+	}
+	
+	private void bounceBackFromWall(SpecificBall aBall) {
+	
+	}
+	
+	private void updateScore (){
+	
+	}
+	
+	private void deleteSpecificBlock() {
+	
+	}
+	
+	private void increaseLevel() {
+	
+	}
+	
+	private Boolean isLastLevel(){
+	
+	}
+	
+	private void start (){
+	
+	}
+	
+	private void resume() {
+	
+	}
+	
+	private Boolean isLastBlock() {
+		
+	}
+	
+	private void pause(){
+	
+	}
+	
+	private void gameOver() {
+	
+	}
+	
+	private void outOfBounds() {
+	
+	}
+	
+	private Boolean hitsBlock() {
+	
+	}
+	
+	private void moveBall() {
+	
+	}
+	
+	private Boolean hitsPaddleOrWall() {
+	
+	}
+}
+

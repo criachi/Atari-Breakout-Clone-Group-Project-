@@ -1,12 +1,15 @@
 namespace ca.mcgill.ecse223.block.model;
 
 use Block223Persistence.ump; 
+use Block223PlayGame.ump;
+use Block223StateMachine.ump;
 
 class Block223 {
    1 <@>- * User users;
    1 <@>- * UserRole roles;
    1 <@>- * Game games;
-   
+   1 <@>- * PlayedGame playedGame;
+   1 <@>- * ScoreEntry scoreEntry;
    public Game findGame(String name) {
 	  for(Game game : getGames()) {
 		  if (game.getName().equals(name)) {
@@ -49,7 +52,7 @@ class Player {
 class Game {
 	before constructor, setName {
 		if(aName == null || aName.length() == 0) {
-			throw new RuntimeException("Name cannot be empty.");
+			throw new RuntimeException("The name of a game must be specified.");
 		}
 	}
 	
@@ -60,11 +63,6 @@ class Game {
    const Integer COLUMNS_PADDING = 5;
    const Integer ROW_PADDING = 2;
    unique name;
-   before constructor, setName {
-    if (aName == null || aName == "") {
-	  throw new RuntimeException("The name of a game must be specified.");
-	}
-  }
    Integer nrBlocksPerLevel;
    before constructor, setNrBlocksPerLevel {
     if (aNrBlocksPerLevel < 0) {
