@@ -1,0 +1,93 @@
+external interface Serializable {}
+
+class Block223 {
+  depend java.io.Serializable;
+  isA Serializable;
+ private static final long serialVersionUID = -4904473121226232586L;
+  public void reinitialize() {
+  	for( Game game : this.getGames() ) {
+  		List<Block> blocks = game.getBlocks();
+  	    Block.reinitializeAutouniqueID(blocks); 
+  	}
+    Game.reinitializeUniqueGameName(this.getGames());
+    User.reinitializeUniqueUserName(this.getUsers());
+  }
+  
+ }
+ class Admin {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 2221721272607853970L;
+ }
+ class Ball {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 145021574790956578L;
+ }
+ class Block {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 5332292624658907512L;
+  
+  public static void reinitializeAutouniqueID(List<Block> blocks) {
+     nextId = 0; 
+     for (Block block : blocks) {
+        if (block.getId() > nextId) {
+        nextId = block.getId();
+       }   
+     }
+     nextId++;
+  }
+  
+ }
+ class BlockAssignment {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = 8120926036616538272L;
+ }
+ class Game {
+  depend java.io.Serializable;
+  isA Serializable;
+ private static final long serialVersionUID = -6233895506801793694L;
+  
+  public static void reinitializeUniqueGameName(List<Game> games) {
+    gamesByName = new HashMap<String, Game>();
+    for (Game game : games) {
+      gamesByName.put(game.getName(), game);
+    }
+  }
+ }
+ class Level {
+  depend java.io.Serializable;
+  isA Serializable;
+ private static final long serialVersionUID = -7956760334392179806L;
+ }
+ class Paddle {
+  depend java.io.Serializable;
+  isA Serializable;
+ private static final long serialVersionUID = 6895123766580505451L;
+ }
+ class Player {
+  depend java.io.Serializable;
+  isA Serializable;
+  private static final long serialVersionUID = -8062584216235283243L;
+  }
+  
+ class User {
+  depend java.io.Serializable;
+  isA Serializable;
+ private static final long serialVersionUID = -2116860180323920601L;
+ 
+  public static void reinitializeUniqueUserName(List<User> users) {
+    usersByUsername = new HashMap<String, User>();
+    for (User user : users) {
+	usersByUsername.put(user.getUsername(), user);
+	}
+ }
+}
+ 
+ class UserRole {
+  depend java.io.Serializable;
+  isA Serializable;
+ private static final long serialVersionUID = 3389752283403781197L;
+ }

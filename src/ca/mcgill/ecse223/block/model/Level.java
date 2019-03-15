@@ -2,14 +2,16 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.block.model;
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * random attribute not needed anymore
  * Each level is filled up with random blocks just before playing the level to reach the nrBlocksPerLevel defined in Game
  */
-// line 59 "../../../../../Block223 v2.ump"
-public class Level
+// line 60 "../../../../../Block223Persistence.ump"
+// line 141 "../../../../../Block223 v2.ump"
+public class Level implements Serializable
 {
 
   //------------------------
@@ -191,4 +193,25 @@ public class Level
     }
   }
 
+  // line 144 "../../../../../Block223 v2.ump"
+   public BlockAssignment findBlockAssignment(int gridHorizontalPosition, int gridVerticalPosition){
+    List<BlockAssignment> blockAssignments = this.getBlockAssignments();
+		for(BlockAssignment blockAssignment: blockAssignments) {
+			int h = blockAssignment.getGridHorizontalPosition();
+			int v = blockAssignment.getGridVerticalPosition();
+				if(h == gridHorizontalPosition && v == gridVerticalPosition) {
+					return blockAssignment;
+				}
+		}
+		return null;
+  }
+  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 63 "../../../../../Block223Persistence.ump"
+  private static final long serialVersionUID = -7956760334392179806L ;
+
+  
 }
