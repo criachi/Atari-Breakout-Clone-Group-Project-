@@ -12,19 +12,16 @@ class PlayedGame {
 			} -> Play;
 		}
 		Play {
-			
+			pause() -> Paused;
+			moveBall [hitsPaddleOrWall()] / {} -> Play
+			moveBall [hitsBlock() && isLastBlock() && isLastLevel()] -> IsOver
+			moveBall [hitBlock() && isLastBlock()] -> Pause
+			moveBall [hitsBlock()] -> Play 
+			moveBall [isBallOutOfBounds() && (getNrLives == 0)] -> isOver
+			moveBall [isBallOutOfBounds()] -> Pause
 		}
 		Paused {
-			start -> Play;
 			resume -> Play;
-		}
-		
-		Play {
-			pause -> Paused;
-			moveBall [isBallOutOfBounds()] && [getNrLives() == 0] -> IsOver;
-			moveBall [isBallOutOfBounds()] && [getNrLives() > 0] -> Paused;
-			moveBall [hitsBlock()] && [getGame().getLevels().size() == getCurrentLevel()] && [getGame().getLevel(getCurrentLevel()-1).getBlockAssignments().size() == 1] -> IsOver;
-			moveBall [hitsBlock()] && [getGame().getLevels().size() != getCurrentLevel()] && [getGame().getLevel(getCurrentLevel()-1).getBlockAssignments().size() == 1] -> Paused;
 		}
 		
 		IsOver {
@@ -33,11 +30,23 @@ class PlayedGame {
 		
 	}
 	
+	private Boolean isLastLevel(){
+	
+	}
+	
+	private int getNrLives() {
+	
+	}
+	
 	private void start (){
 	
 	}
 	
-	/*private void resume() {
+	private void resume() {
+	
+	}
+	
+	private Boolean isLastBlock() {
 	
 	}
 	
@@ -67,5 +76,5 @@ class PlayedGame {
 	
 	private Boolean hitsPaddleOrWall() {
 	
-	}*/
+	}
 }
