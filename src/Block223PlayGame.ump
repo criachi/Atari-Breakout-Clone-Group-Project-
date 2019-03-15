@@ -15,7 +15,6 @@ class  PlayedGame {
 	1 <@>- 1 SpecificBall specificBall;
 	1 <@>- 1 SpecificPaddle specificPaddle;
 	1 <@>- * SpecificBlockAssignment specificBlockAssignments;
-	1 -- * ScoreEntry;
 }
 
 class SpecificBall {

@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse223.block.model;
 
-// line 29 "../../../../../Block223PlayGame.ump"
+// line 28 "../../../../../Block223PlayGame.ump"
 public class ScoreEntry
 {
 
@@ -17,13 +17,12 @@ public class ScoreEntry
   //ScoreEntry Associations
   private Game game;
   private Player player;
-  private PlayedGame playedGame;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public ScoreEntry(Game aGame, Player aPlayer, PlayedGame aPlayedGame)
+  public ScoreEntry(Game aGame, Player aPlayer)
   {
     score = 0;
     boolean didAddGame = setGame(aGame);
@@ -35,11 +34,6 @@ public class ScoreEntry
     if (!didAddPlayer)
     {
       throw new RuntimeException("Unable to create scoreEntry due to player");
-    }
-    boolean didAddPlayedGame = setPlayedGame(aPlayedGame);
-    if (!didAddPlayedGame)
-    {
-      throw new RuntimeException("Unable to create scoreEntry due to playedGame");
     }
   }
 
@@ -68,11 +62,6 @@ public class ScoreEntry
   public Player getPlayer()
   {
     return player;
-  }
-  /* Code from template association_GetOne */
-  public PlayedGame getPlayedGame()
-  {
-    return playedGame;
   }
   /* Code from template association_SetOneToMany */
   public boolean setGame(Game aGame)
@@ -112,25 +101,6 @@ public class ScoreEntry
     wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setPlayedGame(PlayedGame aPlayedGame)
-  {
-    boolean wasSet = false;
-    if (aPlayedGame == null)
-    {
-      return wasSet;
-    }
-
-    PlayedGame existingPlayedGame = playedGame;
-    playedGame = aPlayedGame;
-    if (existingPlayedGame != null && !existingPlayedGame.equals(aPlayedGame))
-    {
-      existingPlayedGame.removeScoreEntry(this);
-    }
-    playedGame.addScoreEntry(this);
-    wasSet = true;
-    return wasSet;
-  }
 
   public void delete()
   {
@@ -146,12 +116,6 @@ public class ScoreEntry
     {
       placeholderPlayer.removeScoreEntry(this);
     }
-    PlayedGame placeholderPlayedGame = playedGame;
-    this.playedGame = null;
-    if(placeholderPlayedGame != null)
-    {
-      placeholderPlayedGame.removeScoreEntry(this);
-    }
   }
 
 
@@ -160,7 +124,6 @@ public class ScoreEntry
     return super.toString() + "["+
             "score" + ":" + getScore()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "playedGame = "+(getPlayedGame()!=null?Integer.toHexString(System.identityHashCode(getPlayedGame())):"null");
+            "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null");
   }
 }

@@ -99,9 +99,9 @@ public class Player extends UserRole implements Serializable
     return 0;
   }
   /* Code from template association_AddManyToOne */
-  public ScoreEntry addScoreEntry(Game aGame, PlayedGame aPlayedGame)
+  public ScoreEntry addScoreEntry(Game aGame)
   {
-    return new ScoreEntry(aGame, this, aPlayedGame);
+    return new ScoreEntry(aGame, this);
   }
 
   public boolean addScoreEntry(ScoreEntry aScoreEntry)

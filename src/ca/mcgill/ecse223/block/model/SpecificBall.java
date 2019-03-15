@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse223.block.model;
 
-// line 21 "../../../../../Block223PlayGame.ump"
+// line 20 "../../../../../Block223PlayGame.ump"
 public class SpecificBall
 {
 
