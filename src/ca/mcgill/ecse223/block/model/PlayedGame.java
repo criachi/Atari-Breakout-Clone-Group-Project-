@@ -27,7 +27,7 @@ public class PlayedGame
   private int id;
 
   //PlayedGame State Machines
-  public enum GameStatus { Idle, Play, Paused, Done, Pause }
+  public enum GameStatus { Idle, Play, Paused, Done }
   private GameStatus gameStatus;
 
   //PlayedGame Associations
@@ -147,6 +147,41 @@ public class PlayedGame
     return gameStatus;
   }
 
+  public boolean beginGame()
+  {
+    boolean wasEventProcessed = false;
+    
+    GameStatus aGameStatus = gameStatus;
+    switch (aGameStatus)
+    {
+      case Idle:
+        if (hasEnoughBlockAssignments())
+        {
+        // line 6 "../../../../../Block223StateMachine.ump"
+          doInitializeBlockAssignments(); //this copies over info from EXISTING blockAssignments to specificBlockAssignments	
+				doInitializeBallandPaddle();
+          setGameStatus(GameStatus.Play);
+          wasEventProcessed = true;
+          break;
+        }
+        if (!(hasEnoughBlockAssignments()))
+        {
+        // line 10 "../../../../../Block223StateMachine.ump"
+          doInitializeBlockAssignments();
+				doPutRandomBlocks();
+				doInitializeBallandPaddle();
+          setGameStatus(GameStatus.Play);
+          wasEventProcessed = true;
+          break;
+        }
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
+  }
+
   public boolean pause()
   {
     boolean wasEventProcessed = false;
@@ -165,7 +200,7 @@ public class PlayedGame
     return wasEventProcessed;
   }
 
-  public boolean moveBall()
+  public boolean move()
   {
     boolean wasEventProcessed = false;
     
@@ -175,57 +210,57 @@ public class PlayedGame
       case Play:
         if (isPaddleHit())
         {
-        // line 21 "../../../../../Block223StateMachine.ump"
-          bounceBackFromPaddle(getSpecificBall());
+        // line 18 "../../../../../Block223StateMachine.ump"
+          doBounceBackFromPaddle(getSpecificBall()); doMoveBall();
           setGameStatus(GameStatus.Play);
           wasEventProcessed = true;
           break;
         }
         if (isWallHit())
         {
-        // line 22 "../../../../../Block223StateMachine.ump"
-          bounceBackFromWall(getSpecificBall());
+        // line 19 "../../../../../Block223StateMachine.ump"
+          doBounceBackFromWall(getSpecificBall()); doMoveBall();
           setGameStatus(GameStatus.Play);
           wasEventProcessed = true;
           break;
         }
         if (isBlockHit()&&isLastBlock()&&isLastLevel())
         {
-        // line 23 "../../../../../Block223StateMachine.ump"
-          updateScore(); deleteSpecificBlock();
+        // line 20 "../../../../../Block223StateMachine.ump"
+          doBounceBackFromBlock(getSpecificBall()); doUpdateScore(); doDeleteSpecificBlock(); doMoveBall();
           setGameStatus(GameStatus.Done);
           wasEventProcessed = true;
           break;
         }
-        if (isBlockHit()&&isLastBlock())
+        if (isBlockHit()&&isLastBlock()&&!(isLastLevel()))
         {
-        // line 24 "../../../../../Block223StateMachine.ump"
-          updateScore(); deleteSpecificBlock(); increaseLevel();
-          setGameStatus(GameStatus.Pause);
+        // line 21 "../../../../../Block223StateMachine.ump"
+          doBounceBackFromBlock(getSpecificBall()); doUpdateScore(); doDeleteSpecificBlock(); doIncreaseLevel(); doMoveBall();
+          setGameStatus(GameStatus.Paused);
           wasEventProcessed = true;
           break;
         }
         if (isBlockHit())
         {
-        // line 25 "../../../../../Block223StateMachine.ump"
-          bounceBackFromBlock(getSpecificBall()); updateScore(); deleteSpecificBlock();
+        // line 22 "../../../../../Block223StateMachine.ump"
+          doBounceBackFromBlock(getSpecificBall()); doUpdateScore(); doDeleteSpecificBlock(); doMoveBall();
           setGameStatus(GameStatus.Play);
           wasEventProcessed = true;
           break;
         }
         if (isBallOutOfBounds()&&(hasOneLifeRemaining()))
         {
-        // line 26 "../../../../../Block223StateMachine.ump"
-          decrementLives(); resetBallandPaddle();
+        // line 23 "../../../../../Block223StateMachine.ump"
+          doDecrementLives(); doResetBallandPaddle(); doMoveBall();
           setGameStatus(GameStatus.Done);
           wasEventProcessed = true;
           break;
         }
         if (isBallOutOfBounds())
         {
-        // line 27 "../../../../../Block223StateMachine.ump"
-          decrementLives();
-          setGameStatus(GameStatus.Pause);
+        // line 24 "../../../../../Block223StateMachine.ump"
+          doDecrementLives(); doMoveBall();
+          setGameStatus(GameStatus.Paused);
           wasEventProcessed = true;
           break;
         }
@@ -262,14 +297,10 @@ public class PlayedGame
     // entry actions and do activities
     switch(gameStatus)
     {
-      case Paused:
-        // line 30 "../../../../../Block223StateMachine.ump"
-        savePlayedGame();
-        break;
       case Done:
-        // line 36 "../../../../../Block223StateMachine.ump"
-        saveScore();
-				deletePlayedGame();
+        // line 30 "../../../../../Block223StateMachine.ump"
+        doUpdateScore();
+				doDeletePlayedGame();
         break;
     }
   }
@@ -499,123 +530,108 @@ public class PlayedGame
     }
   }
 
-  // line 46 "../../../../../Block223StateMachine.ump"
-   private void saveScore(){
+  // line 41 "../../../../../Block223StateMachine.ump"
+   private void doMoveBall(){
     
   }
 
-  // line 51 "../../../../../Block223StateMachine.ump"
-   private Boolean hasOneLifeRemaining(){
+  // line 43 "../../../../../Block223StateMachine.ump"
+   private void doInitializeBlockAssignments(){
+    
+  }
+
+  // line 46 "../../../../../Block223StateMachine.ump"
+   private void doInitializeBallandPaddle(){
+    
+  }
+
+  // line 49 "../../../../../Block223StateMachine.ump"
+   private Boolean hasEnoughBlockAssignments(){
+    return false;
+  }
+
+  // line 53 "../../../../../Block223StateMachine.ump"
+   private void doUpdateScore(){
     
   }
 
   // line 55 "../../../../../Block223StateMachine.ump"
+   private void doDeletePlayedGame(){
+    
+  }
+
+  // line 58 "../../../../../Block223StateMachine.ump"
+   private Boolean hasOneLifeRemaining(){
+    return false;
+  }
+
+  // line 62 "../../../../../Block223StateMachine.ump"
    private Boolean isBallOutOfBounds(){
-    
+    return false;
   }
 
-  // line 59 "../../../../../Block223StateMachine.ump"
+  // line 66 "../../../../../Block223StateMachine.ump"
    private Boolean isBlockHit(){
+    return false;
+  }
+
+  // line 70 "../../../../../Block223StateMachine.ump"
+   private void doBounceBackFromBlock(SpecificBall aBall){
     
   }
 
-  // line 63 "../../../../../Block223StateMachine.ump"
-   private void bounceBackFromBlock(SpecificBall aBall){
+  // line 73 "../../../../../Block223StateMachine.ump"
+   private void doDecrementLives(){
     
   }
 
-  // line 67 "../../../../../Block223StateMachine.ump"
-   private void decrementLives(){
-    
-  }
-
-  // line 71 "../../../../../Block223StateMachine.ump"
-   private void resetBallandPaddle(){
-    
-  }
-
-  // line 75 "../../../../../Block223StateMachine.ump"
-   private Boolean isPaddleHit(){
+  // line 76 "../../../../../Block223StateMachine.ump"
+   private void doResetBallandPaddle(){
     
   }
 
   // line 79 "../../../../../Block223StateMachine.ump"
-   private Boolean isWallHit(){
-    
+   private Boolean isPaddleHit(){
+    return false;
   }
 
   // line 83 "../../../../../Block223StateMachine.ump"
-   private void bounceBackFromPaddle(SpecificBall aBall){
-    
+   private Boolean isWallHit(){
+    return false;
   }
 
   // line 87 "../../../../../Block223StateMachine.ump"
-   private void bounceBackFromWall(SpecificBall aBall){
+   private void doBounceBackFromPaddle(SpecificBall aBall){
     
   }
 
-  // line 91 "../../../../../Block223StateMachine.ump"
-   private void updateScore(){
+  // line 90 "../../../../../Block223StateMachine.ump"
+   private void doBounceBackFromWall(SpecificBall aBall){
     
   }
 
-  // line 95 "../../../../../Block223StateMachine.ump"
-   private void deleteSpecificBlock(){
+  // line 97 "../../../../../Block223StateMachine.ump"
+   private void doDeleteSpecificBlock(){
     
   }
 
-  // line 99 "../../../../../Block223StateMachine.ump"
-   private void increaseLevel(){
+  // line 100 "../../../../../Block223StateMachine.ump"
+   private void doIncreaseLevel(){
     
   }
 
   // line 103 "../../../../../Block223StateMachine.ump"
    private Boolean isLastLevel(){
-    
+    return false;
   }
 
   // line 107 "../../../../../Block223StateMachine.ump"
-   private void start(){
-    
+   private Boolean isLastBlock(){
+    return false;
   }
 
   // line 111 "../../../../../Block223StateMachine.ump"
-   private void resume(){
-    
-  }
-
-  // line 115 "../../../../../Block223StateMachine.ump"
-   private Boolean isLastBlock(){
-    
-  }
-
-  // line 119 "../../../../../Block223StateMachine.ump"
-   private void pause(){
-    
-  }
-
-  // line 123 "../../../../../Block223StateMachine.ump"
-   private void gameOver(){
-    
-  }
-
-  // line 127 "../../../../../Block223StateMachine.ump"
-   private void outOfBounds(){
-    
-  }
-
-  // line 131 "../../../../../Block223StateMachine.ump"
-   private Boolean hitsBlock(){
-    
-  }
-
-  // line 135 "../../../../../Block223StateMachine.ump"
-   private void moveBall(){
-    
-  }
-
-  // line 139 "../../../../../Block223StateMachine.ump"
-   private Boolean hitsPaddleOrWall(){
+   private void doPutRandomBlocks(){
     
   }
 
