@@ -34,7 +34,11 @@ public class User implements Serializable
   public User(String aUsername, Block223 aBlock223, UserRole... allRoles)
   {
     // line 28 "../../../../../Block223 v2.ump"
-    if(aUsername == null || aUsername == "") {
+    if (!setUsername(aUsername))
+        {
+          throw new RuntimeException("The username has already been taken.");
+        }
+       	if(aUsername == null || aUsername == "") {
        		throw new RuntimeException("The username must be specified. ");
        	}
     // END OF UMPLE BEFORE INJECTION

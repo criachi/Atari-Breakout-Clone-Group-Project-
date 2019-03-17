@@ -7,7 +7,7 @@ import java.util.*;
 
 // line 48 "../../../../../Block223Persistence.ump"
 // line 1 "../../../../../Block223PlayGame.ump"
-// line 52 "../../../../../Block223 v2.ump"
+// line 56 "../../../../../Block223 v2.ump"
 public class Game implements Serializable
 {
 
@@ -60,14 +60,14 @@ public class Game implements Serializable
 
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, Ball aBall, Paddle aPaddle, Block223 aBlock223)
   {
-    // line 54 "../../../../../Block223 v2.ump"
+    // line 58 "../../../../../Block223 v2.ump"
     if(aName == null || aName.length() == 0) {
     			throw new RuntimeException("The name of a game must be specified.");
     		}
     // END OF UMPLE BEFORE INJECTION
-    // line 68 "../../../../../Block223 v2.ump"
-    if (aNrBlocksPerLevel < 0) {
-    	  throw new RuntimeException("The number of block per level must be greater than zero.");
+    // line 72 "../../../../../Block223 v2.ump"
+    if (aNrBlocksPerLevel <= 0) {
+    	  throw new RuntimeException("The number of blocks per level must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
     canSetIsPublished = true;
@@ -105,14 +105,14 @@ public class Game implements Serializable
 
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, int aMinBallSpeedXForBall, int aMinBallSpeedYForBall, double aBallSpeedIncreaseFactorForBall, int aMaxPaddleLengthForPaddle, int aMinPaddleLengthForPaddle, Block223 aBlock223)
   {
-    // line 54 "../../../../../Block223 v2.ump"
+    // line 58 "../../../../../Block223 v2.ump"
     if(aName == null || aName.length() == 0) {
     			throw new RuntimeException("The name of a game must be specified.");
     		}
     // END OF UMPLE BEFORE INJECTION
-    // line 68 "../../../../../Block223 v2.ump"
-    if (aNrBlocksPerLevel < 0) {
-    	  throw new RuntimeException("The number of block per level must be greater than zero.");
+    // line 72 "../../../../../Block223 v2.ump"
+    if (aNrBlocksPerLevel <= 0) {
+    	  throw new RuntimeException("The number of blocks per level must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
     name = aName;
@@ -153,7 +153,7 @@ public class Game implements Serializable
   public boolean setName(String aName)
   {
     boolean wasSet = false;
-    // line 54 "../../../../../Block223 v2.ump"
+    // line 58 "../../../../../Block223 v2.ump"
     if(aName == null || aName.length() == 0) {
     			throw new RuntimeException("The name of a game must be specified.");
     		}
@@ -174,10 +174,17 @@ public class Game implements Serializable
   public boolean setNrBlocksPerLevel(int aNrBlocksPerLevel)
   {
     boolean wasSet = false;
-    // line 68 "../../../../../Block223 v2.ump"
-    if (aNrBlocksPerLevel < 0) {
-    	  throw new RuntimeException("The number of block per level must be greater than zero.");
+    // line 72 "../../../../../Block223 v2.ump"
+    if (aNrBlocksPerLevel <= 0) {
+    	  throw new RuntimeException("The number of blocks per level must be greater than zero.");
     	}
+    // END OF UMPLE BEFORE INJECTION
+    // line 77 "../../../../../Block223 v2.ump"
+    for(Level level: levels) {
+       		if(aNrBlocksPerLevel < level.getBlockAssignments().size()) {
+       			throw new RuntimeException("The maximum number of blocks per level cannot be less than the number of existing blocks in a level.");
+       		}
+       	}
     // END OF UMPLE BEFORE INJECTION
     nrBlocksPerLevel = aNrBlocksPerLevel;
     wasSet = true;
@@ -881,7 +888,7 @@ public class Game implements Serializable
     }
   }
 
-  // line 80 "../../../../../Block223 v2.ump"
+  // line 91 "../../../../../Block223 v2.ump"
    public Block findBlock(int id){
     List<Block> blocks = this.getBlocks();
 	for(Block block: blocks) {
