@@ -23,10 +23,6 @@ class User {
    unique username;
    1 -> 1..2 UserRole roles;
    before constructor {
-   	if (!setUsername(aUsername))
-    {
-      throw new RuntimeException("The username has already been taken.");
-    }
    	if(aUsername == null || aUsername == "") {
    		throw new RuntimeException("The username must be specified. ");
    	}

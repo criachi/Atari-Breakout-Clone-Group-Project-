@@ -3,7 +3,7 @@
 
 package ca.mcgill.ecse223.block.model;
 
-// line 36 "../../../../../Block223 v3.ump"
+// line 32 "../../../../../Block223 v3.ump"
 public abstract class UserRole
 {
 
@@ -23,7 +23,7 @@ public abstract class UserRole
 
   public UserRole(String aPassword, Block223 aBlock223)
   {
-    // line 38 "../../../../../Block223 v3.ump"
+    // line 34 "../../../../../Block223 v3.ump"
     if (aPassword == null || aPassword == "") {
        		throw new RuntimeException("The player password needs to be specified. ");
         }

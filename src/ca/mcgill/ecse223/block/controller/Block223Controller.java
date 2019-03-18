@@ -444,14 +444,13 @@ public class Block223Controller {
 			 if(adminPassword != null && adminPassword != "") {
 					admin = new Admin(adminPassword, block223);
 					user.addRole(admin);
-				 }
+			 }
 			 Block223Persistence.save(block223); //maybe?
 		} catch (RuntimeException e) {
 			if(player != null) player.delete();
 			if(admin != null) admin.delete();
 			throw new InvalidInputException(e.getMessage());
 		}
-		
 		/*if(Block223Application.getBlock223().getCurrentUserRole != null) {
 			throw new InvalidInputException("Cannot register a new user while a user is logged in.");
 		}

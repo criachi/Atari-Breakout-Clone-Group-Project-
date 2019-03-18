@@ -7,7 +7,7 @@ import java.util.*;
 
 // line 6 "../../../../../Block223PlayMode.ump"
 // line 43 "../../../../../Block223Persistence.ump"
-// line 54 "../../../../../Block223 v3.ump"
+// line 50 "../../../../../Block223 v3.ump"
 public class Game implements Serializable
 {
 
@@ -59,7 +59,7 @@ public class Game implements Serializable
 
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, Ball aBall, Paddle aPaddle, Block223 aBlock223)
   {
-    // line 64 "../../../../../Block223 v3.ump"
+    // line 60 "../../../../../Block223 v3.ump"
     if (aNrBlocksPerLevel <= 0) {
     	  throw new RuntimeException("The number of blocks per level must be greater than zero.");
     	}
@@ -108,7 +108,7 @@ public class Game implements Serializable
 
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, int aMinBallSpeedXForBall, int aMinBallSpeedYForBall, double aBallSpeedIncreaseFactorForBall, int aMaxPaddleLengthForPaddle, int aMinPaddleLengthForPaddle, Block223 aBlock223)
   {
-    // line 64 "../../../../../Block223 v3.ump"
+    // line 60 "../../../../../Block223 v3.ump"
     if (aNrBlocksPerLevel <= 0) {
     	  throw new RuntimeException("The number of blocks per level must be greater than zero.");
     	}
@@ -175,12 +175,12 @@ public class Game implements Serializable
   public boolean setNrBlocksPerLevel(int aNrBlocksPerLevel)
   {
     boolean wasSet = false;
-    // line 64 "../../../../../Block223 v3.ump"
+    // line 60 "../../../../../Block223 v3.ump"
     if (aNrBlocksPerLevel <= 0) {
     	  throw new RuntimeException("The number of blocks per level must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 69 "../../../../../Block223 v3.ump"
+    // line 65 "../../../../../Block223 v3.ump"
     for(Level level: levels) {
        		if(aNrBlocksPerLevel < level.getBlockAssignments().size()) {
        			throw new RuntimeException("The maximum number of blocks per level cannot be less than the number of existing blocks in a level.");
@@ -899,7 +899,7 @@ public class Game implements Serializable
     }
   }
 
-  // line 83 "../../../../../Block223 v3.ump"
+  // line 79 "../../../../../Block223 v3.ump"
    public Block findBlock(int id){
     List<Block> blocks = this.getBlocks();
 	for(Block block: blocks) {
