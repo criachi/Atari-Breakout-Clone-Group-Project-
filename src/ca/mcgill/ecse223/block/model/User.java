@@ -5,8 +5,8 @@ package ca.mcgill.ecse223.block.model;
 import java.io.Serializable;
 import java.util.*;
 
-// line 76 "../../../../../Block223Persistence.ump"
-// line 24 "../../../../../Block223 v2.ump"
+// line 19 "../../../../../Block223Persistence.ump"
+// line 22 "../../../../../Block223 v3.ump"
 public class User implements Serializable
 {
 
@@ -33,7 +33,7 @@ public class User implements Serializable
 
   public User(String aUsername, Block223 aBlock223, UserRole... allRoles)
   {
-    // line 28 "../../../../../Block223 v2.ump"
+    // line 26 "../../../../../Block223 v3.ump"
     if (!setUsername(aUsername))
         {
           throw new RuntimeException("The username has already been taken.");
@@ -256,7 +256,7 @@ public class User implements Serializable
     }
   }
 
-  // line 82 "../../../../../Block223Persistence.ump"
+  // line 24 "../../../../../Block223Persistence.ump"
    public static  void reinitializeUniqueUserName(List<User> users){
     usersByUsername = new HashMap<String, User>();
     for (User user : users) {
@@ -275,8 +275,8 @@ public class User implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 79 "../../../../../Block223Persistence.ump"
-  private static final long serialVersionUID = -2116860180323920601L ;
+  // line 22 "../../../../../Block223Persistence.ump"
+  private static final long serialVersionUID = 4267485601061759914L ;
 
   
 }

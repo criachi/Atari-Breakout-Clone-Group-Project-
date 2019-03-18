@@ -2,11 +2,9 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.block.model;
-import java.io.Serializable;
 
-// line 89 "../../../../../Block223Persistence.ump"
-// line 38 "../../../../../Block223 v2.ump"
-public abstract class UserRole implements Serializable
+// line 36 "../../../../../Block223 v3.ump"
+public abstract class UserRole
 {
 
   //------------------------
@@ -25,7 +23,7 @@ public abstract class UserRole implements Serializable
 
   public UserRole(String aPassword, Block223 aBlock223)
   {
-    // line 40 "../../../../../Block223 v2.ump"
+    // line 38 "../../../../../Block223 v3.ump"
     if (aPassword == null || aPassword == "") {
        		throw new RuntimeException("The player password needs to be specified. ");
         }
@@ -95,13 +93,5 @@ public abstract class UserRole implements Serializable
     return super.toString() + "["+
             "password" + ":" + getPassword()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "block223 = "+(getBlock223()!=null?Integer.toHexString(System.identityHashCode(getBlock223())):"null");
-  }  
-  //------------------------
-  // DEVELOPER CODE - PROVIDED AS-IS
-  //------------------------
-  
-  // line 92 "../../../../../Block223Persistence.ump"
-  private static final long serialVersionUID = 3389752283403781197L ;
-
-  
+  }
 }
