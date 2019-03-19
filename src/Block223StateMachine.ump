@@ -21,10 +21,10 @@ class PlayedGame {
 			moveBall [isPaddleHit()] / {bounceBackFromPaddle(getSpecificBall());} -> Play;
 			moveBall [isWallHit()] / {bounceBackFromWall(getSpecificBall());} -> Play;
 			moveBall [isBlockHit() && isLastBlock() && isLastLevel()] / { updateScore(); deleteSpecificBlock(); } -> Done; //u will have helper method that gets reference of the specific block assignment whose pos coincides w/ ball's 
-			moveBall [isBlockHit() && isLastBlock()] / { updateScore(); deleteSpecificBlock(); increaseLevel(); } -> Pause; //come back to this
+			moveBall [isBlockHit() && isLastBlock()] / { updateScore(); deleteSpecificBlock(); increaseLevel(); } -> Paused; //come back to this
 			moveBall [isBlockHit()] / { bounceBackFromBlock(getSpecificBall()); updateScore(); deleteSpecificBlock(); } -> Play; // come back 
 			moveBall [isBallOutOfBounds() && (hasOneLifeRemaining())] / {decrementLives(); resetBallandPaddle(); } -> Done;
-			moveBall [isBallOutOfBounds()] / {decrementLives(); } -> Pause;
+			moveBall [isBallOutOfBounds()] / {decrementLives(); } -> Paused;
 		}
 		Paused {
 			entry / {
@@ -39,9 +39,8 @@ class PlayedGame {
 			}
 		}
 		
-		
-		
 	}
+	
 	private void saveScore() {
 	}
 	
