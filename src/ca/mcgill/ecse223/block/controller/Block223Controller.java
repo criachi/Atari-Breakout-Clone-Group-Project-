@@ -207,7 +207,6 @@ public class Block223Controller {
 				throw new InvalidInputException("The name of a game must be unique.");
 			}
 		}
-		
 		try {
 		if(!(currentName.equals(name))) {
 			if(game.setName(name) == false) {

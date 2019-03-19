@@ -142,13 +142,14 @@ public class LogInWindow extends JFrame{
 			new PlayerDashBoardPage();
 		}
 		else if(loggedUser.getMode() == Mode.Design) {
+			System.out.println("im here");
 			frame.dispose();
 			new AdminDashBoardPage();
 		}
 		else {
 			error.setText("Error: No User is currently logged in.");
 			return;
-		}
+		} 
 	}
 	
 	//Cancel just closes the page and brings you back to the welcome window
