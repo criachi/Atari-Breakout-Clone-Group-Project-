@@ -56,6 +56,11 @@ class Game {
    const Integer ROW_PADDING = 2;
    unique name;
    Integer nrBlocksPerLevel;
+   before constructor {
+   	if(aName == "" || aName == null) {
+   	throw new RuntimeException("The name of a game must be specified.");
+   	}
+   }
    before constructor, setNrBlocksPerLevel {
     if (aNrBlocksPerLevel <= 0) {
 	  throw new RuntimeException("The number of blocks per level must be greater than zero.");

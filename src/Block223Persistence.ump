@@ -16,6 +16,12 @@ class Block223 {
   }
 }
 
+class UserRole {
+	depend java.io.Serializable;
+	isA Serializable;
+	private static final long serialVersionUID = 6181305284694705923L;
+}
+
 class User {
   depend java.io.Serializable;
   isA Serializable;

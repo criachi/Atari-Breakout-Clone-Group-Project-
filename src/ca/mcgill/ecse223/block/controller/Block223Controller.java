@@ -419,18 +419,12 @@ public class Block223Controller {
 	}
 
 	public static void register(String username, String playerPassword, String adminPassword) throws InvalidInputException {
-		//String error = "";
 		if(Block223Application.getCurrentUserRole() != null) {
-			//error = "Cannot register a new user while a user is logged in. ";
 			throw new InvalidInputException("Cannot register a new user while a user is logged in. ");
 		}
 		if(playerPassword == adminPassword){ // both used to be .trim()
-			//error = error + "The passwords have to be different. ";
 			throw new InvalidInputException("The passwords have to be different. ");
 		}
-		/*if (error.length() > 0) {
-			throw new InvalidInputException(error.trim());
-		}*/
 		Block223 block223 = Block223Application.getBlock223();
 		// 4th and 5th validation checks are caught this way with try-catch block  			
 		Player player = null;
@@ -446,37 +440,35 @@ public class Block223Controller {
 		} catch (RuntimeException e) {
 			if(player != null) player.delete();
 			if(admin != null) admin.delete();
+			if((e.getMessage()).equals("Cannot create due to duplicate username")) {
+				throw new InvalidInputException("The username has already been taken.");
+			}
 			throw new InvalidInputException(e.getMessage());
 		}
-		/*if(Block223Application.getBlock223().getCurrentUserRole != null) {
-			throw new InvalidInputException("Cannot register a new user while a user is logged in.");
-		}
-		if(playerPassword.equals(adminPassword)) {
-			throw new InvalidInputException("The passwords have to be different.");
-		}*/
-		
 	}
 
 	public static void login(String username, String password) throws InvalidInputException {
 		//Should be changed back resetBlock223 only once persistence is fixed
 		//At the moment load doesn't really work and it was just making a new 223
 		//block every time I logged in meaning nothing would save between logins.
-		if(Block223Application.getBlock223() == null) {
-			Block223Application.resetBlock223();
-		}
-		//String error = "";
 		if(Block223Application.getCurrentUserRole() != null) {
 			throw new InvalidInputException("Cannot login a user while a user already logged in.");
 		}
+		
+		Block223Application.resetBlock223();
+		/*if(Block223Application.getBlock223() != null) {
+			Block223Application.getBlock223().delete();
+		}*/
+		Block223Application.setCurrentGame(null);
+		//Block223 block223 = Block223Application.getBlock223();
+		
+		
 		User foundUser = User.getWithUsername(username);
 		if(foundUser == null) {
 			throw new InvalidInputException("The username and password do not match.");
-			//throw new InvalidInputException(error);
 		}
 		String foundPassword = null;
-		System.out.println("here error ");
 		List<UserRole> users = foundUser.getRoles();
-		System.out.println("hello there;");
 		for(UserRole user: users) {
 			String rolePassword = user.getPassword();
 			if(rolePassword.contentEquals(password)) {
@@ -485,14 +477,10 @@ public class Block223Controller {
 			}
 		}
 		if(foundPassword == null) {
-			throw new InvalidInputException("The username and password do not match.\n"
-					+ "");
+			throw new InvalidInputException("The username and password do not match.");
 		}
-		
-		/*if(error.length() > 0) {
-			throw new InvalidInputException(error.trim());
-		}*/
 	}
+		
 
 	public static void logout() {
 		Block223Application.setCurrentUserRole(null);

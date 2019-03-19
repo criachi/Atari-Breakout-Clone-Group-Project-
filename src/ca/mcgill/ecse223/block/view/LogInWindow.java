@@ -143,7 +143,6 @@ public class LogInWindow extends JFrame{
 			new PlayerDashBoardPage();
 		}
 		else if(loggedUser.getMode() == Mode.Design) {
-			System.out.println("im here");
 			frame.dispose();
 			new AdminDashBoardPage();
 		}
