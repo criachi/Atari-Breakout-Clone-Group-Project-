@@ -84,8 +84,8 @@ public class PlayedGame implements Serializable
     currentLevel = 1;
     waitTime = INITIAL_WAIT_TIME;
     playername = aPlayername;
-    ballDirectionX = getGame().getBall().getMinBallSpeedX();
-    ballDirectionY = getGame().getBall().getMinBallSpeedY();
+    resetBallDirectionX();
+    resetBallDirectionY();
     resetCurrentBallX();
     resetCurrentBallY();
     currentPaddleLength = getGame().getPaddle().getMaxPaddleLength();
@@ -149,7 +149,7 @@ public class PlayedGame implements Serializable
     wasSet = true;
     return wasSet;
   }
-
+  /* Code from template attribute_SetDefaulted */
   public boolean setBallDirectionX(double aBallDirectionX)
   {
     boolean wasSet = false;
@@ -158,12 +158,28 @@ public class PlayedGame implements Serializable
     return wasSet;
   }
 
+  public boolean resetBallDirectionX()
+  {
+    boolean wasReset = false;
+    ballDirectionX = getDefaultBallDirectionX();
+    wasReset = true;
+    return wasReset;
+  }
+  /* Code from template attribute_SetDefaulted */
   public boolean setBallDirectionY(double aBallDirectionY)
   {
     boolean wasSet = false;
     ballDirectionY = aBallDirectionY;
     wasSet = true;
     return wasSet;
+  }
+
+  public boolean resetBallDirectionY()
+  {
+    boolean wasReset = false;
+    ballDirectionY = getDefaultBallDirectionY();
+    wasReset = true;
+    return wasReset;
   }
   /* Code from template attribute_SetDefaulted */
   public boolean setCurrentBallX(double aCurrentBallX)
@@ -257,10 +273,20 @@ public class PlayedGame implements Serializable
   {
     return ballDirectionX;
   }
+  /* Code from template attribute_GetDefaulted */
+  public double getDefaultBallDirectionX()
+  {
+    return getGame().getBall().getMinBallSpeedX();
+  }
 
   public double getBallDirectionY()
   {
     return ballDirectionY;
+  }
+  /* Code from template attribute_GetDefaulted */
+  public double getDefaultBallDirectionY()
+  {
+    return getGame().getBall().getMinBallSpeedY();
   }
 
   /**

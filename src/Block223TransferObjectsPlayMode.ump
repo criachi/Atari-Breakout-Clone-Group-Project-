@@ -14,10 +14,10 @@ class TOCurrentlyPlayedGame {
    Integer currentLevel;
    playername; // "test run" if the admin is doing a test, otherwise name of the player
    1 -- * TOCurrentBlock blocks;
-   Integer currentBallX;
-   Integer currentBallY;
-   Integer currentPaddleLength;
-   Integer currentPaddleX;
+   Double currentBallX;
+   Double currentBallY;
+   Double currentPaddleLength;
+   Double currentPaddleX;
 }
 
 class TOCurrentBlock {
