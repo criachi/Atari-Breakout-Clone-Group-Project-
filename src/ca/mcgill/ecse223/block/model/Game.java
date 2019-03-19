@@ -40,6 +40,7 @@ public class Game implements Serializable
   private String name;
   private int nrBlocksPerLevel;
   private transient Comparator<HallOfFameEntry> hallOfFameEntriesPriority;
+
   //Game Associations
   private HallOfFameEntry mostRecentEntry;
   private Admin admin;
@@ -168,6 +169,11 @@ public class Game implements Serializable
   public boolean setName(String aName)
   {
     boolean wasSet = false;
+    // line 60 "../../../../../Block223 v3.ump"
+    if(aName == "" || aName == null) {
+       	throw new RuntimeException("The name of a game must be specified.");
+       	}
+    // END OF UMPLE BEFORE INJECTION
     String anOldName = getName();
     if (hasWithName(aName)) {
       return wasSet;

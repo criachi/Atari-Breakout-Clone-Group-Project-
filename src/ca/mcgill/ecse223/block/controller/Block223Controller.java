@@ -213,6 +213,10 @@ public class Block223Controller {
 				throw new InvalidInputException("The name of a game must be unique.");
 			}
 		}
+		//Commented out while we confirm whether the prof wants this, this code allows testUpdateGameNonUnique() test to pass.
+		/*if(currentName.equals(name)) {
+			throw new InvalidInputException("The name of a game must be unique.");
+		}*/
 		
 		} catch (RuntimeException e) { 
 			throw new InvalidInputException(e.getMessage());
