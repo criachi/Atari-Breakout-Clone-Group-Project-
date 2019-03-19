@@ -4,8 +4,8 @@
 package ca.mcgill.ecse223.block.model;
 import java.io.Serializable;
 
-// line 43 "../../../../../Block223Persistence.ump"
-// line 165 "../../../../../Block223 v2.ump"
+// line 76 "../../../../../Block223Persistence.ump"
+// line 152 "../../../../../Block223 v3.ump"
 public class BlockAssignment implements Serializable
 {
 
@@ -28,7 +28,7 @@ public class BlockAssignment implements Serializable
 
   public BlockAssignment(int aGridHorizontalPosition, int aGridVerticalPosition, Level aLevel, Block aBlock, Game aGame)
   {
-    // line 171 "../../../../../Block223 v2.ump"
+    // line 158 "../../../../../Block223 v3.ump"
     if(aGridHorizontalPosition <= 0 || aGridHorizontalPosition > maxNrHorizontalBlocks()) {
        			throw new RuntimeException("The horizontal position must be between 1 and " + maxNrHorizontalBlocks() + ".");
        		}
@@ -62,7 +62,7 @@ public class BlockAssignment implements Serializable
   public boolean setGridHorizontalPosition(int aGridHorizontalPosition)
   {
     boolean wasSet = false;
-    // line 179 "../../../../../Block223 v2.ump"
+    // line 166 "../../../../../Block223 v3.ump"
     if(aGridHorizontalPosition <= 0 || aGridHorizontalPosition > maxNrHorizontalBlocks()) {
        			throw new RuntimeException("The horizontal position must be between 1 and " + maxNrHorizontalBlocks() + ".");
        		}
@@ -75,7 +75,7 @@ public class BlockAssignment implements Serializable
   public boolean setGridVerticalPosition(int aGridVerticalPosition)
   {
     boolean wasSet = false;
-    // line 184 "../../../../../Block223 v2.ump"
+    // line 171 "../../../../../Block223 v3.ump"
     if(aGridVerticalPosition <= 0 || aGridVerticalPosition > maxNrVerticalBlocks()) {
        			throw new RuntimeException("The vertical position must be between 1 and " + maxNrVerticalBlocks() + ".");
        		}
@@ -189,13 +189,13 @@ public class BlockAssignment implements Serializable
     }
   }
 
-  // line 190 "../../../../../Block223 v2.ump"
+  // line 177 "../../../../../Block223 v3.ump"
    public static  int maxNrHorizontalBlocks(){
     int max = (390 - 20 + 5)/25;
 		return max;
   }
 
-  // line 195 "../../../../../Block223 v2.ump"
+  // line 182 "../../../../../Block223 v3.ump"
    public static  int maxNrVerticalBlocks(){
     int max = (390 - 30 - 5 - 10 - 10 + 2) / 22;
 	return max;
@@ -215,8 +215,8 @@ public class BlockAssignment implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 46 "../../../../../Block223Persistence.ump"
-  private static final long serialVersionUID = 8120926036616538272L ;
+  // line 79 "../../../../../Block223Persistence.ump"
+  private static final long serialVersionUID = -6011556325373584641L ;
 
   
 }

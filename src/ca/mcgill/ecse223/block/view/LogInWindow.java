@@ -128,6 +128,7 @@ public class LogInWindow extends JFrame{
 			passwordPassed += password[i];
 		}
 		
+		
 		try {
 			Block223Controller.login(textField.getText(), passwordPassed);
 		}
