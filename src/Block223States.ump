@@ -1,0 +1,96 @@
+class PlayedGame {
+
+  // State Machine
+  
+  playStatus {
+    Ready {
+      entry / { doSetup(); }
+      play -> Moving;
+    }
+    Moving {
+      pause -> Paused;
+      move [hitPaddle()] / { doHitPaddleOrWall(); } -> Moving;
+      move [isOutOfBoundsAndLastLife()] / { doOutOfBounds(); } -> GameOver;
+      move [isOutOfBounds()] / { doOutOfBounds(); } -> Paused;
+      move [hitLastBlockAndLastLevel()] / { doHitBlock(); } -> GameOver;
+      move [hitLastBlock()] / { doHitBlockNextLevel(); } -> Ready;
+      move [hitBlock()] / { doHitBlock(); } -> Moving;
+      move [hitWall()] / { doHitPaddleOrWall(); } -> Moving;
+      move / { doHitNothingAndNotOutOfBounds(); } -> Moving;
+    }
+    Paused {
+      play -> Moving;
+    }
+    GameOver {
+      entry / { doGameOver(); }
+    }
+  }
+  
+  // Guards
+  
+  private boolean hitPaddle() {
+    // TODO implement
+    return false;
+  }
+
+  private boolean isOutOfBoundsAndLastLife() {
+    // TODO implement
+    return false;
+  }
+  
+  private boolean isOutOfBounds() {
+    // TODO implement
+    return false;
+  }
+  
+  private boolean hitLastBlockAndLastLevel() {
+    // TODO implement
+    return false;
+  }
+  
+  private boolean hitLastBlock(){
+    // TODO implement
+    return false;
+  }
+  
+  private boolean hitBlock() {
+    // TODO implement
+    return false;
+  }
+  
+  private boolean hitWall() {
+    // TODO implement
+    return false;
+  }
+  
+  // Actions
+  
+  private void doSetup() {
+    // TODO implement
+  }
+  
+  private void doHitPaddleOrWall() {
+    // TODO implement
+  }
+
+  private void doOutOfBounds() {
+    // TODO implement
+  }
+
+  private void doHitBlock() {
+    // TODO implement
+  }
+
+  private void doHitBlockNextLevel() {
+    // TODO implement
+  }
+
+  private void doHitNothingAndNotOutOfBounds() {
+    // TODO implement
+  }
+
+  private void doGameOver() {
+    // TODO implement
+  }
+
+}
