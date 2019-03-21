@@ -39,3 +39,4 @@ class TOHallOfFameEntry {
    playername;
    Integer score;
 }
+ 

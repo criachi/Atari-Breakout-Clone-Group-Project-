@@ -6,6 +6,7 @@ import ca.mcgill.ecse223.block.application.Block223Application;
 import ca.mcgill.ecse223.block.controller.TOUserMode.Mode;
 import ca.mcgill.ecse223.block.model.*;
 import ca.mcgill.ecse223.block.persistence.Block223Persistence;
+import ca.mcgill.ecse223.block.view.Block223PlayModeInterface;
 
 
 public class Block223Controller {
@@ -489,6 +490,20 @@ public class Block223Controller {
 	public static void logout() {
 		Block223Application.setCurrentUserRole(null);
 	}
+	
+	// play mode
+
+		public static void selectPlayableGame(String name, int id) throws InvalidInputException  {
+		}
+
+		public static void startGame(Block223PlayModeInterface ui) throws InvalidInputException {
+		}
+
+		public static void testGame(Block223PlayModeInterface ui) throws InvalidInputException {
+		}
+
+		public static void publishGame () throws InvalidInputException {
+		}
 
 	// ****************************
 	// Query methods
@@ -620,6 +635,20 @@ public class Block223Controller {
 		}
 	    return null;
 	}
+	
+	// play mode
+
+		public static List<TOPlayableGame> getPlayableGames() throws InvalidInputException {
+		}
+
+		public static TOCurrentlyPlayedGame getCurrentPlayableGame() throws InvalidInputException {
+		}
+
+		public static TOHallOfFame getHallOfFame(int start, int end) throws InvalidInputException {
+		}
+
+		public static TOHallOfFame getHallOfFameWithMostRecentEntry(int numberOfEntries) throws InvalidInputException {
+		}
 
 
 }
