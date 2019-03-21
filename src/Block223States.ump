@@ -27,6 +27,7 @@ class PlayedGame {
   }
   
   // Guards
+  // TODO implement bounceBall
   
   private boolean hitPaddle() {
     // TODO implement
@@ -44,18 +45,56 @@ class PlayedGame {
   }
   
   private boolean hitLastBlockAndLastLevel() {
-    // TODO implement
+  // TODO implement calculateBouncePointBlock() method
+    Game game = this.getGame();
+    int nrLevels = game.numberOfLevels();
+    this.setBounce(null);
+    if(nrLevels == this.currentLevel) {
+    	int nrBLocks = this.numberOfBlocks();
+    	if(nrBlocks == 1) {
+    		PlayedBlockAssignment block = this.getBlock(0);
+    		BouncePoint bp = this.calculateBouncePointBlock(block); //calculateBouncePointBlock should be implemented
+    		if(bp == null) {
+    			return null;
+    		}
+    		this.setBounce(bp);
+    		return true;
+    	}
+    }
     return false;
   }
   
   private boolean hitLastBlock(){
-    // TODO implement
+    int nrBlocks = this.numberOfBlocks();
+    this.setBounce(null);
+    if(nrBlocks == 1) {
+    	PlayedBlockAssignment block = this.getBlock(0);
+    	BouncePoint bp = calculateBouncePointBlock(block);
+    	if(bp == null) {
+    		return null;
+    	}
+    	this.setBounce(bp);
+    	return true;
+    }
     return false;
   }
   
   private boolean hitBlock() {
-    // TODO implement
-    return false;
+    int nrBlocks = this.numberOfBlocks();
+    this.setBounce(null);
+    for(int i = 0; i < nrBlocks; i++) {
+    	PlayedBlockAssignment block = this.getBlock(i);
+    	BouncePoint bp = calculateBouncePointBlock(block);
+    	if(bp == null) {
+    		return null;
+    	}
+    	BouncePoint bounce = this.getBounce();
+    	boolean closer = isCloser(bp, bounce); // TODO isCloser(BouncePoint first, BouncePoint second) has to be implemented
+    	if(closer) {
+    		this.setBounce(bp);
+    	}
+    }
+    return this.getBounce() != null;
   }
   
   private boolean hitWall() {
@@ -78,11 +117,22 @@ class PlayedGame {
   }
 
   private void doHitBlock() {
-    // TODO implement
+    int score = this.getScore();
+    BouncePoint bounce = this.getBounce();
+    PlayedBlockAssignment pblock = bounce.getHitBlock();
+    Block block = pblock.getBlock();
+    int bscore = block.getPoints();
+    this.setScore(score + bscore);
+    pblock.delete();
+    this.bounceBall();
   }
 
   private void doHitBlockNextLevel() {
-    // TODO implement
+    this.doHitBlock();
+    int level = this.getCurrentLevel();
+    this.setCurrentLevel(level + 1);
+    this.setCurrentPaddleLength(getGame().getPaddle().getMaxPaddleLength() - (getGame().getPaddle().getMinPaddleLength()) / (getGame().numberOfLevels()-1)*(getCurrentLevel()-1));
+    this.setWaitTime(INITIAL_WAIT_TIME * getGame().getBall().getBallSpeedIcreaseFactor() ^ (getCurrentLevel()-1))
   }
 
   private void doHitNothingAndNotOutOfBounds() {
@@ -92,5 +142,19 @@ class PlayedGame {
   private void doGameOver() {
     // TODO implement
   }
-
+  
+  private boolean isCloser(BouncePoint first, BouncePoint second) {
+  	if(first == null) {
+  		return false;
+  	}
+  	if(second == null) {
+  		return true;
+  	}
+  	double distance1 = sqrt(((first.getX() - currentBallX())*(first.getX() - currentBallX()))+((first.getY() - currentBallY())*(first.getY() - currentBallY())));
+  	double distance2 = sqrt(((second.getX() - currentBallX())*(second.getX() - currentBallX()))+((second.getY() - currentBallY())*(second.getY() - currentBallY())));
+  	if(distance1 < distance2) {
+  		return true;
+  	}
+  	return false;
+  }
 }
