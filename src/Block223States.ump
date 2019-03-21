@@ -89,7 +89,7 @@ class PlayedGame {
     		return null;
     	}
     	BouncePoint bounce = this.getBounce();
-    	boolean closer = isCloser(bp, bounce); // TODO isCloser(BouncePoint first, BouncePoint second) has to be implemented
+    	boolean closer = isCloser(bp, bounce);
     	if(closer) {
     		this.setBounce(bp);
     	}
