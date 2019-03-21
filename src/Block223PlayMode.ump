@@ -25,8 +25,8 @@ class PlayedGame {
    const Integer BALL_INITIAL_X = Game.PLAY_AREA_SIDE / 2;
    const Integer BALL_INITIAL_Y = Game.PLAY_AREA_SIDE / 2;
    // 0/0 is the top left corner of the play area, i.e., a directionX/Y of 0/1 moves the ball down in a straight line
-   Double ballDirectionX = getGame().getBall().getMinBallSpeedX();
-   Double ballDirectionY = getGame().getBall().getMinBallSpeedY();
+   defaulted Double ballDirectionX = getGame().getBall().getMinBallSpeedX();
+   defaulted Double ballDirectionY = getGame().getBall().getMinBallSpeedY();
    // the position of the ball is at the center of the ball
    defaulted Double currentBallX = BALL_INITIAL_X;
    defaulted Double currentBallY = BALL_INITIAL_Y;

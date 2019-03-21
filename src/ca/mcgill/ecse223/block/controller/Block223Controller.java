@@ -201,17 +201,25 @@ public class Block223Controller {
 		}
 		Game game = Block223Application.getCurrentGame();
 		String currentName = game.getName();
-		if(currentName != name) {
-			///unique name is already checked in the game class line 55
-			
-			try {
-				game.setName(name);
+		Block223 block223 = Block223Application.getBlock223();
+		if(block223.findGame(name) != null) {
+			if(block223.findGame(name) != game) {
+				throw new InvalidInputException("The name of a game must be unique.");
 			}
-			catch (RuntimeException e) {
-				error += e.getMessage();
-				throw new InvalidInputException(error);
+		}
+		try {
+		if(!(currentName.equals(name))) {
+			if(game.setName(name) == false) {
+				throw new InvalidInputException("The name of a game must be unique.");
 			}
-			
+		}
+		//Commented out while we confirm whether the prof wants this, this code allows testUpdateGameNonUnique() test to pass.
+		/*if(currentName.equals(name)) {
+			throw new InvalidInputException("The name of a game must be unique.");
+		}*/
+		
+		} catch (RuntimeException e) { 
+			throw new InvalidInputException(e.getMessage());
 		}
 		try {
 			setGameDetails(nrLevels, nrBlocksPerLevel, minBallSpeedX, minBallSpeedY, ballSpeedIncreaseFactor, maxPaddleLength, minPaddleLength);
@@ -276,22 +284,22 @@ public class Block223Controller {
 		if(Block223Application.getCurrentUserRole() != Block223Application.getCurrentGame().getAdmin()) {
 			throw new InvalidInputException("Only the admin who created the game can update a block. ");
 		}
-		// validation check to see if another block w/ same color exists
-		for(Block block: Block223Application.getCurrentGame().getBlocks()) {
-			if((block.getRed() == red) && (block.getGreen() == green) && (block.getBlue() == blue)) {
-				throw new InvalidInputException("A block with the same color already exists for the game. ");
-			}
-		}
 		Game game = Block223Application.getCurrentGame();
-		Block block = game.findBlock(id);
-		if(block == null ) {
+		Block blockToUpdate = game.findBlock(id);
+		if(blockToUpdate == null ) {
 			throw new InvalidInputException("The block does not exist. ");
 		}
+		// validation check to see if another block w/ same color exists
+				for(Block block: Block223Application.getCurrentGame().getBlocks()) {
+					if((block.getRed() == red) && (block.getGreen() == green) && (block.getBlue() == blue) && block.getId() != id) {
+						throw new InvalidInputException("A block with the same color already exists for the game. ");
+					}
+				}
 		try {
-			block.setRed(red);
-			block.setGreen(green);
-			block.setBlue(blue);
-			block.setPoints(points);
+			blockToUpdate.setRed(red);
+			blockToUpdate.setGreen(green);
+			blockToUpdate.setBlue(blue);
+			blockToUpdate.setPoints(points);
 		} catch (RuntimeException e){
 			throw new InvalidInputException(e.getMessage());
 		}
@@ -299,18 +307,14 @@ public class Block223Controller {
 
 	public static void positionBlock(int id, int level, int gridHorizontalPosition, int gridVerticalPosition)
 			throws InvalidInputException {
-		String error = "";
 		if(!(Block223Application.getCurrentUserRole() instanceof Admin)) {
-			error = "Admin privileges are required to position a block. ";
+			throw new InvalidInputException("Admin privileges are required to position a block. ");
 		}
 		if(Block223Application.getCurrentGame() == null) {
-			error = error + "A game must be selected to position a block. ";
+			throw new InvalidInputException("A game must be selected to position a block. ");
 		}
 		if(Block223Application.getCurrentUserRole() != Block223Application.getCurrentGame().getAdmin()) {
-			error = error + "Only the admin who created the game can position a block. ";
-		}
-		if (error.length() > 0) {
-			throw new InvalidInputException(error.trim());
+			throw new InvalidInputException("Only the admin who created the game can position a block. ");
 		}
 		Game game = Block223Application.getCurrentGame();
 		Level foundLevel = null;
@@ -321,7 +325,7 @@ public class Block223Controller {
 		}
 		List<BlockAssignment> assignments = foundLevel.getBlockAssignments();
 		if(assignments.size() == game.getNrBlocksPerLevel()) {
-			error = error + "The number of blocks has reached the maximum number (" + game.getNrBlocksPerLevel() + ") allowed for this game. ";
+			throw new InvalidInputException("The number of blocks has reached the maximum number (" + game.getNrBlocksPerLevel() + ") allowed for this game. ");
 		}
 		BlockAssignment ba = null;
 		for(BlockAssignment assignment: assignments) {
@@ -330,14 +334,11 @@ public class Block223Controller {
 			}
 		}
 		if(ba != null) {
-			error = error + "A block already exists at location " + gridHorizontalPosition + "/" + gridVerticalPosition + ".";
+			throw new InvalidInputException("A block already exists at location " + gridHorizontalPosition + "/" + gridVerticalPosition + ".");
 		}
 		Block block = game.findBlock(id);
 		if(block == null) {
-			error = error + "The block does not exist. ";
-		}
-		if(error.length() > 0) {
-			throw new InvalidInputException(error.trim());
+			throw new InvalidInputException("The block does not exist. ");
 		}
 		try {
 			new BlockAssignment(gridHorizontalPosition, gridVerticalPosition, foundLevel, block, game);
@@ -422,18 +423,12 @@ public class Block223Controller {
 	}
 
 	public static void register(String username, String playerPassword, String adminPassword) throws InvalidInputException {
-		//String error = "";
 		if(Block223Application.getCurrentUserRole() != null) {
-			//error = "Cannot register a new user while a user is logged in. ";
 			throw new InvalidInputException("Cannot register a new user while a user is logged in. ");
 		}
 		if(playerPassword == adminPassword){ // both used to be .trim()
-			//error = error + "The passwords have to be different. ";
 			throw new InvalidInputException("The passwords have to be different. ");
 		}
-		/*if (error.length() > 0) {
-			throw new InvalidInputException(error.trim());
-		}*/
 		Block223 block223 = Block223Application.getBlock223();
 		// 4th and 5th validation checks are caught this way with try-catch block  			
 		Player player = null;
@@ -449,32 +444,32 @@ public class Block223Controller {
 		} catch (RuntimeException e) {
 			if(player != null) player.delete();
 			if(admin != null) admin.delete();
+			if((e.getMessage()).equals("Cannot create due to duplicate username")) {
+				throw new InvalidInputException("The username has already been taken.");
+			}
 			throw new InvalidInputException(e.getMessage());
 		}
-		/*if(Block223Application.getBlock223().getCurrentUserRole != null) {
-			throw new InvalidInputException("Cannot register a new user while a user is logged in.");
-		}
-		if(playerPassword.equals(adminPassword)) {
-			throw new InvalidInputException("The passwords have to be different.");
-		}*/
-		
 	}
 
 	public static void login(String username, String password) throws InvalidInputException {
 		//Should be changed back resetBlock223 only once persistence is fixed
 		//At the moment load doesn't really work and it was just making a new 223
 		//block every time I logged in meaning nothing would save between logins.
-		if(Block223Application.getBlock223() == null) {
-			Block223Application.resetBlock223();
-		}
-		//String error = "";
 		if(Block223Application.getCurrentUserRole() != null) {
 			throw new InvalidInputException("Cannot login a user while a user already logged in.");
 		}
+		
+		Block223Application.resetBlock223();
+		/*if(Block223Application.getBlock223() != null) {
+			Block223Application.getBlock223().delete();
+		}*/
+		Block223Application.setCurrentGame(null);
+		//Block223 block223 = Block223Application.getBlock223();
+		
+		
 		User foundUser = User.getWithUsername(username);
 		if(foundUser == null) {
 			throw new InvalidInputException("The username and password do not match.");
-			//throw new InvalidInputException(error);
 		}
 		String foundPassword = null;
 		List<UserRole> users = foundUser.getRoles();
@@ -486,14 +481,10 @@ public class Block223Controller {
 			}
 		}
 		if(foundPassword == null) {
-			throw new InvalidInputException("The username and password do not match.\n"
-					+ "");
+			throw new InvalidInputException("The username and password do not match.");
 		}
-		
-		/*if(error.length() > 0) {
-			throw new InvalidInputException(error.trim());
-		}*/
 	}
+		
 
 	public static void logout() {
 		Block223Application.setCurrentUserRole(null);
