@@ -35,12 +35,16 @@ class PlayedGame {
   }
 
   private boolean isOutOfBoundsAndLastLife() {
-    // TODO implement
-    return false;
+   	if (getLives() == 1){ 
+     return isOutOfBounds();
+     }
+     return false;
   }
   
   private boolean isOutOfBounds() {
-    // TODO implement
+    if ( getCurrentBallY() > getCurrentPaddleY()){
+    return true;
+    }    
     return false;
   }
   
@@ -113,7 +117,12 @@ class PlayedGame {
   }
 
   private void doOutOfBounds() {
-    // TODO implement
+     setLives (lives-1);
+     resetCurrentBallX();
+     resetCurrentBallY();
+     resetBallDirectionX();
+     resetBallDirectionY();
+     resetCurrentPaddleX();
   }
 
   private void doHitBlock() {
@@ -139,8 +148,15 @@ class PlayedGame {
     // TODO implement
   }
 
-  private void doGameOver() {
-    // TODO implement
+  private void doGameOver(){
+    Block223 block223 = getBlock223();
+    Player p  = getPlayer();
+    if ( p != null){
+    	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p,game,block223);
+    	Game game = getGame();
+    	game.setMostRecentEntry(hof);
+    	}
+    p.delete();
   }
   
   private boolean isCloser(BouncePoint first, BouncePoint second) {
