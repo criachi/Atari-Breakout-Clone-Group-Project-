@@ -150,11 +150,15 @@ class PlayedGame {
   	if(second == null) {
   		return true;
   	}
-  	double distance1 = sqrt(((first.getX() - currentBallX())*(first.getX() - currentBallX()))+((first.getY() - currentBallY())*(first.getY() - currentBallY())));
-  	double distance2 = sqrt(((second.getX() - currentBallX())*(second.getX() - currentBallX()))+((second.getY() - currentBallY())*(second.getY() - currentBallY())));
+  	double distance1 = sqrt(((first.getX() - getCurrentBallX())*(first.getX() - getCurrentBallX()))+((first.getY() - getCurrentBallY())*(first.getY() - getCurrentBallY())));
+  	double distance2 = sqrt(((second.getX() - getCurrentBallX())*(second.getX() - getCurrentBallX()))+((second.getY() - getCurrentBallY())*(second.getY() - getCurrentBallY())));
   	if(distance1 < distance2) {
   		return true;
   	}
   	return false;
+  }
+  
+  private BouncePoint calculateBoincePointBlock(PlayedBlockAssignment block) {
+  	
   }
 }
