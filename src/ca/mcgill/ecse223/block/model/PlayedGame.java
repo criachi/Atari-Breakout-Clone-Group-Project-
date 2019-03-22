@@ -801,7 +801,7 @@ public class PlayedGame implements Serializable
     Block223 block223 = getBlock223();
     Player p  = getPlayer();
     if ( p != null){
-    	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p.this,block223);
+    	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p,game,block223);
     	Game game = getGame();
     	game.setMostRecentEntry(hof);
     	}
