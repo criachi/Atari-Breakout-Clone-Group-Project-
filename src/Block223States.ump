@@ -48,8 +48,9 @@ class PlayedGame {
     return false;
   }
   
+  //Onur Cayci - ball hits block method
+  
   private boolean hitLastBlockAndLastLevel() {
-  // TODO implement calculateBouncePointBlock() method
     Game game = this.getGame();
     int nrLevels = game.numberOfLevels();
     this.setBounce(null);
@@ -57,7 +58,7 @@ class PlayedGame {
     	int nrBLocks = this.numberOfBlocks();
     	if(nrBlocks == 1) {
     		PlayedBlockAssignment block = this.getBlock(0);
-    		BouncePoint bp = this.calculateBouncePointBlock(block); //calculateBouncePointBlock should be implemented
+    		BouncePoint bp = this.calculateBouncePointBlock(block);
     		if(bp == null) {
     			return null;
     		}
@@ -67,6 +68,8 @@ class PlayedGame {
     }
     return false;
   }
+  
+  //Onur Cayci - ball hits block method
   
   private boolean hitLastBlock(){
     int nrBlocks = this.numberOfBlocks();
@@ -82,6 +85,8 @@ class PlayedGame {
     }
     return false;
   }
+  
+  //Onur Cayci - ball hits block method
   
   private boolean hitBlock() {
     int nrBlocks = this.numberOfBlocks();
@@ -124,7 +129,9 @@ class PlayedGame {
      resetBallDirectionY();
      resetCurrentPaddleX();
   }
-
+  
+  //Onur Cayci - ball hits block method
+  
   private void doHitBlock() {
     int score = this.getScore();
     BouncePoint bounce = this.getBounce();
@@ -135,7 +142,9 @@ class PlayedGame {
     pblock.delete();
     this.bounceBall();
   }
-
+  
+  //Onur Cayci - ball hits block method
+  
   private void doHitBlockNextLevel() {
     this.doHitBlock();
     int level = this.getCurrentLevel();
@@ -159,6 +168,8 @@ class PlayedGame {
     p.delete();
   }
   
+  //Onur Cayci - ball hits block method
+  
   private boolean isCloser(BouncePoint first, BouncePoint second) {
   	if(first == null) {
   		return false;
@@ -174,7 +185,28 @@ class PlayedGame {
   	return false;
   }
   
+  //Onur Cayci - ball hits block method
+ 
   private BouncePoint calculateBoincePointBlock(PlayedBlockAssignment block) {
+  	int blockX = 25 * (block.getX() - 1); //top left corner x-coordinate of the block
+  	int blockY = 22 * (block.getY() - 1); //top left corner y-coordinate of the block
+  	Rectangle2D rect = new Rectangle2D.Double(blockX, blockY, 40, 40);
+  	Ellipse2D ball = new Ellipse2D.Double(getCurrentBallX() + getBallDirectionX(); getCurrentBallY() + getBallDirectionY(); 10, 10);
+  	if(!rect.intersectsLine(ball)) return null;
+  	if(blockY > getBallY()) {
+  	//if the ball comes from the top
   	
-  }
+  	}
+  	if((blockY + 20) < getBallY()) {
+  	//if the ball comes from the bottom
+  	
+  	}
+  	if(blockX > getBallX()) {
+  	//if the ball comes from the left
+  	
+  	}
+  	if(blockX + 20 < getBallX()) {
+  	//if the ball comes from the right
+  	
+  	}
 }
