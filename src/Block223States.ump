@@ -153,8 +153,14 @@ class PlayedGame {
     this.setWaitTime(INITIAL_WAIT_TIME * getGame().getBall().getBallSpeedIcreaseFactor() ^ (getCurrentLevel()-1))
   }
 
+//Christina Riachi move Ball feature 
   private void doHitNothingAndNotOutOfBounds() {
-    // TODO implement
+    double x = this.getCurrentBallX();
+    double y = this.getCurrentBallY();
+    double dx = this.getBallDirectionX();
+    double dy = this.getBallDirectionY();
+    this.setCurrentBallX(x+dx);
+    this.setCurrentBallY(y+dy);
   }
 
   private void doGameOver(){
@@ -261,4 +267,5 @@ class PlayedGame {
   			return new BouncePoint(blockX + 20, blockY + 20, FLIP_Y);
   		}
   	}
+}
 }

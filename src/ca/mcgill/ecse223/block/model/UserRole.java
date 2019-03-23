@@ -4,8 +4,8 @@
 package ca.mcgill.ecse223.block.model;
 import java.io.Serializable;
 
-// line 19 "../../../../../Block223Persistence.ump"
-// line 32 "../../../../../Block223 v3.ump"
+// line 17 "../../../../../Block223Persistence.ump"
+// line 45 "../../../../../Block223 v3.ump"
 public abstract class UserRole implements Serializable
 {
 
@@ -25,7 +25,7 @@ public abstract class UserRole implements Serializable
 
   public UserRole(String aPassword, Block223 aBlock223)
   {
-    // line 34 "../../../../../Block223 v3.ump"
+    // line 47 "../../../../../Block223 v3.ump"
     if (aPassword == null || aPassword == "") {
        		throw new RuntimeException("The player password needs to be specified. ");
         }
@@ -100,8 +100,8 @@ public abstract class UserRole implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 22 "../../../../../Block223Persistence.ump"
-  private static final long serialVersionUID = 6181305284694705923L ;
+  // line 20 "../../../../../Block223Persistence.ump"
+  private static final long serialVersionUID = 3389752283403781197L ;
 
   
 }

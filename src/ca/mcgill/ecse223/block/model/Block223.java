@@ -588,25 +588,27 @@ public class Block223 implements Serializable
     
   }
 
-  // line 10 "../../../../../Block223Persistence.ump"
-   public void reinitialize(){
-    for( Game game : this.getGames() ) {
-  		List<Block> blocks = game.getBlocks();
-  	    Block.reinitializeAutouniqueID(blocks); 
-  	}
-  	Game.reinitializeUniqueGameName(this.getGames());
-    User.reinitializeUniqueUserName(this.getUsers());
-  }
-
-  // line 12 "../../../../../Block223 v3.ump"
+  // line 13 "../../../../../Block223 v3.ump"
    public Game findGame(String name){
     for(Game game : getGames()) {
 		  if (game.getName().equals(name)) {
 			  return game;
 		  }
 	  }
-	  
 	  return null;
+  }
+
+  // line 22 "../../../../../Block223 v3.ump"
+   public String findUsername(UserRole userRole){
+    for(User user : users) {
+  			for(UserRole role : user.getRoles()) {
+  				if(role == userRole) {
+  					String username = user.getUsername();
+  					break; 
+  				}
+  			}
+  		}
+  		return username;
   }
   
   //------------------------

@@ -8,15 +8,28 @@ class Block223 {
    1 <@>- * User users;
    1 <@>- * UserRole roles;
    1 <@>- * Game games;
+   
    public Game findGame(String name) {
 	  for(Game game : getGames()) {
 		  if (game.getName().equals(name)) {
 			  return game;
 		  }
 	  }
-	  
 	  return null;
   }
+  
+  public String findUsername(UserRole userRole) {
+  		for(User user : users) {
+  			for(UserRole role : user.getRoles()) {
+  				if(role == userRole) {
+  					String username = user.getUsername();
+  					break; 
+  				}
+  			}
+  		}
+  		return username;
+  }
+  
 }
 
 class User {

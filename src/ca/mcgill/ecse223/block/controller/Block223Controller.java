@@ -151,6 +151,10 @@ public class Block223Controller {
 		if(gameToDelete == null) {
 			return;
 		}
+		// ATTENTION: VALIDATION CHECK ADDED BY CHRISTINA; CHECK IT'S CORRECT 
+		else if(gameToDelete.isPublished()) {
+			throw new InvalidInputException("A published game cannot be deleted.");
+		}
 		//Check that game admin is currently signed in admin
 		else if(!(gameToDelete.getAdmin().equals((Admin)user))){
 			error += "Only the admin who created the game can delete the game.";
@@ -175,7 +179,9 @@ public class Block223Controller {
 		if(game == null) {
 			throw new InvalidInputException("A game with name "+ name +" does not exist.");
 		}
-		
+		if(game.isPublished()) {
+			throw new InvalidInputException("A published game cannot be changed.");
+		}
 		
 		if(Block223Application.getCurrentUserRole() != game.getAdmin()) {
 			throw new InvalidInputException("Only the admin who created the game can select the game.");
@@ -500,9 +506,40 @@ public class Block223Controller {
 		}
 
 		public static void testGame(Block223PlayModeInterface ui) throws InvalidInputException {
+			if(!(Block223Application.getCurrentUserRole() instanceof Admin)) {
+				throw new InvalidInputException("Admin privileges are required to test a game.");
+			}
+			if(Block223Application.getCurrentGame() == null) {
+				throw new InvalidInputException("A game must be selected to test it.");
+			}
+			if(Block223Application.getCurrentUserRole() != Block223Application.getCurrentGame().getAdmin()) {
+				throw new InvalidInputException("Only the admin who created the game can test it.");
+			}
+			Game game = Block223Application.getCurrentGame();
+			UserRole admin = Block223Application.getCurrentUserRole();
+			Block223 block223 = Block223Application.getBlock223();
+			String username = block223.findUsername(Block223Application.getCurrentUserRole());
+			PlayedGame pgame = new PlayedGame(username, game, block223);
+			pgame.setPlayer(null);
+			Block223Application.setCurrentPlayableGame(pgame);
+			startGame(ui);
 		}
 
 		public static void publishGame () throws InvalidInputException {
+			Game game = Block223Application.getCurrentGame();
+			if(!(Block223Application.getCurrentUserRole() instanceof Admin)) {
+				throw new InvalidInputException("Admin privileges are required to publish a game.");
+			}
+			if(game == null) {
+				throw new InvalidInputException("A game must be selected to publish it.");
+			}
+			if(Block223Application.getCurrentUserRole() != game.getAdmin()) {
+				throw new InvalidInputException("Only the admin who created the game can publish it.");
+			}
+			if(game.getNrBlocksPerLevel() < 1) {
+				throw new InvalidInputException("At least one block must be defined for a game to be published.");
+			}
+			game.setPublished(true);
 		}
 
 	// ****************************
