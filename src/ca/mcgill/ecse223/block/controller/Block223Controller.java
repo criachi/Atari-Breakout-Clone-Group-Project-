@@ -560,7 +560,8 @@ public class Block223Controller {
 		//Run through all games, send back the games belonging to the logged in user
 		for(Game game : block223.getGames()) {
 			Admin gameAdmin = game.getAdmin();
-			if(gameAdmin.equals((Admin)user)) {
+			//Validation check added to ensure that published games are not added to the list - Anthony
+			if(gameAdmin.equals((Admin)user) && !game.getPublished()) {
 				TOGame to = new TOGame(game.getName(), game.getLevels().size(), game.getNrBlocksPerLevel(), game.getBall().getMinBallSpeedX(), game.getBall().getMinBallSpeedY(), game.getBall().getBallSpeedIncreaseFactor(), game.getPaddle().getMaxPaddleLength(), game.getPaddle().getMinPaddleLength());
 				result.add(to);
 			}
