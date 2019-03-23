@@ -730,7 +730,11 @@ public class PlayedGame implements Serializable
     return false;
   }
 
-  // line 38 "../../../../../Block223States.ump"
+
+  /**
+   * Melis Malki = ball out of bounds method
+   */
+  // line 40 "../../../../../Block223States.ump"
    private boolean isOutOfBoundsAndLastLife(){
     if (getLives() == 1){ 
      return isOutOfBounds();
@@ -738,7 +742,11 @@ public class PlayedGame implements Serializable
      return false;
   }
 
-  // line 45 "../../../../../Block223States.ump"
+
+  /**
+   * Melis Malki = ball out of bounds method
+   */
+  // line 48 "../../../../../Block223States.ump"
    private boolean isOutOfBounds(){
     if ( getCurrentBallY() > getCurrentPaddleY()){
     return true;
@@ -750,7 +758,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 54 "../../../../../Block223States.ump"
+  // line 57 "../../../../../Block223States.ump"
    private boolean hitLastBlockAndLastLevel(){
     Game game = this.getGame();
     int nrLevels = game.numberOfLevels();
@@ -774,7 +782,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 75 "../../../../../Block223States.ump"
+  // line 78 "../../../../../Block223States.ump"
    private boolean hitLastBlock(){
     int nrBlocks = this.numberOfBlocks();
     this.setBounce(null);
@@ -794,7 +802,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 92 "../../../../../Block223States.ump"
+  // line 95 "../../../../../Block223States.ump"
    private boolean hitBlock(){
     int nrBlocks = this.numberOfBlocks();
     this.setBounce(null);
@@ -813,7 +821,7 @@ public class PlayedGame implements Serializable
     return this.getBounce() != null;
   }
 
-  // line 110 "../../../../../Block223States.ump"
+  // line 113 "../../../../../Block223States.ump"
    private boolean hitWall(){
     // TODO implement
     return false;
@@ -823,19 +831,24 @@ public class PlayedGame implements Serializable
   /**
    * Actions
    */
-  // line 117 "../../../../../Block223States.ump"
+  // line 120 "../../../../../Block223States.ump"
    private void doSetup(){
     // TODO implement
   }
 
-  // line 121 "../../../../../Block223States.ump"
+  // line 124 "../../../../../Block223States.ump"
    private void doHitPaddleOrWall(){
     // TODO implement
   }
 
-  // line 125 "../../../../../Block223States.ump"
+
+  /**
+   * Melis Malki = ball out of bounds method
+   */
+  // line 129 "../../../../../Block223States.ump"
    private void doOutOfBounds(){
-    setLives (lives-1);
+    int lives = getLives();
+     setLives (lives-1);
      resetCurrentBallX();
      resetCurrentBallY();
      resetBallDirectionX();
@@ -847,7 +860,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 136 "../../../../../Block223States.ump"
+  // line 141 "../../../../../Block223States.ump"
    private void doHitBlock(){
     int score = this.getScore();
     BouncePoint bounce = this.getBounce();
@@ -863,7 +876,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 149 "../../../../../Block223States.ump"
+  // line 154 "../../../../../Block223States.ump"
    private void doHitBlockNextLevel(){
     this.doHitBlock();
     int level = this.getCurrentLevel();
@@ -876,7 +889,7 @@ public class PlayedGame implements Serializable
   /**
    * Christina Riachi move Ball feature
    */
-  // line 158 "../../../../../Block223States.ump"
+  // line 163 "../../../../../Block223States.ump"
    private void doHitNothingAndNotOutOfBounds(){
     double x = this.getCurrentBallX();
     double y = this.getCurrentBallY();
@@ -886,9 +899,12 @@ public class PlayedGame implements Serializable
     this.setCurrentBallY(y+dy);
   }
 
-  // line 167 "../../../../../Block223States.ump"
+
+  /**
+   * Melis Malki = ball out of bounds method
+   */
+  // line 174 "../../../../../Block223States.ump"
    private void doGameOver(){
-    Block223 block223 = getBlock223();
     Player p  = getPlayer();
     if ( p != null){
     	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p,game,block223);
@@ -902,7 +918,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 180 "../../../../../Block223States.ump"
+  // line 186 "../../../../../Block223States.ump"
    private boolean isCloser(BouncePoint first, BouncePoint second){
     if(first == null) {
   		return false;
@@ -922,7 +938,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 197 "../../../../../Block223States.ump"
+  // line 203 "../../../../../Block223States.ump"
    private BouncePoint calculateBouncePointBlock(PlayedBlockAssignment block){
     double blockX = 25 * (block.getX() - 1); //top left corner x-coordinate of the block
   	double blockY = 22 * (block.getY() - 1); //top left corner y-coordinate of the block
@@ -1000,7 +1016,7 @@ public class PlayedGame implements Serializable
   	return null;
   }
 
-  // line 274 "../../../../../Block223States.ump"
+  // line 280 "../../../../../Block223States.ump"
    private void bounceBall(){
     //FLIP_Y case
   	BouncePoint.BounceDirection bd = this.bounce.getDirection();

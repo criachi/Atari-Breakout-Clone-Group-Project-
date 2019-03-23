@@ -34,12 +34,15 @@ class PlayedGame {
     return false;
   }
 
+//Melis Malki = ball out of bounds method
+
   private boolean isOutOfBoundsAndLastLife() {
    	if (getLives() == 1){ 
      return isOutOfBounds();
      }
      return false;
   }
+  //Melis Malki = ball out of bounds method
   
   private boolean isOutOfBounds() {
     if ( getCurrentBallY() > getCurrentPaddleY()){
@@ -120,8 +123,10 @@ class PlayedGame {
   private void doHitPaddleOrWall() {
     // TODO implement
   }
+//Melis Malki = ball out of bounds method
 
   private void doOutOfBounds() {
+     int lives = getLives();
      setLives (lives-1);
      resetCurrentBallX();
      resetCurrentBallY();
@@ -162,9 +167,10 @@ class PlayedGame {
     this.setCurrentBallX(x+dx);
     this.setCurrentBallY(y+dy);
   }
+  
+//Melis Malki = ball out of bounds method
 
   private void doGameOver(){
-    Block223 block223 = getBlock223();
     Player p  = getPlayer();
     if ( p != null){
     	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p,game,block223);
