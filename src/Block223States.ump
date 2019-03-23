@@ -193,20 +193,72 @@ class PlayedGame {
   	Rectangle2D rect = new Rectangle2D.Double(blockX, blockY, 40, 40);
   	Ellipse2D ball = new Ellipse2D.Double(getCurrentBallX() + getBallDirectionX(); getCurrentBallY() + getBallDirectionY(); 10, 10);
   	if(!rect.intersectsLine(ball)) return null;
-  	if(blockY > getBallY()) {
+  	
   	//if the ball comes from the top
   	
+  	if(blockY > getBallY()) {
+  	//option A
+  		if((getBallX() + getBallDirectionX()) != blockX || (getBallX() + getBallDirectionX()) != (getBallX() + 20)) {
+  			return BouncePoint bp = new BouncePoint(getBallX() + getBallDirectionX(), blockY, FLIP_Y);
+  		}
+  	//option E
+  		if((getBallX() + getBallDirectionX()) = blockX) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  			return new BouncePoint(blockX, blockY, FLIP_Y);
+  		}
+  	//option F
+  		if((getBallX() + getBallDirectionX() = (blockX + 20)) {
+  			return new BouncePoint(blockX + 20, blockY, FLIP_X);
+  		} 
   	}
-  	if((blockY + 20) < getBallY()) {
+  	
   	//if the ball comes from the bottom
   	
+  	if((blockY + 20) < getBallY()) {
+  	//option D
+  		if((getBallX() + getBallDirectionX()) != blockX || (getBallX() + getBallDirectionX()) != (getBallX() + 20)) {
+  			return new BouncePoint(getBallX() + getBallDirectionX(), blockY + 20, FLIP_Y);
+  		}
+  	//option G
+  		if((getBallX() + getBallDirectionX()) = blockX) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  			return new BouncePoint(blockX, blockY + 20, FLIP_Y);
+  		}
+  	//option H
+  		if((getBallX() + getBallDirectionX() = (blockX + 20)) {
+  			return new BouncePoint(blockX + 20, blockY + 20, FLIP_X);
+  		}
   	}
-  	if(blockX > getBallX()) {
+  	
   	//if the ball comes from the left
   	
+  	if(blockX > getBallX()) {
+  	//option B
+  	if((getBallY() + getBallDirectionY()) != blockY || (getBallY() + getBallDirectionY()) != (getBallY() + 20)) {
+  			return new BouncePoint(blockX, getBallY() + getBallDirectionY(), FLIP_X);
+  		}
+  	//option E
+  		if((getBallY() + getBallDirectionY()) = blockY) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  			return new BouncePoint(blockX, blockY, FLIP_X);
+  		}
+  	//option G
+ 		if((getBallY() + getBallDirectionY() = (blockY + 20)) {
+  			return new BouncePoint(blockX, blockY + 20, FLIP_X);
+  		}
   	}
-  	if(blockX + 20 < getBallX()) {
+  	
   	//if the ball comes from the right
   	
+  	if(blockX + 20 < getBallX()) {
+  	//option C
+  		if((getBallY() + getBallDirectionY()) != blockY || (getBallY() + getBallDirectionY()) != (getBallY() + 20)) {
+  			return new BouncePoint(blockX + 20, getBallY() + getBallDirectionY(), FLIP_X);
+  		}
+  	//option F
+  		if((getBallY() + getBallDirectionY()) = blockY) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  			return new BouncePoint(blockX + 20, blockY, FLIP_Y);
+  		}
+  	//option H
+  		if((getBallY() + getBallDirectionY() = (blockY + 20)) {
+  			return new BouncePoint(blockX + 20, blockY + 20, FLIP_Y);
+  		}
   	}
 }
