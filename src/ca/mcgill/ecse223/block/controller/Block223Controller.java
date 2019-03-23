@@ -692,7 +692,8 @@ public class Block223Controller {
 				throw new InvalidInputException("A game must be selected to view its hall of fame.");
 			} 
 			List<TOPlayableGame> list = getPlayableGames ();
-			PlayedGame pgame = list.selectPlayableGame(pgame.getGame().getName(), pgame.getId());
+			PlayedGame pgame = new PlayedGame()//sth must be written here instead of this but whatever I tried did not work
+			selectPlayableGame(pgame.getGame().getName() , pgame.getId());
 			Game game = pgame.getGame();
 			TOHallOfFame result = new TOHallOfFame (game.getName());
 			if (start < 1) {
@@ -704,8 +705,7 @@ public class Block223Controller {
 				end = end -1;
 			}
 			for(int i= start ; i<= end; i++) {
-				String userName = pgame.getPlayername();
-				TOHallOfFameEntry to = new TOHallOfFameEntry(i+1, userName, game.getHallOfFameEntry(i).getScore(),result);
+				TOHallOfFameEntry to = new TOHallOfFameEntry(i+1, game.getHallOfFameEntry(i).getPlayername(), game.getHallOfFameEntry(i).getScore(),result);
 			}
 			return result;
 		}
@@ -718,7 +718,8 @@ public class Block223Controller {
 				throw new InvalidInputException("A game must be selected to view its hall of fame.");
 			} 
 			List<TOPlayableGame> list = getPlayableGames ();
-			PlayedGame pgame = list.selectPlayableGame(pgame.getGame().getName(), pgame.getId());
+			PlayedGame pgame = new PlayedGame()//sth must be written here instead of this but whatever I tried did not work
+			selectPlayableGame(pgame.getGame().getName() , pgame.getId());
 			Game game = pgame.getGame();
 			TOHallOfFame result = new TOHallOfFame (game.getName());
 			HallOfFameEntry mostRecent = game.getMostRecentEntry();
@@ -735,7 +736,7 @@ public class Block223Controller {
 				end = end -1;
 			}
 			for(index =start; index<end; index++) {
-				String userName = pgame.getPlayername();
+				String userName = game.getHallOfFameEntry(index).getPlayername();
 				TOHallOfFameEntry to = new TOHallOfFameEntry(index+1, userName, game.getHallOfFameEntry(index).getScore(),result);
 			}
 			return result;
