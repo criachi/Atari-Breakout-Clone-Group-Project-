@@ -271,6 +271,53 @@ class PlayedGame {
   }
   
   private void bounceBall() {
-  //TODO define bounceBall
+  //FLIP_Y case
+  	BouncePoint.BounceDirection bd = this.bounce.getDirection();
+  	if(bd.equals(BouncePoint.BounceDirection.FLIP_Y)) {
+  		double in = bounce.getY() - currentBallY;
+  		double rem = ballDirectionY - in;
+  		if(rem == 0) {
+  			currentBallX = bounce.getX();
+  			currentBallY = bounce.getY();
+  		}
+  		double oldDirectionX = ballDirectionX;
+  		double oldDirectionY = ballDirectionY;
+  		ballDirectionX = oldDirectionX + (0.1 * oldDirectionY);
+  		ballDirectionY = (oldDirectionY * (-1));
+  		currentBallX = bounce.getX() + rem/oldDirectionX * ballDirectionX;
+  		currentBallY = bounce.getY() + rem/oldDirectionY * ballDirectionY;
+  	}
+  	//FLIP_X case
+  	if(bd.equals(BouncePoint.BounceDirection.FLIP_X)) {
+  		double in = bounce.getX() - currentBallX;
+  		double rem = ballDirectionX - in;
+  		if(rem == 0) {
+  			currentBallX = bounce.getX();
+  			currentBallY = bounce.getY();
+  		}
+  		double oldDirectionX = ballDirectionX;
+  		double oldDirectionY = ballDirectionY;
+  		ballDirectionX = (oldDirectionX * (-1));
+  		ballDirectionY = oldDirectionY + (0.1 * oldDirectionX);
+  		currentBallX = bounce.getX() + rem/oldDirectionX * ballDirectionX;
+  		currentBallY = bounce.getY() + rem/oldDirectionY * ballDirectionY;
+  	}
+  	//FLIP_BOTH case
+  	if(bd.equals(BouncePoint.BounceDirection.FLIP_BOTH)) {
+  		double inX = bounce.getX() - currentBallX;
+  		double remX = ballDirectionX - inX;
+  		double inY = bounce.getY() - currentBallY;
+  		double remY = ballDirectionY - inY;
+  		if(remX == 0 && remY == 0) {
+  			currentBallX = bounce.getX();
+  			currentBallY = bounce.getY();
+  		}
+  		double oldDirectionX = ballDirectionX;
+  		double oldDirectionY = ballDirectionY;
+  		ballDirectionX = (oldDirectionX * (-1));
+  		ballDirectionY = (oldDirectionY * (-1));
+  		currentBallX = bounce.getX() + remX/oldDirectionX * ballDirectionX;
+  		currentBallY = bounce.getY() + remY/oldDirectionY * ballDirectionY;
+  	}
   }
 }
