@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 6 "../../../../../Block223PlayMode.ump"
-// line 35 "../../../../../Block223Persistence.ump"
-// line 63 "../../../../../Block223 v3.ump"
+// line 49 "../../../../../Block223Persistence.ump"
+// line 64 "../../../../../Block223 v3.ump"
 public class Game implements Serializable
 {
 
@@ -39,7 +39,7 @@ public class Game implements Serializable
   private boolean published;
   private String name;
   private int nrBlocksPerLevel;
-  private Comparator<HallOfFameEntry> hallOfFameEntriesPriority;
+  private transient Comparator<HallOfFameEntry> hallOfFameEntriesPriority;
 
   //Game Associations
   private HallOfFameEntry mostRecentEntry;
@@ -59,12 +59,12 @@ public class Game implements Serializable
 
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, Ball aBall, Paddle aPaddle, Block223 aBlock223)
   {
-    // line 73 "../../../../../Block223 v3.ump"
+    // line 74 "../../../../../Block223 v3.ump"
     if(aName == "" || aName == null) {
        	throw new RuntimeException("The name of a game must be specified.");
        	}
     // END OF UMPLE BEFORE INJECTION
-    // line 78 "../../../../../Block223 v3.ump"
+    // line 79 "../../../../../Block223 v3.ump"
     if (aNrBlocksPerLevel <= 0) {
     	  throw new RuntimeException("The number of blocks per level must be greater than zero.");
     	}
@@ -113,12 +113,12 @@ public class Game implements Serializable
 
   public Game(String aName, int aNrBlocksPerLevel, Admin aAdmin, int aMinBallSpeedXForBall, int aMinBallSpeedYForBall, double aBallSpeedIncreaseFactorForBall, int aMaxPaddleLengthForPaddle, int aMinPaddleLengthForPaddle, Block223 aBlock223)
   {
-    // line 73 "../../../../../Block223 v3.ump"
+    // line 74 "../../../../../Block223 v3.ump"
     if(aName == "" || aName == null) {
        	throw new RuntimeException("The name of a game must be specified.");
        	}
     // END OF UMPLE BEFORE INJECTION
-    // line 78 "../../../../../Block223 v3.ump"
+    // line 79 "../../../../../Block223 v3.ump"
     if (aNrBlocksPerLevel <= 0) {
     	  throw new RuntimeException("The number of blocks per level must be greater than zero.");
     	}
@@ -169,7 +169,7 @@ public class Game implements Serializable
   public boolean setName(String aName)
   {
     boolean wasSet = false;
-    // line 73 "../../../../../Block223 v3.ump"
+    // line 74 "../../../../../Block223 v3.ump"
     if(aName == "" || aName == null) {
        	throw new RuntimeException("The name of a game must be specified.");
        	}
@@ -190,12 +190,12 @@ public class Game implements Serializable
   public boolean setNrBlocksPerLevel(int aNrBlocksPerLevel)
   {
     boolean wasSet = false;
-    // line 78 "../../../../../Block223 v3.ump"
+    // line 79 "../../../../../Block223 v3.ump"
     if (aNrBlocksPerLevel <= 0) {
     	  throw new RuntimeException("The number of blocks per level must be greater than zero.");
     	}
     // END OF UMPLE BEFORE INJECTION
-    // line 83 "../../../../../Block223 v3.ump"
+    // line 84 "../../../../../Block223 v3.ump"
     for(Level level: levels) {
        		if(aNrBlocksPerLevel < level.getBlockAssignments().size()) {
        			throw new RuntimeException("The maximum number of blocks per level cannot be less than the number of existing blocks in a level.");
@@ -906,7 +906,15 @@ public class Game implements Serializable
     }
   }
 
-  // line 97 "../../../../../Block223 v3.ump"
+  // line 54 "../../../../../Block223Persistence.ump"
+   public static  void reinitializeUniqueGameName(List<Game> games){
+    gamesByName = new HashMap<String, Game>();
+    for (Game game : games) {
+      gamesByName.put(game.getName(), game);
+    }
+  }
+
+  // line 98 "../../../../../Block223 v3.ump"
    public Block findBlock(int id){
     List<Block> blocks = this.getBlocks();
 	for(Block block: blocks) {
@@ -935,7 +943,7 @@ public class Game implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 38 "../../../../../Block223Persistence.ump"
+  // line 52 "../../../../../Block223Persistence.ump"
   private static final long serialVersionUID = -210105651472293481L ;
 
   

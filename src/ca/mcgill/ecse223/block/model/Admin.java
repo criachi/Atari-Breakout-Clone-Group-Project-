@@ -5,8 +5,8 @@ package ca.mcgill.ecse223.block.model;
 import java.io.Serializable;
 import java.util.*;
 
-// line 23 "../../../../../Block223Persistence.ump"
-// line 55 "../../../../../Block223 v3.ump"
+// line 37 "../../../../../Block223Persistence.ump"
+// line 56 "../../../../../Block223 v3.ump"
 public class Admin extends UserRole implements Serializable
 {
 
@@ -147,7 +147,7 @@ public class Admin extends UserRole implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 26 "../../../../../Block223Persistence.ump"
+  // line 40 "../../../../../Block223Persistence.ump"
   private static final long serialVersionUID = 1959250384912895829L ;
 
   

@@ -6,12 +6,26 @@ class Block223 {
   depend java.io.Serializable;
   isA Serializable;
   private static final long serialVersionUID = 6181302407834705923L;
+  public void reinitialize() {
+  	for( Game game : this.getGames() ) {
+  		List<Block> blocks = game.getBlocks();
+  	    Block.reinitializeAutouniqueID(blocks); 
+  	}
+  	Game.reinitializeUniqueGameName(this.getGames());
+    User.reinitializeUniqueUserName(this.getUsers());
+  }
 }
 
 class User {
   depend java.io.Serializable;
   isA Serializable;
   private static final long serialVersionUID = 4267485601061759914L;
+  public static void reinitializeUniqueUserName(List<User> users) {
+    usersByUsername = new HashMap<String, User>();
+    for (User user : users) {
+	usersByUsername.put(user.getUsername(), user);
+	}
+  }
 }
 
 class UserRole {
@@ -36,12 +50,27 @@ class Game {
   depend java.io.Serializable;
   isA Serializable;
   private static final long serialVersionUID = -210105651472293481L;
+  public static void reinitializeUniqueGameName(List<Game> games) {
+    gamesByName = new HashMap<String, Game>();
+    for (Game game : games) {
+      gamesByName.put(game.getName(), game);
+    }
+  }
 }
 
 class Block {
   depend java.io.Serializable;
   isA Serializable;
   private static final long serialVersionUID = 5332292624658907512L;
+  public static void reinitializeAutouniqueID(List<Block> blocks) {
+     nextId = 0; 
+     for (Block block : blocks) {
+        if (block.getId() > nextId) {
+        nextId = block.getId();
+       }   
+     }
+     nextId++;
+  }
 }
 
 class Level {

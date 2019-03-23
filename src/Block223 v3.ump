@@ -19,10 +19,11 @@ class Block223 {
   }
   
   public String findUsername(UserRole userRole) {
+  		String username = "";
   		for(User user : users) {
   			for(UserRole role : user.getRoles()) {
   				if(role == userRole) {
-  					String username = user.getUsername();
+  					username += user.getUsername();
   					break; 
   				}
   			}
