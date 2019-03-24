@@ -111,10 +111,51 @@ class PlayedGame {
     return false;
   }
   
-  // Actions
+  // Antkin - doSetUp
   
   private void doSetup() {
-    // TODO implement
+    resetCurrentBallX();
+	   	resetCurrentBallY();
+	   	resetBallDirectionX();
+	   	resetBallDirectionY();
+	   	resetCurrentPaddleX();
+	   	Game game = getGame();
+	   	Random rand = new Random();
+	   	
+	   	Level level = game.getLevel(getCurrentLevel() - 1);
+	   	
+	   	for(BlockAssignment a : level.getBlockAssignments()) {
+	   		new PlayedBlockAssignment((Game.WALL_PADDING + Block.SIZE + Game.COLUMNS_PADDING)* (a.getGridHorizontalPosition() - 1), Game.WALL_PADDING + (Block.SIZE + Game.ROW_PADDING) * (a.getGridVerticalPosition() - 1), a.getBlock(), this);
+	   	}
+	   	
+	   	while(blocks.size() < game.getNrBlocksPerLevel()){
+	   		boolean positionChosen = false;
+	   		int x = rand.nextInt(BlockAssignment.maxNrHorizontalBlocks());
+   			int y = rand.nextInt(BlockAssignment.maxNrVerticalBlocks());
+   			x++;
+   			y++;
+	   		
+   			while(positionChosen == false) {
+   				if(level.findBlockAssignment(x, y) == null) {
+   					positionChosen = true;
+   				}
+   				else {
+   					if(x != (BlockAssignment.maxNrHorizontalBlocks())) {
+   						x++;
+   					}
+   					else if(x == (BlockAssignment.maxNrHorizontalBlocks()) && y != (BlockAssignment.maxNrVerticalBlocks())) {
+   						x = 1; 
+   						y++;
+   					}
+   					else {
+   						x = 1;
+   						y = 1;
+   					}
+   				}
+	   		}
+   			
+   			new PlayedBlockAssignment(x, y, game.getRandomBlock(), this);
+	   	}
   }
   
   private void doHitPaddleOrWall() {

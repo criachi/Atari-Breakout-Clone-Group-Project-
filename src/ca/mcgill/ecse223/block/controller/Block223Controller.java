@@ -5,6 +5,7 @@ import java.util.List;
 import ca.mcgill.ecse223.block.application.Block223Application;
 import ca.mcgill.ecse223.block.controller.TOUserMode.Mode;
 import ca.mcgill.ecse223.block.model.*;
+import ca.mcgill.ecse223.block.model.PlayedGame.PlayStatus;
 import ca.mcgill.ecse223.block.persistence.Block223Persistence;
 import ca.mcgill.ecse223.block.view.Block223PlayModeInterface;
 
@@ -499,13 +500,110 @@ public class Block223Controller {
 	
 	// play mode
 
-		public static void selectPlayableGame(String name, int id) throws InvalidInputException  {
+	public static void selectPlayableGame(String name, int id) throws InvalidInputException  {
+		if(!(Block223Application.getCurrentUserRole() instanceof Player)) {
+			throw new InvalidInputException("Player privileges are required to play a game.");
 		}
-
-		public static void startGame(Block223PlayModeInterface ui) throws InvalidInputException {
+		String username = "";
+		Block223 block223 = Block223Application.getBlock223();
+		
+		Game playableGame = block223.findGame(name);
+		
+		if(!(playableGame == null)) {
+			UserRole currentRole = Block223Application.getCurrentUserRole();
+			username += block223.findUsername(currentRole);
+			
+			PlayedGame pGame = new PlayedGame(username, playableGame, block223);
+			pGame.setPlayer((Player)currentRole);
+			Block223Application.setCurrentPlayableGame(pGame);
 		}
+		else if(!(block223.findPlayableGame(id) == null)) {
+			Player currentPlayer = (Player) Block223Application.getCurrentUserRole();
+			PlayedGame pGame = block223.findPlayableGame(id);
+			if(currentPlayer != pGame.getPlayer()) {
+				throw new InvalidInputException("Only the player that started a game can continue the game.");
+			}
+			Block223Application.setCurrentPlayableGame(pGame);
+		}
+		else {
+			throw new InvalidInputException("The game does not exist.");
+		}
+	}
+	
+	/*
+	 * @Author - Anthony
+	 */
+	public static void startGame(Block223PlayModeInterface ui) throws InvalidInputException {
+		if(Block223Application.getCurrentUserRole() == null) {
+			throw new InvalidInputException("Player privileges are required to play a game.");
+		}
+		if(Block223Application.getCurrentPlayableGame() == null) {
+			throw new InvalidInputException("A game must be selected to play it.");
+		}
+		if(Block223Application.getCurrentUserRole() instanceof Admin && Block223Application.getCurrentPlayableGame().hasPlayer()) {
+			throw new InvalidInputException("Player privileges are required to play a game.");
+		}
+		if(Block223Application.getCurrentUserRole() instanceof Admin) {
+			PlayedGame pGame = Block223Application.getCurrentPlayableGame();
+			if(pGame.getGame().getAdmin() != Block223Application.getCurrentUserRole()) {
+				throw new InvalidInputException("Only the admin of a game can test the game.");
+			}
+		}
+		if(Block223Application.getCurrentUserRole() instanceof Player && !(Block223Application.getCurrentPlayableGame().hasPlayer())) {
+			throw new InvalidInputException("Admin privileges are required to test a game.");
+		}
+		
+		PlayedGame currentGame = Block223Application.getCurrentPlayableGame();
+		currentGame.play();
+		String inputs = ui.takeInputs();
+		
+		while(currentGame.getPlayStatus() == PlayStatus.Moving) {
+			inputs = ui.takeInputs();
+			updatePaddlePosition(inputs);
+			
+			currentGame.move();
+			
+			if(inputs.contains(" ")) {
+				currentGame.pause();
+			}
+			
+			long currentTime = System.currentTimeMillis();
+			while(System.currentTimeMillis() <= (currentTime + currentGame.getWaitTime()));
+			
+			ui.refresh();
+		}
+		
+		if(currentGame.getPlayStatus() == PlayStatus.GameOver) {
+			Block223Application.setCurrentPlayableGame(null);
+			if(currentGame.getPlayer() != null) {
+				Block223 block223 = Block223Application.getBlock223();
+				Block223Persistence.save(block223);
+			}
+		}
+	}
+	
+	/*
+	 * @Author - Anthony
+	 */
+	private static void updatePaddlePosition(String inputs) {
+		int stringLength = inputs.length();
+		for(int i = 0; i < stringLength; i++) {
+			Double currentPaddleX = Block223Application.getCurrentPlayableGame().getCurrentPaddleX();
+			if(inputs.charAt(i) == 'l') {
+				currentPaddleX += PlayedGame.PADDLE_MOVE_LEFT;
+				Block223Application.getCurrentPlayableGame().setCurrentPaddleX(currentPaddleX);
+			}
+			if(inputs.charAt(i) == 'r') {
+				currentPaddleX += PlayedGame.PADDLE_MOVE_RIGHT;
+				Block223Application.getCurrentPlayableGame().setCurrentPaddleX(currentPaddleX);
+			}
+			if(inputs.charAt(i) == ' ') {
+				return;
+			}
+		}
+	}
 
-		public static void testGame(Block223PlayModeInterface ui) throws InvalidInputException {
+	public static void testGame(Block223PlayModeInterface ui) throws InvalidInputException {
 			if(!(Block223Application.getCurrentUserRole() instanceof Admin)) {
 				throw new InvalidInputException("Admin privileges are required to test a game.");
 			}
@@ -523,9 +621,9 @@ public class Block223Controller {
 			pgame.setPlayer(null);
 			Block223Application.setCurrentPlayableGame(pgame);
 			startGame(ui);
-		}
+	}
 
-		public static void publishGame () throws InvalidInputException {
+	public static void publishGame () throws InvalidInputException {
 			Game game = Block223Application.getCurrentGame();
 			if(!(Block223Application.getCurrentUserRole() instanceof Admin)) {
 				throw new InvalidInputException("Admin privileges are required to publish a game.");
@@ -540,7 +638,7 @@ public class Block223Controller {
 				throw new InvalidInputException("At least one block must be defined for a game to be published.");
 			}
 			game.setPublished(true);
-		}
+	}
 
 	// ****************************
 	// Query methods
@@ -675,14 +773,69 @@ public class Block223Controller {
 	}
 	
 	// play mode
-
-		public static List<TOPlayableGame> getPlayableGames() throws InvalidInputException {
-			return null;
+	/*
+	 * @Author - Anthony
+	 */
+	public static List<TOPlayableGame> getPlayableGames() throws InvalidInputException {
+		if(!(Block223Application.getCurrentUserRole() instanceof Player)) {
+			throw new InvalidInputException("Player privileges are required to start a game.");
 		}
-
-		public static TOCurrentlyPlayedGame getCurrentPlayableGame() throws InvalidInputException {
-			return null;
+		
+		Player player = (Player) Block223Application.getCurrentUserRole();
+		
+		Block223 block223 = Block223Application.getBlock223();
+		
+		List<TOPlayableGame> result = new ArrayList<TOPlayableGame>();
+		
+		for(Game game : block223.getGames()) {
+			if(game.getPublished()) {
+				TOPlayableGame to = new TOPlayableGame(game.getName(), -1, 0);
+				result.add(to);
+			}
 		}
+		
+		for(PlayedGame playedGame : player.getPlayedGames()) {
+			TOPlayableGame to = new TOPlayableGame(playedGame.getGame().getName(), playedGame.getId(), playedGame.getCurrentLevel());
+			result.add(to);
+		}
+		
+		return result;
+	}
+	
+	/*
+	 * @Author - Anthony
+	 */
+	public static TOCurrentlyPlayedGame getCurrentPlayableGame() throws InvalidInputException {
+		if(Block223Application.getCurrentUserRole() == null) {
+			throw new InvalidInputException("Player privileges are required to play a game.");
+		}
+		if(Block223Application.getCurrentPlayableGame() == null) {
+			throw new InvalidInputException("A game must be selected to play it.");
+		}
+		if(Block223Application.getCurrentUserRole() instanceof Admin && Block223Application.getCurrentPlayableGame().hasPlayer()) {
+			throw new InvalidInputException("Player privileges are required to play a game.");
+		}
+		if(Block223Application.getCurrentUserRole() instanceof Admin) {
+			PlayedGame pGame = Block223Application.getCurrentPlayableGame();
+			if(pGame.getGame().getAdmin() != Block223Application.getCurrentUserRole()) {
+				throw new InvalidInputException("Only the admin of a game can test the game.");
+			}
+		}
+		if(Block223Application.getCurrentUserRole() instanceof Player && !(Block223Application.getCurrentPlayableGame().hasPlayer())) {
+			throw new InvalidInputException("Admin privileges are required to test a game.");
+		}
+		
+		PlayedGame currentlyPlayed = Block223Application.getCurrentPlayableGame();
+		
+		Boolean paused = (currentlyPlayed.getPlayStatus() == PlayStatus.Ready) || (currentlyPlayed.getPlayStatus() == PlayStatus.Paused);
+		
+		TOCurrentlyPlayedGame result = new TOCurrentlyPlayedGame(currentlyPlayed.getGame().getName(), paused, currentlyPlayed.getScore(), currentlyPlayed.getLives(), currentlyPlayed.getCurrentLevel(), currentlyPlayed.getPlayername(), currentlyPlayed.getCurrentBallX(), currentlyPlayed.getCurrentBallY(), currentlyPlayed.getCurrentPaddleLength(), currentlyPlayed.getCurrentPaddleX());
+		
+		for(PlayedBlockAssignment block : currentlyPlayed.getBlocks()) {
+			new TOCurrentBlock(block.getBlock().getRed(), block.getBlock().getGreen(), block.getBlock().getBlue(), block.getBlock().getPoints(), block.getX(), block.getY(), result);
+		}
+		return result;
+	}
 
 		public static TOHallOfFame getHallOfFame(int start, int end) throws InvalidInputException {
 			if(!(Block223Application.getCurrentUserRole() instanceof Player)) {

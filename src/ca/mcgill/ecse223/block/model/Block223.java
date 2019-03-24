@@ -609,13 +609,23 @@ public class Block223 implements Serializable
   }
 
   // line 22 "../../../../../Block223 v3.ump"
+   public PlayedGame findPlayableGame(Integer id){
+    for(PlayedGame playedGame : getPlayedGames()) {
+  		if ((playedGame.getId()) == id) {
+  			return playedGame;
+  		}
+  	}
+  	return null;
+  }
+
+  // line 31 "../../../../../Block223 v3.ump"
    public String findUsername(UserRole userRole){
     String username = "";
   		for(User user : users) {
   			for(UserRole role : user.getRoles()) {
   				if(role == userRole) {
   					username += user.getUsername();
-  					break; 
+  					return username;
   				}
   			}
   		}

@@ -18,13 +18,22 @@ class Block223 {
 	  return null;
   }
   
+  public PlayedGame findPlayableGame(Integer id){
+  	for(PlayedGame playedGame : getPlayedGames()) {
+  		if ((playedGame.getId()) == id) {
+  			return playedGame;
+  		}
+  	}
+  	return null;
+  }
+  
   public String findUsername(UserRole userRole) {
   		String username = "";
   		for(User user : users) {
   			for(UserRole role : user.getRoles()) {
   				if(role == userRole) {
   					username += user.getUsername();
-  					break; 
+  					return username;
   				}
   			}
   		}
@@ -41,6 +50,9 @@ class User {
    		throw new RuntimeException("The username must be specified. ");
    	}
    }
+   
+   
+   
 }
 
 class UserRole {
@@ -103,6 +115,13 @@ class Game {
 	}
 	return null; 
    }
+   
+     public Block getRandomBlock() {
+	  int numOfBlocks = blocks.size();
+	  Random rand = new Random();
+	  
+	  return blocks.get(rand.nextInt(numOfBlocks));
+  }
 }
 
 class Block {
