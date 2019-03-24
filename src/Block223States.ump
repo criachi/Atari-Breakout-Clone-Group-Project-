@@ -31,15 +31,12 @@ class PlayedGame {
    private boolean hitPaddle() {
 
     // TODO implement
-
-    if(BouncePoint == null) { 
-    return null;
-    }
-    hitPaddle();
     BouncePoint bp = calculateBouncePointPaddle();
+    if(bp == null) {
+    		return false;
+    }
     setBounce(bp);
-    if(bp != null) {
-    return bp;    
+   return true;
     }
 
 
@@ -122,14 +119,12 @@ class PlayedGame {
    private boolean hitWall() {
 
     // TODO implement
-
-    if(BouncePoint == null) { 
-    return null;
-    }
     BouncePoint bp = calculateBouncePointWall();
+   if(bp == null) {
+    		return false;
+    }
     setBounce(bp);
-    if(bp != null) {
-    return bp;    
+   return true;
     }
 
 
@@ -303,7 +298,11 @@ class PlayedGame {
   	return null;
   }
   
+  //Haluk ball hits wall method
+  
   private BouncePoint calculateBouncePointWall() {
+  
+  
   	
   }
   
@@ -361,4 +360,5 @@ class PlayedGame {
   		currentBallY = bounce.getY() + remY/oldDirectionY * ballDirectionY;
   	}
   }
+  
 }
