@@ -10,7 +10,6 @@ import ca.mcgill.ecse223.block.view.Block223PlayModeInterface;
 
 
 public class Block223Controller {
-
 	// ****************************
 	// Modifier methods
 	// ****************************

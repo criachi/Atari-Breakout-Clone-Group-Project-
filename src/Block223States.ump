@@ -38,7 +38,7 @@ class PlayedGame {
     setBounce(bp);
    return true;
     }
-
+}
 
 
 //Melis Malki = ball out of bounds method
@@ -126,7 +126,7 @@ class PlayedGame {
     setBounce(bp);
    return true;
     }
-
+}
 
   
   // Actions
