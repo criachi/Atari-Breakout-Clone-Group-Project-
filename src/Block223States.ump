@@ -139,7 +139,6 @@ class PlayedGame {
 
     // TODO implement
     
-    doHitPaddleOrWall();
     bounceBall();
     return;
   }
@@ -301,6 +300,34 @@ class PlayedGame {
   //Haluk ball hits wall method
   
   private BouncePoint calculateBouncePointWall() {
+  java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY(), 10, 10);
+  if(!rect.getBounds2D().intersects(ball.getBounds2D())) return null;
+  
+  // Option A 
+  java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(0, 0, 5, 385);
+  
+  if((CurrentBallX() + BallDirectionX()) != 0  || (CurrentBallX() + this.getBallDirectionX()) != (blockX + 20)) {
+  			return new BouncePoint(this.getCurrentBallX() + this.getBallDirectionX(), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  
+  
+  
+  //Option B
+   java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(0, 0, 380, 5);
+  
+  
+  
+  
+  
+  
+  
+  //Option C
+  
+  
+  
+  
+  
+  
   
   
   	
