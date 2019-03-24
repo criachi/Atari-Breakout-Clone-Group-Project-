@@ -178,7 +178,6 @@ class PlayedGame {
   //Haluk Calin - ball hit the wall or paddle
   
   private void doHitPaddleOrWall(){  
-    doHitPaddleOrWall();
     bounceBall();
    }
 

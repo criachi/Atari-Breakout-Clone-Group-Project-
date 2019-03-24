@@ -853,20 +853,60 @@ public class PlayedGame implements Serializable
 
 
   /**
-   * Actions
+   * Antkin - doSetUp
    */
-  // line 132 "../../../../../Block223States.ump"
+  // line 134 "../../../../../Block223States.ump"
    private void doSetup(){
-    // TODO implement
+    resetCurrentBallX();
+	   	resetCurrentBallY();
+	   	resetBallDirectionX();
+	   	resetBallDirectionY();
+	   	resetCurrentPaddleX();
+	   	Game game = getGame();
+	   	Random rand = new Random();
+	   	
+	   	Level level = game.getLevel(getCurrentLevel() - 1);
+	   	
+	   	for(BlockAssignment a : level.getBlockAssignments()) {
+	   		new PlayedBlockAssignment((Game.WALL_PADDING + Block.SIZE + Game.COLUMNS_PADDING)* (a.getGridHorizontalPosition() - 1), Game.WALL_PADDING + (Block.SIZE + Game.ROW_PADDING) * (a.getGridVerticalPosition() - 1), a.getBlock(), this);
+	   	}
+	   	
+	   	while(blocks.size() < game.getNrBlocksPerLevel()){
+	   		boolean positionChosen = false;
+	   		int x = rand.nextInt(BlockAssignment.maxNrHorizontalBlocks());
+   			int y = rand.nextInt(BlockAssignment.maxNrVerticalBlocks());
+   			x++;
+   			y++;
+	   		
+   			while(positionChosen == false) {
+   				if(level.findBlockAssignment(x, y) == null) {
+   					positionChosen = true;
+   				}
+   				else {
+   					if(x != (BlockAssignment.maxNrHorizontalBlocks())) {
+   						x++;
+   					}
+   					else if(x == (BlockAssignment.maxNrHorizontalBlocks()) && y != (BlockAssignment.maxNrVerticalBlocks())) {
+   						x = 1; 
+   						y++;
+   					}
+   					else {
+   						x = 1;
+   						y = 1;
+   					}
+   				}
+	   		}
+   			
+   			new PlayedBlockAssignment(x, y, game.getRandomBlock(), this);
+	   	}
   }
 
 
   /**
    * Haluk Calin - ball hit the wall or paddle
    */
-  // line 138 "../../../../../Block223States.ump"
+  // line 181 "../../../../../Block223States.ump"
    private void doHitPaddleOrWall(){
-    doHitPaddleOrWall();
     bounceBall();
   }
 
@@ -874,7 +914,7 @@ public class PlayedGame implements Serializable
   /**
    * Melis Malki = ball out of bounds method
    */
-  // line 146 "../../../../../Block223States.ump"
+  // line 188 "../../../../../Block223States.ump"
    private void doOutOfBounds(){
     int lives = getLives();
      setLives (lives-1);
@@ -889,7 +929,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 158 "../../../../../Block223States.ump"
+  // line 200 "../../../../../Block223States.ump"
    private void doHitBlock(){
     int score = this.getScore();
     BouncePoint bounce = this.getBounce();
@@ -905,7 +945,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 171 "../../../../../Block223States.ump"
+  // line 213 "../../../../../Block223States.ump"
    private void doHitBlockNextLevel(){
     this.doHitBlock();
     int level = this.getCurrentLevel();
@@ -918,7 +958,7 @@ public class PlayedGame implements Serializable
   /**
    * Christina Riachi move Ball feature
    */
-  // line 180 "../../../../../Block223States.ump"
+  // line 222 "../../../../../Block223States.ump"
    private void doHitNothingAndNotOutOfBounds(){
     double x = this.getCurrentBallX();
     double y = this.getCurrentBallY();
@@ -932,7 +972,7 @@ public class PlayedGame implements Serializable
   /**
    * Melis Malki = ball out of bounds method
    */
-  // line 191 "../../../../../Block223States.ump"
+  // line 233 "../../../../../Block223States.ump"
    private void doGameOver(){
     Player p  = getPlayer();
     if ( p != null){
@@ -947,7 +987,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 203 "../../../../../Block223States.ump"
+  // line 245 "../../../../../Block223States.ump"
    private boolean isCloser(BouncePoint first, BouncePoint second){
     if(first == null) {
   		return false;
@@ -967,7 +1007,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 220 "../../../../../Block223States.ump"
+  // line 262 "../../../../../Block223States.ump"
    private BouncePoint calculateBouncePointBlock(PlayedBlockAssignment block){
     double blockX = 25 * (block.getX() - 1); //top left corner x-coordinate of the block
   	double blockY = 22 * (block.getY() - 1); //top left corner y-coordinate of the block
@@ -1063,7 +1103,7 @@ public class PlayedGame implements Serializable
   /**
    * Haluk ball hits wall method
    */
-  // line 313 "../../../../../Block223States.ump"
+  // line 355 "../../../../../Block223States.ump"
    private BouncePoint calculateBouncePointWall(){
     java.awt.geom.Rectangle2D rectA = new java.awt.geom.Rectangle2D.Double(0, 5, 5, 385);
   java.awt.geom.Rectangle2D rectB = new java.awt.geom.Rectangle2D.Double(5, 0, 380, 5);
@@ -1110,7 +1150,7 @@ public class PlayedGame implements Serializable
   	return null;
   }
 
-  // line 360 "../../../../../Block223States.ump"
+  // line 402 "../../../../../Block223States.ump"
    private BouncePoint calculateBouncePointPaddle(){
     java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX(), this.getCurrentPaddleY(), currentPaddleLength, 5);
   	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY(), 10, 10);
@@ -1164,7 +1204,7 @@ public class PlayedGame implements Serializable
   	return null;
   }
 
-  // line 413 "../../../../../Block223States.ump"
+  // line 455 "../../../../../Block223States.ump"
    private void bounceBall(){
     //FLIP_Y case
   	BouncePoint.BounceDirection bd = this.bounce.getDirection();
