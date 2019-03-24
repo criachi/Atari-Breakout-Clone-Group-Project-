@@ -30,6 +30,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import ca.mcgill.ecse223.block.application.Block223Application;
 import ca.mcgill.ecse223.block.controller.Block223Controller;
 import ca.mcgill.ecse223.block.controller.InvalidInputException;
 import ca.mcgill.ecse223.block.controller.TOGame;
@@ -223,7 +224,11 @@ public class AdminDashBoardPage {
 		//frame.dispose() will delete the current page (from what i understand)
 		
 		try {
-			Block223Controller.createGame(textField.getText());
+			String newName = textField.getText();
+			Block223Controller.createGame(newName);
+			// added this after long rant abt updateGame diff name w/ alrdy existing game
+			// create game in controller used to call setCurrentGame on application class to set current game var to the game we just created so the test wld fail
+			Block223Controller.selectGame(newName);
 		}
 		catch(InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
