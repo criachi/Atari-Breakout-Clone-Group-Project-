@@ -749,7 +749,7 @@ public class PlayedGame implements Serializable
   /**
    * Melis Malki = ball out of bounds method
    */
-  // line 47 "../../../../../Block223States.ump"
+  // line 45 "../../../../../Block223States.ump"
    private boolean isOutOfBoundsAndLastLife(){
     if (getLives() == 1){ 
      return isOutOfBounds();
@@ -761,7 +761,7 @@ public class PlayedGame implements Serializable
   /**
    * Melis Malki = ball out of bounds method
    */
-  // line 55 "../../../../../Block223States.ump"
+  // line 53 "../../../../../Block223States.ump"
    private boolean isOutOfBounds(){
     if ( getCurrentBallY() > getCurrentPaddleY()){
     return true;
@@ -773,7 +773,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 64 "../../../../../Block223States.ump"
+  // line 62 "../../../../../Block223States.ump"
    private boolean hitLastBlockAndLastLevel(){
     Game game = this.getGame();
     int nrLevels = game.numberOfLevels();
@@ -797,7 +797,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 85 "../../../../../Block223States.ump"
+  // line 83 "../../../../../Block223States.ump"
    private boolean hitLastBlock(){
     int nrBlocks = this.numberOfBlocks();
     this.setBounce(null);
@@ -817,7 +817,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 102 "../../../../../Block223States.ump"
+  // line 100 "../../../../../Block223States.ump"
    private boolean hitBlock(){
     int nrBlocks = this.numberOfBlocks();
     this.setBounce(null);
@@ -840,13 +840,14 @@ public class PlayedGame implements Serializable
   /**
    * Haluk Calin - ball hit the wall or paddle
    */
-  // line 122 "../../../../../Block223States.ump"
+  // line 120 "../../../../../Block223States.ump"
    private boolean hitWall(){
     BouncePoint bp = calculateBouncePointWall();
 	 if(bp == null) { 
 		 return false;
     }
     setBounce(bp);
+
     return bp != null;
   }
 
@@ -854,7 +855,7 @@ public class PlayedGame implements Serializable
   /**
    * Actions
    */
-  // line 134 "../../../../../Block223States.ump"
+  // line 132 "../../../../../Block223States.ump"
    private void doSetup(){
     // TODO implement
   }
@@ -863,7 +864,7 @@ public class PlayedGame implements Serializable
   /**
    * Haluk Calin - ball hit the wall or paddle
    */
-  // line 140 "../../../../../Block223States.ump"
+  // line 138 "../../../../../Block223States.ump"
    private void doHitPaddleOrWall(){
     doHitPaddleOrWall();
     bounceBall();
@@ -873,7 +874,7 @@ public class PlayedGame implements Serializable
   /**
    * Melis Malki = ball out of bounds method
    */
-  // line 148 "../../../../../Block223States.ump"
+  // line 146 "../../../../../Block223States.ump"
    private void doOutOfBounds(){
     int lives = getLives();
      setLives (lives-1);
@@ -888,7 +889,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 160 "../../../../../Block223States.ump"
+  // line 158 "../../../../../Block223States.ump"
    private void doHitBlock(){
     int score = this.getScore();
     BouncePoint bounce = this.getBounce();
@@ -904,7 +905,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 173 "../../../../../Block223States.ump"
+  // line 171 "../../../../../Block223States.ump"
    private void doHitBlockNextLevel(){
     this.doHitBlock();
     int level = this.getCurrentLevel();
@@ -917,7 +918,7 @@ public class PlayedGame implements Serializable
   /**
    * Christina Riachi move Ball feature
    */
-  // line 182 "../../../../../Block223States.ump"
+  // line 180 "../../../../../Block223States.ump"
    private void doHitNothingAndNotOutOfBounds(){
     double x = this.getCurrentBallX();
     double y = this.getCurrentBallY();
@@ -931,7 +932,7 @@ public class PlayedGame implements Serializable
   /**
    * Melis Malki = ball out of bounds method
    */
-  // line 193 "../../../../../Block223States.ump"
+  // line 191 "../../../../../Block223States.ump"
    private void doGameOver(){
     Player p  = getPlayer();
     if ( p != null){
@@ -946,7 +947,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 205 "../../../../../Block223States.ump"
+  // line 203 "../../../../../Block223States.ump"
    private boolean isCloser(BouncePoint first, BouncePoint second){
     if(first == null) {
   		return false;
@@ -966,29 +967,35 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 222 "../../../../../Block223States.ump"
+  // line 220 "../../../../../Block223States.ump"
    private BouncePoint calculateBouncePointBlock(PlayedBlockAssignment block){
     double blockX = 25 * (block.getX() - 1); //top left corner x-coordinate of the block
   	double blockY = 22 * (block.getY() - 1); //top left corner y-coordinate of the block
-  	java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(blockX, blockY, 40, 40);
+  	java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(blockX, blockY, 30, 30);
   	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY(), 10, 10);
   	if(!rect.getBounds2D().intersects(ball.getBounds2D())) return null;
-  	
-  	//if the ball comes from the top
   	
   	if(blockY > this.getCurrentBallY()) {
   	//option A
   		if((this.getCurrentBallX() + this.getBallDirectionX()) != blockX || (this.getCurrentBallX() + this.getBallDirectionX()) != (blockX + 20)) {
-  			return new BouncePoint(this.getCurrentBallX() + this.getBallDirectionX(), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY)), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
   		}
-  	//option E
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
-  			return new BouncePoint(blockX - 5, blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  	//option E approaching from right
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX && (this.getCurrentBallX() + this.getBallDirectionX()) < this.getBallDirectionX()) { 
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY)), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
   		}
-  	//option F
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20)) {
-  			return new BouncePoint(blockX + 25, blockY - 5, BouncePoint.BounceDirection.FLIP_X);
-  		} 
+  	//option E approaching from left
+  		if((currentBallX + ballDirectionX) == blockX && (currentBallX + ballDirectionX) > currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY)), blockY - 5, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F aproaching from right
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20) && (currentBallX + ballDirectionX) < currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY)), blockY - 5, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F approaching from left
+  		if((currentBallX + ballDirectionX) == (blockX + 20) && (currentBallX + ballDirectionX) > currentBallX) {
+  		return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY)), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  		}
   	}
   	
   	//if the ball comes from the bottom
@@ -996,15 +1003,23 @@ public class PlayedGame implements Serializable
   	if((blockY + 20) < this.getCurrentBallY()) {
   	//option D
   		if((this.getCurrentBallX() + this.getBallDirectionX()) != blockX || (this.getCurrentBallX() + this.getBallDirectionX()) != (blockX + 20)) {
-  			return new BouncePoint(this.getCurrentBallX() + this.getBallDirectionX(), blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY)), blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
   		}
-  	//option G
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
-  			return new BouncePoint(blockX - 5, blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
+  	//option G approaching from right
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX && (currentBallX + ballDirectionX) < currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY)), blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
   		}
-  	//option H
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20)) {
-  			return new BouncePoint(blockX + 25, blockY + 25, BouncePoint.BounceDirection.FLIP_X);
+  	//option E approaching from left
+  		if((currentBallX + ballDirectionX) == blockX && (currentBallX + ballDirectionX) > currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY)), blockY + 25, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F aproaching from right
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20) && (currentBallX + ballDirectionX) < currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY)), blockY + 25, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F approaching from left
+  		if((currentBallX + ballDirectionX) == (blockX + 20) && (currentBallX + ballDirectionX) > currentBallX) {
+  		return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY)), blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
   		}
   	}
   	
@@ -1016,7 +1031,7 @@ public class PlayedGame implements Serializable
   			return new BouncePoint(blockX - 5, this.getCurrentBallY() + this.getBallDirectionY(), BouncePoint.BounceDirection.FLIP_X);
   		}
   	//option E
-  		if((this.getCurrentBallY() + this.getBallDirectionY()) == blockY) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  		if((this.getCurrentBallY() + this.getBallDirectionY()) == blockY) { 
   			return new BouncePoint(blockX - 5, blockY - 5, BouncePoint.BounceDirection.FLIP_X);
   		}
   	//option G
@@ -1044,17 +1059,112 @@ public class PlayedGame implements Serializable
   	return null;
   }
 
-  // line 299 "../../../../../Block223States.ump"
+
+  /**
+   * Haluk ball hits wall method
+   */
+  // line 313 "../../../../../Block223States.ump"
    private BouncePoint calculateBouncePointWall(){
-    return null;
+    java.awt.geom.Rectangle2D rectA = new java.awt.geom.Rectangle2D.Double(0, 5, 5, 385);
+  java.awt.geom.Rectangle2D rectB = new java.awt.geom.Rectangle2D.Double(5, 0, 380, 5);
+  java.awt.geom.Rectangle2D rectC = new java.awt.geom.Rectangle2D.Double(385, 5, 380, 5);
+  java.awt.geom.Rectangle2D rectE = new java.awt.geom.Rectangle2D.Double(0, 0, 5, 5);
+  java.awt.geom.Rectangle2D rectF = new java.awt.geom.Rectangle2D.Double(385, 0, 5, 5);
+
+  java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY(), 10, 10);
+  if(!rectA.getBounds2D().intersects(ball.getBounds2D())) return null;
+  if(!rectB.getBounds2D().intersects(ball.getBounds2D())) return null;
+  if(!rectC.getBounds2D().intersects(ball.getBounds2D())) return null;
+  if(!rectE.getBounds2D().intersects(ball.getBounds2D())) return null;
+  if(!rectF.getBounds2D().intersects(ball.getBounds2D())) return null;
+  
+  
+  // Option A 
+  if((this.getCurrentBallY() + this.getBallDirectionY()) > 5 && (this.getCurrentBallX() + this.getBallDirectionX()) <= 5  ) {
+  			return new BouncePoint(5, ((2*currentBallY + ballDirectionY)*(5)/(2*currentBallX + ballDirectionX)), BouncePoint.BounceDirection.FLIP_X);
+  		}
+
+  //Option B
+  if((this.getCurrentBallY() + this.getBallDirectionY()) <= 5 && (this.getCurrentBallX() + this.getBallDirectionX()) > 5 && (this.getCurrentBallX() + this.getBallDirectionX()) < 385   ) {
+   return new BouncePoint(((2*currentBallX + ballDirectionX)*(5)/(2*currentBallY + ballDirectionY)), 5, BouncePoint.BounceDirection.FLIP_Y);
+   }
+
+   //A&B corner
+  if((this.getCurrentBallX() + this.getBallDirectionX()) <= 5 && (this.getCurrentBallY() + this.getBallDirectionY()) <=  5) {
+  	return new BouncePoint(5, 5, BouncePoint.BounceDirection.FLIP_BOTH);
+  		}
+   	
+   
+   //B&C corner
+   if((this.getCurrentBallX() + this.getBallDirectionX()) <= 385  && (this.getCurrentBallY() + this.getBallDirectionY()) <=  5) {
+    return new BouncePoint(5, 5, BouncePoint.BounceDirection.FLIP_BOTH);
+   }
+   
+  
+  //Option C
+  
+  if((this.getCurrentBallY() + this.getBallDirectionY()) > 5 && (this.getCurrentBallX() + this.getBallDirectionX()) >= 385) {
+  	return new BouncePoint(385, ((2*currentBallY + ballDirectionY)*(5)/(2*currentBallX + ballDirectionX)), BouncePoint.BounceDirection.FLIP_X);
+  		}
+  
+  	return null;
   }
 
-  // line 303 "../../../../../Block223States.ump"
+  // line 360 "../../../../../Block223States.ump"
    private BouncePoint calculateBouncePointPaddle(){
-    return null;
+    java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX(), this.getCurrentPaddleY(), currentPaddleLength, 5);
+  	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY(), 10, 10);
+  	if(!rect.getBounds2D().intersects(ball.getBounds2D())) return null;
+  	
+  	//ball comes from the top
+  	if(this.getCurrentBallY() < currentPaddleY && currentPaddleY - (currentBallY + ballDirectionY) <= 5) {
+  	//option A
+  		if((currentBallX + ballDirectionX) != currentPaddleX || (currentBallX + ballDirectionX) != (currentPaddleX + currentPaddleLength)) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(currentPaddleY - 5)/(2*currentBallY + ballDirectionY)), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option E approaching from right
+  		if((currentBallX + ballDirectionX) == currentPaddleX && (currentBallX + ballDirectionX) < currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(currentPaddleY - 5)/(2*currentBallY + ballDirectionY)), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option E approaching from left
+  		if((currentBallX + ballDirectionX) == currentPaddleX && (currentBallX + ballDirectionX) > currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(currentPaddleY - 5)/(2*currentBallY + ballDirectionY)), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F from the right
+  		if((currentBallX + ballDirectionX) == (currentPaddleX + currentPaddleLength) && (currentBallX + ballDirectionX) > currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(currentPaddleY - 5)/(2*currentBallY + ballDirectionY)), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option F from the right
+  		if((currentBallX + ballDirectionX) == (currentPaddleX + currentPaddleLength) && (currentBallX + ballDirectionX) > currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(currentPaddleY - 5)/(2*currentBallY + ballDirectionY)), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	}
+  	//ball comes from the left
+  	if(currentBallX < currentPaddleX) {
+  	//option B
+  		if((currentBallY + ballDirectionY) != currentPaddleY || (currentBallY + ballDirectionY) != (currentPaddleY + 5)) {
+  			return new BouncePoint((currentPaddleX - 5), ((2*currentBallY + ballDirectionY)*(currentPaddleX - 5)/(2*currentBallX + ballDirectionX)), BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option E
+  		if((currentBallY + ballDirectionY) == currentPaddleY) {
+  			return new BouncePoint((currentPaddleX - 5), ((2*currentBallY + ballDirectionY)*(currentPaddleX - 5)/(2*currentBallX + ballDirectionX)), BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	}
+  	//ball comes from the right
+  	if(currentBallX > currentPaddleX) {
+  	//option C
+  		if((currentBallY + ballDirectionY) != currentPaddleY || (currentBallY + ballDirectionY) != (currentPaddleY + 5)) {
+  			return new BouncePoint((currentPaddleX + currentPaddleLength + 5), ((2*currentBallY + ballDirectionY)*(currentPaddleX + currentPaddleLength + 5)/(2*currentBallX + ballDirectionX)), BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F
+  		if((currentBallY + ballDirectionY) == currentPaddleY) {
+  			return new BouncePoint((currentPaddleX + currentPaddleLength + 5), ((2*currentBallY + ballDirectionY)*(currentPaddleX + currentPaddleLength + 5)/(2*currentBallX + ballDirectionX)), BouncePoint.BounceDirection.FLIP_X);
+  		}	
+  	}
+  	return null;
   }
 
-  // line 307 "../../../../../Block223States.ump"
+  // line 413 "../../../../../Block223States.ump"
    private void bounceBall(){
     //FLIP_Y case
   	BouncePoint.BounceDirection bd = this.bounce.getDirection();
