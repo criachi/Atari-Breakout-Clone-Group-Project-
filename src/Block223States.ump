@@ -41,7 +41,7 @@ class PlayedGame {
     if(bp != null) {
     return bp;    
     }
-
+}
 
 
 //Melis Malki = ball out of bounds method
@@ -131,7 +131,7 @@ class PlayedGame {
     if(bp != null) {
     return bp;    
     }
-
+}
 
   
   // Actions
