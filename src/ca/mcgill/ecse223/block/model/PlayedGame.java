@@ -1137,7 +1137,7 @@ public class PlayedGame implements Serializable
   	//option F from the right
   		if((currentBallX + ballDirectionX) == (currentPaddleX + currentPaddleLength) && (currentBallX + ballDirectionX) > currentBallX) {
   			return new BouncePoint(((2*currentBallX + ballDirectionX)*(currentPaddleY - 5)/(2*currentBallY + ballDirectionY)), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
-  		} 
+  		}
   	}
   	//ball comes from the left
   	if(currentBallX < currentPaddleX) {
