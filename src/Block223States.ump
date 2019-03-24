@@ -230,16 +230,24 @@ class PlayedGame {
   	if(blockY > this.getCurrentBallY()) {
   	//option A
   		if((this.getCurrentBallX() + this.getBallDirectionX()) != blockX || (this.getCurrentBallX() + this.getBallDirectionX()) != (blockX + 20)) {
-  			return new BouncePoint(this.getCurrentBallX() + this.getBallDirectionX(), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY)), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
   		}
-  	//option E
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
-  			return new BouncePoint(blockX - 5, blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  	//option E approaching from right
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX && (this.getCurrentBallX + this.getBallDirectionX) < this.getCurrentBallDirectionX) { 
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
   		}
-  	//option F
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20)) {
-  			return new BouncePoint(blockX + 25, blockY - 5, BouncePoint.BounceDirection.FLIP_X);
-  		} 
+  	//option E approaching from left
+  		if((currentBallX + ballDirectionX) == blockX && (currentBallX + ballDirectionX) > currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY), blockY - 5, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F aproaching from right
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20) && (currentBallX + ballDirectionX) < currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY), blockY - 5, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F approaching from left
+  		if((currentBallX + ballDirectionX) == (blockX + 20) && (currentBallX + ballDirectionX) > currentBallX) {
+  		return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  		}
   	}
   	
   	//if the ball comes from the bottom
@@ -247,15 +255,23 @@ class PlayedGame {
   	if((blockY + 20) < this.getCurrentBallY()) {
   	//option D
   		if((this.getCurrentBallX() + this.getBallDirectionX()) != blockX || (this.getCurrentBallX() + this.getBallDirectionX()) != (blockX + 20)) {
-  			return new BouncePoint(this.getCurrentBallX() + this.getBallDirectionX(), blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY)), blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
   		}
-  	//option G
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
-  			return new BouncePoint(blockX - 5, blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
+  	//option G approaching from right
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX && (currentBallX + ballDirectionX) < currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY), blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
   		}
-  	//option H
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20)) {
-  			return new BouncePoint(blockX + 25, blockY + 25, BouncePoint.BounceDirection.FLIP_X);
+  	//option E approaching from left
+  		if((currentBallX + ballDirectionX) == blockX && (currentBallX + ballDirectionX) > currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY), blockY + 25, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F aproaching from right
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20) && (currentBallX + ballDirectionX) < currentBallX) {
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY), blockY + 25, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F approaching from left
+  		if((currentBallX + ballDirectionX) == (blockX + 20) && (currentBallX + ballDirectionX) > currentBallX) {
+  		return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY), blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
   		}
   	}
   	
@@ -267,7 +283,7 @@ class PlayedGame {
   			return new BouncePoint(blockX - 5, this.getCurrentBallY() + this.getBallDirectionY(), BouncePoint.BounceDirection.FLIP_X);
   		}
   	//option E
-  		if((this.getCurrentBallY() + this.getBallDirectionY()) == blockY) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  		if((this.getCurrentBallY() + this.getBallDirectionY()) == blockY) { 
   			return new BouncePoint(blockX - 5, blockY - 5, BouncePoint.BounceDirection.FLIP_X);
   		}
   	//option G
@@ -300,7 +316,6 @@ class PlayedGame {
   }
   
   private BouncePoint calculateBouncePointPaddle() {
-<<<<<<< HEAD
   	java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX(), this.getCurrentPaddleY(), currentPaddleLength, 5);
   	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY(), 10, 10);
   	if(!rect.getBounds2D().intersects(ball.getBounds2D())) return null;
@@ -309,32 +324,48 @@ class PlayedGame {
   	if(this.getCurrentBallY() < currentPaddleY && currentPaddleY - (currentBallY + ballDirectionY) <= 5) {
   	//option A
   		if((currentBallX + ballDirectionX) != currentPaddleX || (currentBallX + ballDirectionX) != (currentPaddleX + currentPaddleLength)) {
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(2*currentBallY + ballDirectionY))/(currentPaddleY - 5), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(currentPaddleY - 5)/(2*currentBallY + ballDirectionY)), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
   		}
   	//option E approaching from right
   		if((currentBallX + ballDirectionX) == currentPaddleX && (currentBallX + ballDirectionX) < currentBallX) {
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(2*currentBallY + ballDirectionY))/(currentPaddleY - 5), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(currentPaddleY - 5)/(2*currentBallY + ballDirectionY)), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
   		}
   	//option E approaching from left
   		if((currentBallX + ballDirectionX) == currentPaddleX && (currentBallX + ballDirectionX) > currentBallX) {
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(2*currentBallY + ballDirectionY))/(currentPaddleY - 5), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_X);
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(currentPaddleY - 5)/(2*currentBallY + ballDirectionY), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_X);
   		}
   	//option F from the right
   		if((currentBallX + ballDirectionX) == (currentPaddleX + currentPaddleLength) && (currentBallX + ballDirectionX) < currentBallX) {
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(2*currentBallY + ballDirectionY))/(currentPaddleY - 5), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_X);
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(currentPaddleY - 5)/(2*currentBallY + ballDirectionY)), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_X);
   		}
   	//option F from the right
   		if(currentBallX + ballDirectionX) == (currentPaddleX + currentPaddleLength) && (currentBallX + ballDirectionX) > currentBallX) {
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(2*currentBallY + ballDirectionY))/(currentPaddleY - 5), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(currentPaddleY - 5)/(2*currentBallY + ballDirectionY)), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
   		}
   	}
   	//ball comes from the left
   	if(currentBallX < currentPaddleX) {
-  	
+  	//option B
+  		if((currentBallY + ballDirectionY) != currentPaddleY || (currentBallY + ballDirectionY) != (currentPaddleY + 5)) {
+  			return new BouncePoint((currentPaddleX - 5), ((2*currentBallY + ballDirectionY)*(currentPaddleX - 5)/(2*currentBallX + ballDirectionX)), BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option E
+  		if((currentBallY + ballDirectionY) == currentPaddleY) {
+  			return new BouncePoint(currentPaddleX - 5), ((2*currentBallY + ballDirectionY)*(currentPaddleX - 5)/(2*currentBallX + ballDirectionX)), BouncePoint.BounceDirection.FLIP_X);
+  		}
   	}
-=======
+  	//ball comes from the right
+  	if(currentBallX > currentPaddleX) {
+  	//option C
+  		if((currentBallY + ballDirectionY) != currentPaddleY || (currentBallY + ballDirectionY) != (currentPaddleY + 5)) {
+  			return new BouncePoint((currentPaddleX + currentPaddleLength + 5), ((2*currentBallY + ballDirectionY)*(currentPaddleX + currentPaddleLength + 5)/(2*currentBallX + ballDirectionX)), BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F
+  		if((currentBallY + ballDirectionY) == currentPaddleY) {
+  			return new BouncePoint((currentPaddleX + currentPaddleLength + 5), ((2*currentBallY + ballDirectionY)*(currentPaddleX + currentPaddleLength + 5)/(2*currentBallX + ballDirectionX)), BouncePoint.BounceDirection.FLIP_X);
+  		}	
+  	}
   	return null;
->>>>>>> branch 'master' of https://github.com/W2019-ECSE223/ecse223-group-project-p-1.git
   }
   
   private void bounceBall() {
