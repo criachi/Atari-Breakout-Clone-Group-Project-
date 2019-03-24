@@ -644,10 +644,6 @@ public class GameDesignPage {
 	
 	// method for Remove Block from a Level 
 	private void removeBlockAssignmentBtnActionPerformed(java.awt.event.ActionEvent evt) {
-<<<<<<< HEAD
-		
-		
-=======
 		errorMessage.setText("");
 		int selectedBlockAssignmentIndex = blockAssignmentComboBox.getSelectedIndex();
 		if(selectedBlockAssignmentIndex <= 0) {
@@ -665,7 +661,6 @@ public class GameDesignPage {
 		}catch(NumberFormatException e) {
 			errorMessage.setText(e.getMessage());
 		}
->>>>>>> branch 'master' of https://github.com/W2019-ECSE223/ecse223-group-project-p-1.git
 	}
 	private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		//frame.dispose() will delete the current page (from what i understand)

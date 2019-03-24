@@ -27,7 +27,6 @@ class PlayedGame {
   }
   
   // Guards
-  // TODO implement bounceBall
   
   private boolean hitPaddle() {
     // TODO implement
@@ -274,6 +273,14 @@ class PlayedGame {
   		}
   	}
   	return null;
+  }
+  
+  private BouncePoint calculateBouncePointWall() {
+  	
+  }
+  
+  private BouncePoint calculateBouncePointPaddle() {
+  
   }
   
   private void bounceBall() {
