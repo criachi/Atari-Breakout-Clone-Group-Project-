@@ -522,7 +522,7 @@ public class Block223Controller {
 			Game game = Block223Application.getCurrentGame();
 			UserRole admin = Block223Application.getCurrentUserRole();
 			Block223 block223 = Block223Application.getBlock223();
-			String username = block223.findUsername(Block223Application.getCurrentUserRole());
+			String username = block223.findUsername(admin);
 			PlayedGame pgame = new PlayedGame(username, game, block223);
 			pgame.setPlayer(null);
 			Block223Application.setCurrentPlayableGame(pgame);
@@ -540,7 +540,7 @@ public class Block223Controller {
 			if(Block223Application.getCurrentUserRole() != game.getAdmin()) {
 				throw new InvalidInputException("Only the admin who created the game can publish it.");
 			}
-			if(game.getNrBlocksPerLevel() < 1) {
+			if(game.getBlocks().size() < 1) {
 				throw new InvalidInputException("At least one block must be defined for a game to be published.");
 			}
 			game.setPublished(true);

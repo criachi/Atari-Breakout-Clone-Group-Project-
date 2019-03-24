@@ -28,8 +28,17 @@ class PlayedGame {
   
   // Guards
   
-   private boolean hitPaddle() {
+  //Haluk Calin - ball hit the wall or paddle
+    
+    private boolean hitPaddle(){
+	 BouncePoint bp = calculateBouncePointPaddle();
+	 if(bp == null) { 
+		 return false;
+     }
+     setBounce(bp);
+     return bp!=null;
 
+<<<<<<< HEAD
     // TODO implement
     BouncePoint bp = calculateBouncePointPaddle();
     if(bp == null) {
@@ -39,6 +48,9 @@ class PlayedGame {
    return true;
     }
 }
+=======
+  }
+>>>>>>> branch 'master' of https://github.com/W2019-ECSE223/ecse223-group-project-p-1.git
 
 
 //Melis Malki = ball out of bounds method
@@ -116,17 +128,31 @@ class PlayedGame {
     return this.getBounce() != null;
   }
   
+<<<<<<< HEAD
    private boolean hitWall() {
 
     // TODO implement
     BouncePoint bp = calculateBouncePointWall();
    if(bp == null) {
     		return false;
+=======
+   //Haluk Calin - ball hit the wall or paddle
+   
+   private boolean hitWall(){
+	BouncePoint bp = calculateBouncePointWall();
+	 if(bp == null) { 
+		 return false;
+>>>>>>> branch 'master' of https://github.com/W2019-ECSE223/ecse223-group-project-p-1.git
     }
     setBounce(bp);
+<<<<<<< HEAD
    return true;
     }
 }
+=======
+    return bp != null;
+  }
+>>>>>>> branch 'master' of https://github.com/W2019-ECSE223/ecse223-group-project-p-1.git
 
   
   // Actions
@@ -135,13 +161,19 @@ class PlayedGame {
     // TODO implement
   }
   
+<<<<<<< HEAD
   private void doHitPaddleOrWall() {
 
     // TODO implement
     
+=======
+  //Haluk Calin - ball hit the wall or paddle
+  
+  private void doHitPaddleOrWall(){  
+    doHitPaddleOrWall();
+>>>>>>> branch 'master' of https://github.com/W2019-ECSE223/ecse223-group-project-p-1.git
     bounceBall();
-    return;
-  }
+   }
 
 
 //Melis Malki = ball out of bounds method
@@ -300,21 +332,29 @@ class PlayedGame {
   //Haluk ball hits wall method
   
   private BouncePoint calculateBouncePointWall() {
+
   java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY(), 10, 10);
   if(!rect.getBounds2D().intersects(ball.getBounds2D())) return null;
   
   // Option A 
-  java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(0, 0, 5, 385);
+  java.awt.geom.Rectangle2D rectA = new java.awt.geom.Rectangle2D.Double(0, 0, 5, 385);
   
-  if((CurrentBallX() + BallDirectionX()) != 0  || (CurrentBallX() + this.getBallDirectionX()) != (blockX + 20)) {
-  			return new BouncePoint(this.getCurrentBallX() + this.getBallDirectionX(), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  if((CurrentBallX() + BallDirectionX()) != 0  || (CurrentBallX() + BallDirectionX()) != (0 + 5)) {
+  			return new BouncePoint(CurrentBallX() + BallDirectionX(), 0 - 5, BouncePoint.BounceDirection.FLIP_X);
   		}
   
   
   
   //Option B
-   java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(0, 0, 380, 5);
-  
+   java.awt.geom.Rectangle2D rectB = new java.awt.geom.Rectangle2D.Double(0, 0, 380, 5);
+   
+   
+   //A&B corner
+   
+   
+   
+   //B&C corner
+   
   
   
   
@@ -322,19 +362,18 @@ class PlayedGame {
   
   
   //Option C
+   java.awt.geom.Rectangle2D rectC = new java.awt.geom.Rectangle2D.Double(0, 0, 380, 5);
   
   
   
   
-  
-  
-  
-  
-  	
+ 
+  	return null;
+
   }
   
   private BouncePoint calculateBouncePointPaddle() {
-  
+  	return null;
   }
   
   private void bounceBall() {
