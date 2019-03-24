@@ -157,6 +157,7 @@ public class RegisterWindow {
 		}
 		catch(InvalidInputException e) {
 			error.setText(e.getMessage());
+			return;
 		}
 				
 		

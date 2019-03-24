@@ -2,113 +2,133 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.block.model;
+import java.io.Serializable;
 import java.util.*;
 
-// line 10 "../../../../../Block223PlayGame.ump"
-// line 1 "../../../../../Block223StateMachine.ump"
-public class PlayedGame
+// line 11 "../../../../../Block223PlayMode.ump"
+// line 100 "../../../../../Block223Persistence.ump"
+// line 1 "../../../../../Block223States.ump"
+public class PlayedGame implements Serializable
 {
 
   //------------------------
   // STATIC VARIABLES
   //------------------------
 
+
+  /**
+   * at design time, the initial wait time may be adjusted as seen fit
+   */
+  public static final int INITIAL_WAIT_TIME = 1000;
   private static int nextId = 1;
+  public static final int NR_LIVES = 3;
+
+  /**
+   * the PlayedBall and PlayedPaddle are not in a separate class to avoid the bug in Umple that occurred for the second constructor of Game
+   * no direct link to Ball, because the ball can be found by navigating to Game and then Ball
+   */
+  public static final int BALL_INITIAL_X = Game.PLAY_AREA_SIDE / 2;
+  public static final int BALL_INITIAL_Y = Game.PLAY_AREA_SIDE / 2;
+
+  /**
+   * no direct link to Paddle, because the paddle can be found by navigating to Game and then Paddle
+   * pixels moved when right arrow key is pressed
+   */
+  public static final int PADDLE_MOVE_RIGHT = 1;
+
+  /**
+   * pixels moved when left arrow key is pressed
+   */
+  public static final int PADDLE_MOVE_LEFT = -1;
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
   //PlayedGame Attributes
-  private int nrLives;
+  private int score;
+  private int lives;
   private int currentLevel;
+  private double waitTime;
+  private String playername;
+  private double ballDirectionX;
+  private double ballDirectionY;
+  private double currentBallX;
+  private double currentBallY;
+  private double currentPaddleLength;
+  private double currentPaddleX;
+  private double currentPaddleY;
 
   //Autounique Attributes
   private int id;
 
   //PlayedGame State Machines
-  public enum GameStatus { Idle, Play, Paused, Done, Pause }
-  private GameStatus gameStatus;
+  public enum PlayStatus { Ready, Moving, Paused, GameOver }
+  private PlayStatus playStatus;
 
   //PlayedGame Associations
   private Player player;
-  private SpecificBall specificBall;
-  private SpecificPaddle specificPaddle;
-  private List<SpecificBlockAssignment> specificBlockAssignments;
   private Game game;
+  private List<PlayedBlockAssignment> blocks;
+  private BouncePoint bounce;
   private Block223 block223;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public PlayedGame(Player aPlayer, SpecificBall aSpecificBall, SpecificPaddle aSpecificPaddle, Game aGame, Block223 aBlock223)
+  public PlayedGame(String aPlayername, Game aGame, Block223 aBlock223)
   {
-    nrLives = 3;
+    // line 47 "../../../../../Block223PlayMode.ump"
+    boolean didAddGameResult = setGame(aGame);
+          if (!didAddGameResult)
+          {
+             throw new RuntimeException("Unable to create playedGame due to game");
+          }
+    // END OF UMPLE BEFORE INJECTION
+    score = 0;
+    lives = NR_LIVES;
     currentLevel = 1;
+    waitTime = INITIAL_WAIT_TIME;
+    playername = aPlayername;
+    resetBallDirectionX();
+    resetBallDirectionY();
+    resetCurrentBallX();
+    resetCurrentBallY();
+    currentPaddleLength = getGame().getPaddle().getMaxPaddleLength();
+    resetCurrentPaddleX();
+    currentPaddleY = Game.PLAY_AREA_SIDE - Paddle.VERTICAL_DISTANCE - Paddle.PADDLE_WIDTH;
     id = nextId++;
-    boolean didAddPlayer = setPlayer(aPlayer);
-    if (!didAddPlayer)
-    {
-      throw new RuntimeException("Unable to create playedGame due to player");
-    }
-    if (aSpecificBall == null || aSpecificBall.getPlayedGame() != null)
-    {
-      throw new RuntimeException("Unable to create PlayedGame due to aSpecificBall");
-    }
-    specificBall = aSpecificBall;
-    if (aSpecificPaddle == null || aSpecificPaddle.getPlayedGame() != null)
-    {
-      throw new RuntimeException("Unable to create PlayedGame due to aSpecificPaddle");
-    }
-    specificPaddle = aSpecificPaddle;
-    specificBlockAssignments = new ArrayList<SpecificBlockAssignment>();
     boolean didAddGame = setGame(aGame);
     if (!didAddGame)
     {
       throw new RuntimeException("Unable to create playedGame due to game");
     }
+    blocks = new ArrayList<PlayedBlockAssignment>();
     boolean didAddBlock223 = setBlock223(aBlock223);
     if (!didAddBlock223)
     {
       throw new RuntimeException("Unable to create playedGame due to block223");
     }
-    setGameStatus(GameStatus.Idle);
-  }
-
-  public PlayedGame(Player aPlayer, Ball aBallForSpecificBall, Paddle aPaddleForSpecificPaddle, Game aGame, Block223 aBlock223)
-  {
-    nrLives = 3;
-    currentLevel = 1;
-    id = nextId++;
-    boolean didAddPlayer = setPlayer(aPlayer);
-    if (!didAddPlayer)
-    {
-      throw new RuntimeException("Unable to create playedGame due to player");
-    }
-    specificBall = new SpecificBall(aBallForSpecificBall, this);
-    specificPaddle = new SpecificPaddle(aPaddleForSpecificPaddle, this);
-    specificBlockAssignments = new ArrayList<SpecificBlockAssignment>();
-    boolean didAddGame = setGame(aGame);
-    if (!didAddGame)
-    {
-      throw new RuntimeException("Unable to create playedGame due to game");
-    }
-    boolean didAddBlock223 = setBlock223(aBlock223);
-    if (!didAddBlock223)
-    {
-      throw new RuntimeException("Unable to create playedGame due to block223");
-    }
+    setPlayStatus(PlayStatus.Ready);
   }
 
   //------------------------
   // INTERFACE
   //------------------------
 
-  public boolean setNrLives(int aNrLives)
+  public boolean setScore(int aScore)
   {
     boolean wasSet = false;
-    nrLives = aNrLives;
+    score = aScore;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setLives(int aLives)
+  {
+    boolean wasSet = false;
+    lives = aLives;
     wasSet = true;
     return wasSet;
   }
@@ -121,9 +141,118 @@ public class PlayedGame
     return wasSet;
   }
 
-  public int getNrLives()
+  public boolean setWaitTime(double aWaitTime)
   {
-    return nrLives;
+    boolean wasSet = false;
+    waitTime = aWaitTime;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setPlayername(String aPlayername)
+  {
+    boolean wasSet = false;
+    playername = aPlayername;
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template attribute_SetDefaulted */
+  public boolean setBallDirectionX(double aBallDirectionX)
+  {
+    boolean wasSet = false;
+    ballDirectionX = aBallDirectionX;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean resetBallDirectionX()
+  {
+    boolean wasReset = false;
+    ballDirectionX = getDefaultBallDirectionX();
+    wasReset = true;
+    return wasReset;
+  }
+  /* Code from template attribute_SetDefaulted */
+  public boolean setBallDirectionY(double aBallDirectionY)
+  {
+    boolean wasSet = false;
+    ballDirectionY = aBallDirectionY;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean resetBallDirectionY()
+  {
+    boolean wasReset = false;
+    ballDirectionY = getDefaultBallDirectionY();
+    wasReset = true;
+    return wasReset;
+  }
+  /* Code from template attribute_SetDefaulted */
+  public boolean setCurrentBallX(double aCurrentBallX)
+  {
+    boolean wasSet = false;
+    currentBallX = aCurrentBallX;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean resetCurrentBallX()
+  {
+    boolean wasReset = false;
+    currentBallX = getDefaultCurrentBallX();
+    wasReset = true;
+    return wasReset;
+  }
+  /* Code from template attribute_SetDefaulted */
+  public boolean setCurrentBallY(double aCurrentBallY)
+  {
+    boolean wasSet = false;
+    currentBallY = aCurrentBallY;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean resetCurrentBallY()
+  {
+    boolean wasReset = false;
+    currentBallY = getDefaultCurrentBallY();
+    wasReset = true;
+    return wasReset;
+  }
+
+  public boolean setCurrentPaddleLength(double aCurrentPaddleLength)
+  {
+    boolean wasSet = false;
+    currentPaddleLength = aCurrentPaddleLength;
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template attribute_SetDefaulted */
+  public boolean setCurrentPaddleX(double aCurrentPaddleX)
+  {
+    boolean wasSet = false;
+    currentPaddleX = aCurrentPaddleX;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean resetCurrentPaddleX()
+  {
+    boolean wasReset = false;
+    currentPaddleX = getDefaultCurrentPaddleX();
+    wasReset = true;
+    return wasReset;
+  }
+
+  public int getScore()
+  {
+    return score;
+  }
+
+  public int getLives()
+  {
+    return lives;
   }
 
   public int getCurrentLevel()
@@ -131,31 +260,135 @@ public class PlayedGame
     return currentLevel;
   }
 
+  public double getWaitTime()
+  {
+    return waitTime;
+  }
+
+  /**
+   * added here so that it only needs to be determined once
+   */
+  public String getPlayername()
+  {
+    return playername;
+  }
+
+  /**
+   * 0/0 is the top left corner of the play area, i.e., a directionX/Y of 0/1 moves the ball down in a straight line
+   */
+  public double getBallDirectionX()
+  {
+    return ballDirectionX;
+  }
+  /* Code from template attribute_GetDefaulted */
+  public double getDefaultBallDirectionX()
+  {
+    return getGame().getBall().getMinBallSpeedX();
+  }
+
+  public double getBallDirectionY()
+  {
+    return ballDirectionY;
+  }
+  /* Code from template attribute_GetDefaulted */
+  public double getDefaultBallDirectionY()
+  {
+    return getGame().getBall().getMinBallSpeedY();
+  }
+
+  /**
+   * the position of the ball is at the center of the ball
+   */
+  public double getCurrentBallX()
+  {
+    return currentBallX;
+  }
+  /* Code from template attribute_GetDefaulted */
+  public double getDefaultCurrentBallX()
+  {
+    return BALL_INITIAL_X;
+  }
+
+  public double getCurrentBallY()
+  {
+    return currentBallY;
+  }
+  /* Code from template attribute_GetDefaulted */
+  public double getDefaultCurrentBallY()
+  {
+    return BALL_INITIAL_Y;
+  }
+
+  public double getCurrentPaddleLength()
+  {
+    return currentPaddleLength;
+  }
+
+  /**
+   * the position of the paddle is at its top right corner
+   */
+  public double getCurrentPaddleX()
+  {
+    return currentPaddleX;
+  }
+  /* Code from template attribute_GetDefaulted */
+  public double getDefaultCurrentPaddleX()
+  {
+    return (Game.PLAY_AREA_SIDE - currentPaddleLength) / 2;
+  }
+
+  public double getCurrentPaddleY()
+  {
+    return currentPaddleY;
+  }
+
   public int getId()
   {
     return id;
   }
 
-  public String getGameStatusFullName()
+  public String getPlayStatusFullName()
   {
-    String answer = gameStatus.toString();
+    String answer = playStatus.toString();
     return answer;
   }
 
-  public GameStatus getGameStatus()
+  public PlayStatus getPlayStatus()
   {
-    return gameStatus;
+    return playStatus;
+  }
+
+  public boolean play()
+  {
+    boolean wasEventProcessed = false;
+    
+    PlayStatus aPlayStatus = playStatus;
+    switch (aPlayStatus)
+    {
+      case Ready:
+        setPlayStatus(PlayStatus.Moving);
+        wasEventProcessed = true;
+        break;
+      case Paused:
+        setPlayStatus(PlayStatus.Moving);
+        wasEventProcessed = true;
+        break;
+      default:
+        // Other states do respond to this event
+    }
+
+    return wasEventProcessed;
   }
 
   public boolean pause()
   {
     boolean wasEventProcessed = false;
     
-    GameStatus aGameStatus = gameStatus;
-    switch (aGameStatus)
+    PlayStatus aPlayStatus = playStatus;
+    switch (aPlayStatus)
     {
-      case Play:
-        setGameStatus(GameStatus.Paused);
+      case Moving:
+        setPlayStatus(PlayStatus.Paused);
         wasEventProcessed = true;
         break;
       default:
@@ -165,87 +398,73 @@ public class PlayedGame
     return wasEventProcessed;
   }
 
-  public boolean moveBall()
+  public boolean move()
   {
     boolean wasEventProcessed = false;
     
-    GameStatus aGameStatus = gameStatus;
-    switch (aGameStatus)
+    PlayStatus aPlayStatus = playStatus;
+    switch (aPlayStatus)
     {
-      case Play:
-        if (isPaddleHit())
+      case Moving:
+        if (hitPaddle())
         {
-        // line 21 "../../../../../Block223StateMachine.ump"
-          bounceBackFromPaddle(getSpecificBall());
-          setGameStatus(GameStatus.Play);
+        // line 12 "../../../../../Block223States.ump"
+          doHitPaddleOrWall();
+          setPlayStatus(PlayStatus.Moving);
           wasEventProcessed = true;
           break;
         }
-        if (isWallHit())
+        if (isOutOfBoundsAndLastLife())
         {
-        // line 22 "../../../../../Block223StateMachine.ump"
-          bounceBackFromWall(getSpecificBall());
-          setGameStatus(GameStatus.Play);
+        // line 13 "../../../../../Block223States.ump"
+          doOutOfBounds();
+          setPlayStatus(PlayStatus.GameOver);
           wasEventProcessed = true;
           break;
         }
-        if (isBlockHit()&&isLastBlock()&&isLastLevel())
+        if (isOutOfBounds())
         {
-        // line 23 "../../../../../Block223StateMachine.ump"
-          updateScore(); deleteSpecificBlock();
-          setGameStatus(GameStatus.Done);
+        // line 14 "../../../../../Block223States.ump"
+          doOutOfBounds();
+          setPlayStatus(PlayStatus.Paused);
           wasEventProcessed = true;
           break;
         }
-        if (isBlockHit()&&isLastBlock())
+        if (hitLastBlockAndLastLevel())
         {
-        // line 24 "../../../../../Block223StateMachine.ump"
-          updateScore(); deleteSpecificBlock(); increaseLevel();
-          setGameStatus(GameStatus.Pause);
+        // line 15 "../../../../../Block223States.ump"
+          doHitBlock();
+          setPlayStatus(PlayStatus.GameOver);
           wasEventProcessed = true;
           break;
         }
-        if (isBlockHit())
+        if (hitLastBlock())
         {
-        // line 25 "../../../../../Block223StateMachine.ump"
-          bounceBackFromBlock(getSpecificBall()); updateScore(); deleteSpecificBlock();
-          setGameStatus(GameStatus.Play);
+        // line 16 "../../../../../Block223States.ump"
+          doHitBlockNextLevel();
+          setPlayStatus(PlayStatus.Ready);
           wasEventProcessed = true;
           break;
         }
-        if (isBallOutOfBounds()&&(hasOneLifeRemaining()))
+        if (hitBlock())
         {
-        // line 26 "../../../../../Block223StateMachine.ump"
-          decrementLives(); resetBallandPaddle();
-          setGameStatus(GameStatus.Done);
+        // line 17 "../../../../../Block223States.ump"
+          doHitBlock();
+          setPlayStatus(PlayStatus.Moving);
           wasEventProcessed = true;
           break;
         }
-        if (isBallOutOfBounds())
+        if (hitWall())
         {
-        // line 27 "../../../../../Block223StateMachine.ump"
-          decrementLives();
-          setGameStatus(GameStatus.Pause);
+        // line 18 "../../../../../Block223States.ump"
+          doHitPaddleOrWall();
+          setPlayStatus(PlayStatus.Moving);
           wasEventProcessed = true;
           break;
         }
-        break;
-      default:
-        // Other states do respond to this event
-    }
-
-    return wasEventProcessed;
-  }
-
-  public boolean resume()
-  {
-    boolean wasEventProcessed = false;
-    
-    GameStatus aGameStatus = gameStatus;
-    switch (aGameStatus)
-    {
-      case Paused:
-        setGameStatus(GameStatus.Play);
+        // line 19 "../../../../../Block223States.ump"
+        doHitNothingAndNotOutOfBounds();
+        setPlayStatus(PlayStatus.Moving);
         wasEventProcessed = true;
         break;
       default:
@@ -255,21 +474,20 @@ public class PlayedGame
     return wasEventProcessed;
   }
 
-  private void setGameStatus(GameStatus aGameStatus)
+  private void setPlayStatus(PlayStatus aPlayStatus)
   {
-    gameStatus = aGameStatus;
+    playStatus = aPlayStatus;
 
     // entry actions and do activities
-    switch(gameStatus)
+    switch(playStatus)
     {
-      case Paused:
-        // line 30 "../../../../../Block223StateMachine.ump"
-        savePlayedGame();
+      case Ready:
+        // line 7 "../../../../../Block223States.ump"
+        doSetup();
         break;
-      case Done:
-        // line 36 "../../../../../Block223StateMachine.ump"
-        saveScore();
-				deletePlayedGame();
+      case GameOver:
+        // line 25 "../../../../../Block223States.ump"
+        doGameOver();
         break;
     }
   }
@@ -278,146 +496,79 @@ public class PlayedGame
   {
     return player;
   }
-  /* Code from template association_GetOne */
-  public SpecificBall getSpecificBall()
-  {
-    return specificBall;
-  }
-  /* Code from template association_GetOne */
-  public SpecificPaddle getSpecificPaddle()
-  {
-    return specificPaddle;
-  }
-  /* Code from template association_GetMany */
-  public SpecificBlockAssignment getSpecificBlockAssignment(int index)
-  {
-    SpecificBlockAssignment aSpecificBlockAssignment = specificBlockAssignments.get(index);
-    return aSpecificBlockAssignment;
-  }
 
-  public List<SpecificBlockAssignment> getSpecificBlockAssignments()
+  public boolean hasPlayer()
   {
-    List<SpecificBlockAssignment> newSpecificBlockAssignments = Collections.unmodifiableList(specificBlockAssignments);
-    return newSpecificBlockAssignments;
-  }
-
-  public int numberOfSpecificBlockAssignments()
-  {
-    int number = specificBlockAssignments.size();
-    return number;
-  }
-
-  public boolean hasSpecificBlockAssignments()
-  {
-    boolean has = specificBlockAssignments.size() > 0;
+    boolean has = player != null;
     return has;
-  }
-
-  public int indexOfSpecificBlockAssignment(SpecificBlockAssignment aSpecificBlockAssignment)
-  {
-    int index = specificBlockAssignments.indexOf(aSpecificBlockAssignment);
-    return index;
   }
   /* Code from template association_GetOne */
   public Game getGame()
   {
     return game;
   }
+  /* Code from template association_GetMany */
+  public PlayedBlockAssignment getBlock(int index)
+  {
+    PlayedBlockAssignment aBlock = blocks.get(index);
+    return aBlock;
+  }
+
+  public List<PlayedBlockAssignment> getBlocks()
+  {
+    List<PlayedBlockAssignment> newBlocks = Collections.unmodifiableList(blocks);
+    return newBlocks;
+  }
+
+  public int numberOfBlocks()
+  {
+    int number = blocks.size();
+    return number;
+  }
+
+  public boolean hasBlocks()
+  {
+    boolean has = blocks.size() > 0;
+    return has;
+  }
+
+  public int indexOfBlock(PlayedBlockAssignment aBlock)
+  {
+    int index = blocks.indexOf(aBlock);
+    return index;
+  }
+  /* Code from template association_GetOne */
+  public BouncePoint getBounce()
+  {
+    return bounce;
+  }
+
+  public boolean hasBounce()
+  {
+    boolean has = bounce != null;
+    return has;
+  }
   /* Code from template association_GetOne */
   public Block223 getBlock223()
   {
     return block223;
   }
-  /* Code from template association_SetOneToMany */
+  /* Code from template association_SetOptionalOneToMany */
   public boolean setPlayer(Player aPlayer)
   {
     boolean wasSet = false;
-    if (aPlayer == null)
-    {
-      return wasSet;
-    }
-
     Player existingPlayer = player;
     player = aPlayer;
     if (existingPlayer != null && !existingPlayer.equals(aPlayer))
     {
       existingPlayer.removePlayedGame(this);
     }
-    player.addPlayedGame(this);
+    if (aPlayer != null)
+    {
+      aPlayer.addPlayedGame(this);
+    }
     wasSet = true;
     return wasSet;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfSpecificBlockAssignments()
-  {
-    return 0;
-  }
-  /* Code from template association_AddManyToOne */
-  public SpecificBlockAssignment addSpecificBlockAssignment(int aPositionX, int aPositionY, Block aBlock)
-  {
-    return new SpecificBlockAssignment(aPositionX, aPositionY, aBlock, this);
-  }
-
-  public boolean addSpecificBlockAssignment(SpecificBlockAssignment aSpecificBlockAssignment)
-  {
-    boolean wasAdded = false;
-    if (specificBlockAssignments.contains(aSpecificBlockAssignment)) { return false; }
-    PlayedGame existingPlayedGame = aSpecificBlockAssignment.getPlayedGame();
-    boolean isNewPlayedGame = existingPlayedGame != null && !this.equals(existingPlayedGame);
-    if (isNewPlayedGame)
-    {
-      aSpecificBlockAssignment.setPlayedGame(this);
-    }
-    else
-    {
-      specificBlockAssignments.add(aSpecificBlockAssignment);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeSpecificBlockAssignment(SpecificBlockAssignment aSpecificBlockAssignment)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aSpecificBlockAssignment, as it must always have a playedGame
-    if (!this.equals(aSpecificBlockAssignment.getPlayedGame()))
-    {
-      specificBlockAssignments.remove(aSpecificBlockAssignment);
-      wasRemoved = true;
-    }
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addSpecificBlockAssignmentAt(SpecificBlockAssignment aSpecificBlockAssignment, int index)
-  {  
-    boolean wasAdded = false;
-    if(addSpecificBlockAssignment(aSpecificBlockAssignment))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfSpecificBlockAssignments()) { index = numberOfSpecificBlockAssignments() - 1; }
-      specificBlockAssignments.remove(aSpecificBlockAssignment);
-      specificBlockAssignments.add(index, aSpecificBlockAssignment);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveSpecificBlockAssignmentAt(SpecificBlockAssignment aSpecificBlockAssignment, int index)
-  {
-    boolean wasAdded = false;
-    if(specificBlockAssignments.contains(aSpecificBlockAssignment))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfSpecificBlockAssignments()) { index = numberOfSpecificBlockAssignments() - 1; }
-      specificBlockAssignments.remove(aSpecificBlockAssignment);
-      specificBlockAssignments.add(index, aSpecificBlockAssignment);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addSpecificBlockAssignmentAt(aSpecificBlockAssignment, index);
-    }
-    return wasAdded;
   }
   /* Code from template association_SetOneToMany */
   public boolean setGame(Game aGame)
@@ -435,6 +586,86 @@ public class PlayedGame
       existingGame.removePlayedGame(this);
     }
     game.addPlayedGame(this);
+    wasSet = true;
+    return wasSet;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfBlocks()
+  {
+    return 0;
+  }
+  /* Code from template association_AddManyToOne */
+  public PlayedBlockAssignment addBlock(int aX, int aY, Block aBlock)
+  {
+    return new PlayedBlockAssignment(aX, aY, aBlock, this);
+  }
+
+  public boolean addBlock(PlayedBlockAssignment aBlock)
+  {
+    boolean wasAdded = false;
+    if (blocks.contains(aBlock)) { return false; }
+    PlayedGame existingPlayedGame = aBlock.getPlayedGame();
+    boolean isNewPlayedGame = existingPlayedGame != null && !this.equals(existingPlayedGame);
+    if (isNewPlayedGame)
+    {
+      aBlock.setPlayedGame(this);
+    }
+    else
+    {
+      blocks.add(aBlock);
+    }
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeBlock(PlayedBlockAssignment aBlock)
+  {
+    boolean wasRemoved = false;
+    //Unable to remove aBlock, as it must always have a playedGame
+    if (!this.equals(aBlock.getPlayedGame()))
+    {
+      blocks.remove(aBlock);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addBlockAt(PlayedBlockAssignment aBlock, int index)
+  {  
+    boolean wasAdded = false;
+    if(addBlock(aBlock))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfBlocks()) { index = numberOfBlocks() - 1; }
+      blocks.remove(aBlock);
+      blocks.add(index, aBlock);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveBlockAt(PlayedBlockAssignment aBlock, int index)
+  {
+    boolean wasAdded = false;
+    if(blocks.contains(aBlock))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfBlocks()) { index = numberOfBlocks() - 1; }
+      blocks.remove(aBlock);
+      blocks.add(index, aBlock);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addBlockAt(aBlock, index);
+    }
+    return wasAdded;
+  }
+  /* Code from template association_SetUnidirectionalOptionalOne */
+  public boolean setBounce(BouncePoint aNewBounce)
+  {
+    boolean wasSet = false;
+    bounce = aNewBounce;
     wasSet = true;
     return wasSet;
   }
@@ -460,37 +691,26 @@ public class PlayedGame
 
   public void delete()
   {
-    Player placeholderPlayer = player;
-    this.player = null;
-    if(placeholderPlayer != null)
+    if (player != null)
     {
+      Player placeholderPlayer = player;
+      this.player = null;
       placeholderPlayer.removePlayedGame(this);
     }
-    SpecificBall existingSpecificBall = specificBall;
-    specificBall = null;
-    if (existingSpecificBall != null)
-    {
-      existingSpecificBall.delete();
-    }
-    SpecificPaddle existingSpecificPaddle = specificPaddle;
-    specificPaddle = null;
-    if (existingSpecificPaddle != null)
-    {
-      existingSpecificPaddle.delete();
-    }
-    while (specificBlockAssignments.size() > 0)
-    {
-      SpecificBlockAssignment aSpecificBlockAssignment = specificBlockAssignments.get(specificBlockAssignments.size() - 1);
-      aSpecificBlockAssignment.delete();
-      specificBlockAssignments.remove(aSpecificBlockAssignment);
-    }
-    
     Game placeholderGame = game;
     this.game = null;
     if(placeholderGame != null)
     {
       placeholderGame.removePlayedGame(this);
     }
+    while (blocks.size() > 0)
+    {
+      PlayedBlockAssignment aBlock = blocks.get(blocks.size() - 1);
+      aBlock.delete();
+      blocks.remove(aBlock);
+    }
+    
+    bounce = null;
     Block223 placeholderBlock223 = block223;
     this.block223 = null;
     if(placeholderBlock223 != null)
@@ -499,124 +719,353 @@ public class PlayedGame
     }
   }
 
-  // line 46 "../../../../../Block223StateMachine.ump"
-   private void saveScore(){
-    
+
+  /**
+   * Guards
+   * TODO implement bounceBall
+   */
+  // line 33 "../../../../../Block223States.ump"
+   private boolean hitPaddle(){
+    // TODO implement
+    return false;
   }
 
-  // line 51 "../../../../../Block223StateMachine.ump"
-   private Boolean hasOneLifeRemaining(){
-    
+
+  /**
+   * Melis Malki = ball out of bounds method
+   */
+  // line 40 "../../../../../Block223States.ump"
+   private boolean isOutOfBoundsAndLastLife(){
+    if (getLives() == 1){ 
+     return isOutOfBounds();
+     }
+     return false;
   }
 
-  // line 55 "../../../../../Block223StateMachine.ump"
-   private Boolean isBallOutOfBounds(){
-    
+
+  /**
+   * Melis Malki = ball out of bounds method
+   */
+  // line 48 "../../../../../Block223States.ump"
+   private boolean isOutOfBounds(){
+    if ( getCurrentBallY() > getCurrentPaddleY()){
+    return true;
+    }    
+    return false;
   }
 
-  // line 59 "../../../../../Block223StateMachine.ump"
-   private Boolean isBlockHit(){
-    
+
+  /**
+   * Onur Cayci - ball hits block method
+   */
+  // line 57 "../../../../../Block223States.ump"
+   private boolean hitLastBlockAndLastLevel(){
+    Game game = this.getGame();
+    int nrLevels = game.numberOfLevels();
+    this.setBounce(null);
+    if(nrLevels == this.currentLevel) {
+    	int nrBlocks = this.numberOfBlocks();
+    	if(nrBlocks == 1) {
+    		PlayedBlockAssignment block = this.getBlock(0);
+    		BouncePoint bp = this.calculateBouncePointBlock(block);
+    		if(bp == null) {
+    			return false;
+    		}
+    		this.setBounce(bp);
+    		return true;
+    	}
+    }
+    return false;
   }
 
-  // line 63 "../../../../../Block223StateMachine.ump"
-   private void bounceBackFromBlock(SpecificBall aBall){
-    
+
+  /**
+   * Onur Cayci - ball hits block method
+   */
+  // line 78 "../../../../../Block223States.ump"
+   private boolean hitLastBlock(){
+    int nrBlocks = this.numberOfBlocks();
+    this.setBounce(null);
+    if(nrBlocks == 1) {
+    	PlayedBlockAssignment block = this.getBlock(0);
+    	BouncePoint bp = calculateBouncePointBlock(block);
+    	if(bp == null) {
+    		return false;
+    	}
+    	this.setBounce(bp);
+    	return true;
+    }
+    return false;
   }
 
-  // line 67 "../../../../../Block223StateMachine.ump"
-   private void decrementLives(){
-    
+
+  /**
+   * Onur Cayci - ball hits block method
+   */
+  // line 95 "../../../../../Block223States.ump"
+   private boolean hitBlock(){
+    int nrBlocks = this.numberOfBlocks();
+    this.setBounce(null);
+    for(int i = 0; i < nrBlocks; i++) {
+    	PlayedBlockAssignment block = this.getBlock(i);
+    	BouncePoint bp = calculateBouncePointBlock(block);
+    	if(bp == null) {
+    		return false;
+    	}
+    	BouncePoint bounce = this.getBounce();
+    	boolean closer = isCloser(bp, bounce);
+    	if(closer) {
+    		this.setBounce(bp);
+    	}
+    }
+    return this.getBounce() != null;
   }
 
-  // line 71 "../../../../../Block223StateMachine.ump"
-   private void resetBallandPaddle(){
-    
+  // line 113 "../../../../../Block223States.ump"
+   private boolean hitWall(){
+    // TODO implement
+    return false;
   }
 
-  // line 75 "../../../../../Block223StateMachine.ump"
-   private Boolean isPaddleHit(){
-    
+
+  /**
+   * Actions
+   */
+  // line 120 "../../../../../Block223States.ump"
+   private void doSetup(){
+    // TODO implement
   }
 
-  // line 79 "../../../../../Block223StateMachine.ump"
-   private Boolean isWallHit(){
-    
+  // line 124 "../../../../../Block223States.ump"
+   private void doHitPaddleOrWall(){
+    // TODO implement
   }
 
-  // line 83 "../../../../../Block223StateMachine.ump"
-   private void bounceBackFromPaddle(SpecificBall aBall){
-    
+
+  /**
+   * Melis Malki = ball out of bounds method
+   */
+  // line 129 "../../../../../Block223States.ump"
+   private void doOutOfBounds(){
+    int lives = getLives();
+     setLives (lives-1);
+     resetCurrentBallX();
+     resetCurrentBallY();
+     resetBallDirectionX();
+     resetBallDirectionY();
+     resetCurrentPaddleX();
   }
 
-  // line 87 "../../../../../Block223StateMachine.ump"
-   private void bounceBackFromWall(SpecificBall aBall){
-    
+
+  /**
+   * Onur Cayci - ball hits block method
+   */
+  // line 141 "../../../../../Block223States.ump"
+   private void doHitBlock(){
+    int score = this.getScore();
+    BouncePoint bounce = this.getBounce();
+    PlayedBlockAssignment pblock = bounce.getHitBlock();
+    Block block = pblock.getBlock();
+    int bscore = block.getPoints();
+    this.setScore(score + bscore);
+    pblock.delete();
+    this.bounceBall();
   }
 
-  // line 91 "../../../../../Block223StateMachine.ump"
-   private void updateScore(){
-    
+
+  /**
+   * Onur Cayci - ball hits block method
+   */
+  // line 154 "../../../../../Block223States.ump"
+   private void doHitBlockNextLevel(){
+    this.doHitBlock();
+    int level = this.getCurrentLevel();
+    this.setCurrentLevel(level + 1);
+    this.setCurrentPaddleLength(getGame().getPaddle().getMaxPaddleLength() - (getGame().getPaddle().getMinPaddleLength()) / (getGame().numberOfLevels()-1)*(getCurrentLevel()-1));
+    this.setWaitTime(INITIAL_WAIT_TIME * java.lang.Math.pow(getGame().getBall().getBallSpeedIncreaseFactor(), (getCurrentLevel()-1)));
   }
 
-  // line 95 "../../../../../Block223StateMachine.ump"
-   private void deleteSpecificBlock(){
-    
+
+  /**
+   * Christina Riachi move Ball feature
+   */
+  // line 163 "../../../../../Block223States.ump"
+   private void doHitNothingAndNotOutOfBounds(){
+    double x = this.getCurrentBallX();
+    double y = this.getCurrentBallY();
+    double dx = this.getBallDirectionX();
+    double dy = this.getBallDirectionY();
+    this.setCurrentBallX(x+dx);
+    this.setCurrentBallY(y+dy);
   }
 
-  // line 99 "../../../../../Block223StateMachine.ump"
-   private void increaseLevel(){
-    
+
+  /**
+   * Melis Malki = ball out of bounds method
+   */
+  // line 174 "../../../../../Block223States.ump"
+   private void doGameOver(){
+    Player p  = getPlayer();
+    if ( p != null){
+    	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p,game,block223);
+    	Game game = getGame();
+    	game.setMostRecentEntry(hof);
+    	}
+    p.delete();
   }
 
-  // line 103 "../../../../../Block223StateMachine.ump"
-   private Boolean isLastLevel(){
-    
+
+  /**
+   * Onur Cayci - ball hits block method
+   */
+  // line 186 "../../../../../Block223States.ump"
+   private boolean isCloser(BouncePoint first, BouncePoint second){
+    if(first == null) {
+  		return false;
+  	}
+  	if(second == null) {
+  		return true;
+  	}
+  	double distance1 = java.lang.Math.sqrt(((first.getX() - getCurrentBallX())*(first.getX() - getCurrentBallX()))+((first.getY() - getCurrentBallY())*(first.getY() - getCurrentBallY())));
+  	double distance2 = java.lang.Math.sqrt(((second.getX() - getCurrentBallX())*(second.getX() - getCurrentBallX()))+((second.getY() - getCurrentBallY())*(second.getY() - getCurrentBallY())));
+  	if(distance1 < distance2) {
+  		return true;
+  	}
+  	return false;
   }
 
-  // line 107 "../../../../../Block223StateMachine.ump"
-   private void start(){
-    
+
+  /**
+   * Onur Cayci - ball hits block method
+   */
+  // line 203 "../../../../../Block223States.ump"
+   private BouncePoint calculateBouncePointBlock(PlayedBlockAssignment block){
+    double blockX = 25 * (block.getX() - 1); //top left corner x-coordinate of the block
+  	double blockY = 22 * (block.getY() - 1); //top left corner y-coordinate of the block
+  	java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(blockX, blockY, 40, 40);
+  	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY(), 10, 10);
+  	if(!rect.getBounds2D().intersects(ball.getBounds2D())) return null;
+  	
+  	//if the ball comes from the top
+  	
+  	if(blockY > this.getCurrentBallY()) {
+  	//option A
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) != blockX || (this.getCurrentBallX() + this.getBallDirectionX()) != (blockX + 20)) {
+  			return new BouncePoint(this.getCurrentBallX() + this.getBallDirectionX(), blockY, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option E
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  			return new BouncePoint(blockX, blockY, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option F
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20)) {
+  			return new BouncePoint(blockX + 20, blockY, BouncePoint.BounceDirection.FLIP_X);
+  		} 
+  	}
+  	
+  	//if the ball comes from the bottom
+  	
+  	if((blockY + 20) < this.getCurrentBallY()) {
+  	//option D
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) != blockX || (this.getCurrentBallX() + this.getBallDirectionX()) != (blockX + 20)) {
+  			return new BouncePoint(this.getCurrentBallX() + this.getBallDirectionX(), blockY + 20, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option G
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  			return new BouncePoint(blockX, blockY + 20, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option H
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20)) {
+  			return new BouncePoint(blockX + 20, blockY + 20, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	}
+  	
+  	//if the ball comes from the left
+  	
+  	if(blockX > this.getCurrentBallX()) {
+  	//option B
+  	if((this.getCurrentBallY() + this.getBallDirectionY()) != blockY || (this.getCurrentBallY() + this.getBallDirectionY()) != (blockY + 20)) {
+  			return new BouncePoint(blockX, this.getCurrentBallY() + this.getBallDirectionY(), BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option E
+  		if((this.getCurrentBallY() + this.getBallDirectionY()) == blockY) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  			return new BouncePoint(blockX, blockY, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option G
+ 		if((this.getCurrentBallY() + this.getBallDirectionY()) == (blockY + 20)) {
+  			return new BouncePoint(blockX, blockY + 20, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	}
+  	
+  	//if the ball comes from the right
+  	
+  	if(blockX + 20 < this.getCurrentBallX()) {
+  	//option C
+  		if((this.getCurrentBallY() + this.getBallDirectionY()) != blockY || (this.getCurrentBallY() + this.getBallDirectionY()) != (blockY + 20)) {
+  			return new BouncePoint(blockX + 20, this.getCurrentBallY() + this.getBallDirectionY(), BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F
+  		if((this.getCurrentBallY() + this.getBallDirectionY()) == blockY) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  			return new BouncePoint(blockX + 20, blockY, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option H
+  		if((this.getCurrentBallY() + this.getBallDirectionY()) == (blockY + 20)) {
+  			return new BouncePoint(blockX + 20, blockY + 20, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	}
+  	return null;
   }
 
-  // line 111 "../../../../../Block223StateMachine.ump"
-   private void resume(){
-    
-  }
-
-  // line 115 "../../../../../Block223StateMachine.ump"
-   private Boolean isLastBlock(){
-    
-  }
-
-  // line 119 "../../../../../Block223StateMachine.ump"
-   private void pause(){
-    
-  }
-
-  // line 123 "../../../../../Block223StateMachine.ump"
-   private void gameOver(){
-    
-  }
-
-  // line 127 "../../../../../Block223StateMachine.ump"
-   private void outOfBounds(){
-    
-  }
-
-  // line 131 "../../../../../Block223StateMachine.ump"
-   private Boolean hitsBlock(){
-    
-  }
-
-  // line 135 "../../../../../Block223StateMachine.ump"
-   private void moveBall(){
-    
-  }
-
-  // line 139 "../../../../../Block223StateMachine.ump"
-   private Boolean hitsPaddleOrWall(){
-    
+  // line 280 "../../../../../Block223States.ump"
+   private void bounceBall(){
+    //FLIP_Y case
+  	BouncePoint.BounceDirection bd = this.bounce.getDirection();
+  	if(bd.equals(BouncePoint.BounceDirection.FLIP_Y)) {
+  		double in = bounce.getY() - currentBallY;
+  		double rem = ballDirectionY - in;
+  		if(rem == 0) {
+  			currentBallX = bounce.getX();
+  			currentBallY = bounce.getY();
+  		}
+  		double oldDirectionX = ballDirectionX;
+  		double oldDirectionY = ballDirectionY;
+  		ballDirectionX = oldDirectionX + (0.1 * oldDirectionY);
+  		ballDirectionY = (oldDirectionY * (-1));
+  		currentBallX = bounce.getX() + rem/oldDirectionX * ballDirectionX;
+  		currentBallY = bounce.getY() + rem/oldDirectionY * ballDirectionY;
+  	}
+  	//FLIP_X case
+  	if(bd.equals(BouncePoint.BounceDirection.FLIP_X)) {
+  		double in = bounce.getX() - currentBallX;
+  		double rem = ballDirectionX - in;
+  		if(rem == 0) {
+  			currentBallX = bounce.getX();
+  			currentBallY = bounce.getY();
+  		}
+  		double oldDirectionX = ballDirectionX;
+  		double oldDirectionY = ballDirectionY;
+  		ballDirectionX = (oldDirectionX * (-1));
+  		ballDirectionY = oldDirectionY + (0.1 * oldDirectionX);
+  		currentBallX = bounce.getX() + rem/oldDirectionX * ballDirectionX;
+  		currentBallY = bounce.getY() + rem/oldDirectionY * ballDirectionY;
+  	}
+  	//FLIP_BOTH case
+  	if(bd.equals(BouncePoint.BounceDirection.FLIP_BOTH)) {
+  		double inX = bounce.getX() - currentBallX;
+  		double remX = ballDirectionX - inX;
+  		double inY = bounce.getY() - currentBallY;
+  		double remY = ballDirectionY - inY;
+  		if(remX == 0 && remY == 0) {
+  			currentBallX = bounce.getX();
+  			currentBallY = bounce.getY();
+  		}
+  		double oldDirectionX = ballDirectionX;
+  		double oldDirectionY = ballDirectionY;
+  		ballDirectionX = (oldDirectionX * (-1));
+  		ballDirectionY = (oldDirectionY * (-1));
+  		currentBallX = bounce.getX() + remX/oldDirectionX * ballDirectionX;
+  		currentBallY = bounce.getY() + remY/oldDirectionY * ballDirectionY;
+  	}
   }
 
 
@@ -624,12 +1073,29 @@ public class PlayedGame
   {
     return super.toString() + "["+
             "id" + ":" + getId()+ "," +
-            "nrLives" + ":" + getNrLives()+ "," +
-            "currentLevel" + ":" + getCurrentLevel()+ "]" + System.getProperties().getProperty("line.separator") +
+            "score" + ":" + getScore()+ "," +
+            "lives" + ":" + getLives()+ "," +
+            "currentLevel" + ":" + getCurrentLevel()+ "," +
+            "waitTime" + ":" + getWaitTime()+ "," +
+            "playername" + ":" + getPlayername()+ "," +
+            "ballDirectionX" + ":" + getBallDirectionX()+ "," +
+            "ballDirectionY" + ":" + getBallDirectionY()+ "," +
+            "currentBallX" + ":" + getCurrentBallX()+ "," +
+            "currentBallY" + ":" + getCurrentBallY()+ "," +
+            "currentPaddleLength" + ":" + getCurrentPaddleLength()+ "," +
+            "currentPaddleX" + ":" + getCurrentPaddleX()+ "," +
+            "currentPaddleY" + ":" + getCurrentPaddleY()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "player = "+(getPlayer()!=null?Integer.toHexString(System.identityHashCode(getPlayer())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "specificBall = "+(getSpecificBall()!=null?Integer.toHexString(System.identityHashCode(getSpecificBall())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "specificPaddle = "+(getSpecificPaddle()!=null?Integer.toHexString(System.identityHashCode(getSpecificPaddle())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "game = "+(getGame()!=null?Integer.toHexString(System.identityHashCode(getGame())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "bounce = "+(getBounce()!=null?Integer.toHexString(System.identityHashCode(getBounce())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "block223 = "+(getBlock223()!=null?Integer.toHexString(System.identityHashCode(getBlock223())):"null");
-  }
+  }  
+  //------------------------
+  // DEVELOPER CODE - PROVIDED AS-IS
+  //------------------------
+  
+  // line 103 "../../../../../Block223Persistence.ump"
+  private static final long serialVersionUID = 8597675110221231714L ;
+
+  
 }

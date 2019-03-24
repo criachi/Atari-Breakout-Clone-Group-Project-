@@ -128,6 +128,7 @@ public class LogInWindow extends JFrame{
 			passwordPassed += password[i];
 		}
 		
+		
 		try {
 			Block223Controller.login(textField.getText(), passwordPassed);
 		}
@@ -148,7 +149,7 @@ public class LogInWindow extends JFrame{
 		else {
 			error.setText("Error: No User is currently logged in.");
 			return;
-		}
+		} 
 	}
 	
 	//Cancel just closes the page and brings you back to the welcome window

@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 
 public class PersistenceObjectStream {
 
-	private static String filename = "output.txt";
+	private static String filename = "data.block223";
 
 	public static void serialize(Object object) {
 		FileOutputStream fileOut;
@@ -34,6 +34,7 @@ public class PersistenceObjectStream {
 			fileIn.close();
 		} catch (Exception e) {
 			o = null;
+			System.out.println("Error in deserialize is: "+e.getMessage());
 		}
 		return o;
 	}

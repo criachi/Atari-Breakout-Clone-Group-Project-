@@ -1,0 +1,329 @@
+class PlayedGame {
+
+  // State Machine
+  
+  playStatus {
+    Ready {
+      entry / { doSetup(); }
+      play -> Moving;
+    }
+    Moving {
+      pause -> Paused;
+      move [hitPaddle()] / { doHitPaddleOrWall(); } -> Moving;
+      move [isOutOfBoundsAndLastLife()] / { doOutOfBounds(); } -> GameOver;
+      move [isOutOfBounds()] / { doOutOfBounds(); } -> Paused;
+      move [hitLastBlockAndLastLevel()] / { doHitBlock(); } -> GameOver;
+      move [hitLastBlock()] / { doHitBlockNextLevel(); } -> Ready;
+      move [hitBlock()] / { doHitBlock(); } -> Moving;
+      move [hitWall()] / { doHitPaddleOrWall(); } -> Moving;
+      move / { doHitNothingAndNotOutOfBounds(); } -> Moving;
+    }
+    Paused {
+      play -> Moving;
+    }
+    GameOver {
+      entry / { doGameOver(); }
+    }
+  }
+  
+  // Guards
+  // TODO implement bounceBall
+  
+  private boolean hitPaddle() {
+    // TODO implement
+    return false;
+  }
+
+//Melis Malki = ball out of bounds method
+
+  private boolean isOutOfBoundsAndLastLife() {
+   	if (getLives() == 1){ 
+     return isOutOfBounds();
+     }
+     return false;
+  }
+  //Melis Malki = ball out of bounds method
+  
+  private boolean isOutOfBounds() {
+    if ( getCurrentBallY() > getCurrentPaddleY()){
+    return true;
+    }    
+    return false;
+  }
+  
+  //Onur Cayci - ball hits block method
+  
+  private boolean hitLastBlockAndLastLevel() {
+    Game game = this.getGame();
+    int nrLevels = game.numberOfLevels();
+    this.setBounce(null);
+    if(nrLevels == this.currentLevel) {
+    	int nrBlocks = this.numberOfBlocks();
+    	if(nrBlocks == 1) {
+    		PlayedBlockAssignment block = this.getBlock(0);
+    		BouncePoint bp = this.calculateBouncePointBlock(block);
+    		if(bp == null) {
+    			return false;
+    		}
+    		this.setBounce(bp);
+    		return true;
+    	}
+    }
+    return false;
+  }
+  
+  //Onur Cayci - ball hits block method
+  
+  private boolean hitLastBlock(){
+    int nrBlocks = this.numberOfBlocks();
+    this.setBounce(null);
+    if(nrBlocks == 1) {
+    	PlayedBlockAssignment block = this.getBlock(0);
+    	BouncePoint bp = calculateBouncePointBlock(block);
+    	if(bp == null) {
+    		return false;
+    	}
+    	this.setBounce(bp);
+    	return true;
+    }
+    return false;
+  }
+  
+  //Onur Cayci - ball hits block method
+  
+  private boolean hitBlock() {
+    int nrBlocks = this.numberOfBlocks();
+    this.setBounce(null);
+    for(int i = 0; i < nrBlocks; i++) {
+    	PlayedBlockAssignment block = this.getBlock(i);
+    	BouncePoint bp = calculateBouncePointBlock(block);
+    	if(bp == null) {
+    		return false;
+    	}
+    	BouncePoint bounce = this.getBounce();
+    	boolean closer = isCloser(bp, bounce);
+    	if(closer) {
+    		this.setBounce(bp);
+    	}
+    }
+    return this.getBounce() != null;
+  }
+  
+  private boolean hitWall() {
+    // TODO implement
+    return false;
+  }
+  
+  // Actions
+  
+  private void doSetup() {
+    // TODO implement
+  }
+  
+  private void doHitPaddleOrWall() {
+    // TODO implement
+  }
+//Melis Malki = ball out of bounds method
+
+  private void doOutOfBounds() {
+     int lives = getLives();
+     setLives (lives-1);
+     resetCurrentBallX();
+     resetCurrentBallY();
+     resetBallDirectionX();
+     resetBallDirectionY();
+     resetCurrentPaddleX();
+  }
+  
+  //Onur Cayci - ball hits block method
+  
+  private void doHitBlock() {
+    int score = this.getScore();
+    BouncePoint bounce = this.getBounce();
+    PlayedBlockAssignment pblock = bounce.getHitBlock();
+    Block block = pblock.getBlock();
+    int bscore = block.getPoints();
+    this.setScore(score + bscore);
+    pblock.delete();
+    this.bounceBall();
+  }
+  
+  //Onur Cayci - ball hits block method
+  
+  private void doHitBlockNextLevel() {
+    this.doHitBlock();
+    int level = this.getCurrentLevel();
+    this.setCurrentLevel(level + 1);
+    this.setCurrentPaddleLength(getGame().getPaddle().getMaxPaddleLength() - (getGame().getPaddle().getMinPaddleLength()) / (getGame().numberOfLevels()-1)*(getCurrentLevel()-1));
+    this.setWaitTime(INITIAL_WAIT_TIME * java.lang.Math.pow(getGame().getBall().getBallSpeedIncreaseFactor(), (getCurrentLevel()-1)));
+  }
+
+//Christina Riachi move Ball feature 
+  private void doHitNothingAndNotOutOfBounds() {
+    double x = this.getCurrentBallX();
+    double y = this.getCurrentBallY();
+    double dx = this.getBallDirectionX();
+    double dy = this.getBallDirectionY();
+    this.setCurrentBallX(x+dx);
+    this.setCurrentBallY(y+dy);
+  }
+  
+//Melis Malki = ball out of bounds method
+
+  private void doGameOver(){
+    Player p  = getPlayer();
+    if ( p != null){
+    	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p,game,block223);
+    	Game game = getGame();
+    	game.setMostRecentEntry(hof);
+    	}
+    p.delete();
+  }
+  
+  //Onur Cayci - ball hits block method
+  
+  private boolean isCloser(BouncePoint first, BouncePoint second) {
+  	if(first == null) {
+  		return false;
+  	}
+  	if(second == null) {
+  		return true;
+  	}
+  	double distance1 = java.lang.Math.sqrt(((first.getX() - getCurrentBallX())*(first.getX() - getCurrentBallX()))+((first.getY() - getCurrentBallY())*(first.getY() - getCurrentBallY())));
+  	double distance2 = java.lang.Math.sqrt(((second.getX() - getCurrentBallX())*(second.getX() - getCurrentBallX()))+((second.getY() - getCurrentBallY())*(second.getY() - getCurrentBallY())));
+  	if(distance1 < distance2) {
+  		return true;
+  	}
+  	return false;
+  }
+  
+  //Onur Cayci - ball hits block method
+ 
+  private BouncePoint calculateBouncePointBlock(PlayedBlockAssignment block) {
+  	double blockX = 25 * (block.getX() - 1); //top left corner x-coordinate of the block
+  	double blockY = 22 * (block.getY() - 1); //top left corner y-coordinate of the block
+  	java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(blockX, blockY, 40, 40);
+  	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY(), 10, 10);
+  	if(!rect.getBounds2D().intersects(ball.getBounds2D())) return null;
+  	
+  	//if the ball comes from the top
+  	
+  	if(blockY > this.getCurrentBallY()) {
+  	//option A
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) != blockX || (this.getCurrentBallX() + this.getBallDirectionX()) != (blockX + 20)) {
+  			return new BouncePoint(this.getCurrentBallX() + this.getBallDirectionX(), blockY, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option E
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  			return new BouncePoint(blockX, blockY, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option F
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20)) {
+  			return new BouncePoint(blockX + 20, blockY, BouncePoint.BounceDirection.FLIP_X);
+  		} 
+  	}
+  	
+  	//if the ball comes from the bottom
+  	
+  	if((blockY + 20) < this.getCurrentBallY()) {
+  	//option D
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) != blockX || (this.getCurrentBallX() + this.getBallDirectionX()) != (blockX + 20)) {
+  			return new BouncePoint(this.getCurrentBallX() + this.getBallDirectionX(), blockY + 20, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option G
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  			return new BouncePoint(blockX, blockY + 20, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option H
+  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20)) {
+  			return new BouncePoint(blockX + 20, blockY + 20, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	}
+  	
+  	//if the ball comes from the left
+  	
+  	if(blockX > this.getCurrentBallX()) {
+  	//option B
+  	if((this.getCurrentBallY() + this.getBallDirectionY()) != blockY || (this.getCurrentBallY() + this.getBallDirectionY()) != (blockY + 20)) {
+  			return new BouncePoint(blockX, this.getCurrentBallY() + this.getBallDirectionY(), BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option E
+  		if((this.getCurrentBallY() + this.getBallDirectionY()) == blockY) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  			return new BouncePoint(blockX, blockY, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option G
+ 		if((this.getCurrentBallY() + this.getBallDirectionY()) == (blockY + 20)) {
+  			return new BouncePoint(blockX, blockY + 20, BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	}
+  	
+  	//if the ball comes from the right
+  	
+  	if(blockX + 20 < this.getCurrentBallX()) {
+  	//option C
+  		if((this.getCurrentBallY() + this.getBallDirectionY()) != blockY || (this.getCurrentBallY() + this.getBallDirectionY()) != (blockY + 20)) {
+  			return new BouncePoint(blockX + 20, this.getCurrentBallY() + this.getBallDirectionY(), BouncePoint.BounceDirection.FLIP_X);
+  		}
+  	//option F
+  		if((this.getCurrentBallY() + this.getBallDirectionY()) == blockY) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
+  			return new BouncePoint(blockX + 20, blockY, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	//option H
+  		if((this.getCurrentBallY() + this.getBallDirectionY()) == (blockY + 20)) {
+  			return new BouncePoint(blockX + 20, blockY + 20, BouncePoint.BounceDirection.FLIP_Y);
+  		}
+  	}
+  	return null;
+  }
+  
+  private void bounceBall() {
+  //FLIP_Y case
+  	BouncePoint.BounceDirection bd = this.bounce.getDirection();
+  	if(bd.equals(BouncePoint.BounceDirection.FLIP_Y)) {
+  		double in = bounce.getY() - currentBallY;
+  		double rem = ballDirectionY - in;
+  		if(rem == 0) {
+  			currentBallX = bounce.getX();
+  			currentBallY = bounce.getY();
+  		}
+  		double oldDirectionX = ballDirectionX;
+  		double oldDirectionY = ballDirectionY;
+  		ballDirectionX = oldDirectionX + (0.1 * oldDirectionY);
+  		ballDirectionY = (oldDirectionY * (-1));
+  		currentBallX = bounce.getX() + rem/oldDirectionX * ballDirectionX;
+  		currentBallY = bounce.getY() + rem/oldDirectionY * ballDirectionY;
+  	}
+  	//FLIP_X case
+  	if(bd.equals(BouncePoint.BounceDirection.FLIP_X)) {
+  		double in = bounce.getX() - currentBallX;
+  		double rem = ballDirectionX - in;
+  		if(rem == 0) {
+  			currentBallX = bounce.getX();
+  			currentBallY = bounce.getY();
+  		}
+  		double oldDirectionX = ballDirectionX;
+  		double oldDirectionY = ballDirectionY;
+  		ballDirectionX = (oldDirectionX * (-1));
+  		ballDirectionY = oldDirectionY + (0.1 * oldDirectionX);
+  		currentBallX = bounce.getX() + rem/oldDirectionX * ballDirectionX;
+  		currentBallY = bounce.getY() + rem/oldDirectionY * ballDirectionY;
+  	}
+  	//FLIP_BOTH case
+  	if(bd.equals(BouncePoint.BounceDirection.FLIP_BOTH)) {
+  		double inX = bounce.getX() - currentBallX;
+  		double remX = ballDirectionX - inX;
+  		double inY = bounce.getY() - currentBallY;
+  		double remY = ballDirectionY - inY;
+  		if(remX == 0 && remY == 0) {
+  			currentBallX = bounce.getX();
+  			currentBallY = bounce.getY();
+  		}
+  		double oldDirectionX = ballDirectionX;
+  		double oldDirectionY = ballDirectionY;
+  		ballDirectionX = (oldDirectionX * (-1));
+  		ballDirectionY = (oldDirectionY * (-1));
+  		currentBallX = bounce.getX() + remX/oldDirectionX * ballDirectionX;
+  		currentBallY = bounce.getY() + remY/oldDirectionY * ballDirectionY;
+  	}
+  }
+}
