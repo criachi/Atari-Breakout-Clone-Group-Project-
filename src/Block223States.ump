@@ -28,20 +28,17 @@ class PlayedGame {
   
   // Guards
   
-   private boolean hitPaddle() {
+  //Haluk Calin - ball hit the wall or paddle
+    
+    private boolean hitPaddle(){
+	 BouncePoint bp = calculateBouncePointPaddle();
+	 if(bp == null) { 
+		 return false;
+     }
+     setBounce(bp);
+     return bp!=null;
 
-    // TODO implement
-
-    if(BouncePoint == null) { 
-    return null;
-    }
-    hitPaddle();
-    BouncePoint bp = calculateBouncePointPaddle();
-    setBounce(bp);
-    if(bp != null) {
-    return bp;    
-    }
-
+  }
 
 
 //Melis Malki = ball out of bounds method
@@ -119,19 +116,16 @@ class PlayedGame {
     return this.getBounce() != null;
   }
   
-   private boolean hitWall() {
-
-    // TODO implement
-
-    if(BouncePoint == null) { 
-    return null;
+   //Haluk Calin - ball hit the wall or paddle
+   
+   private boolean hitWall(){
+	BouncePoint bp = calculateBouncePointWall();
+	 if(bp == null) { 
+		 return false;
     }
-    BouncePoint bp = calculateBouncePointWall();
     setBounce(bp);
-    if(bp != null) {
-    return bp;    
-    }
-
+    return bp != null;
+  }
 
   
   // Actions
@@ -140,14 +134,12 @@ class PlayedGame {
     // TODO implement
   }
   
-  private void doHitPaddleOrWall() {
-
-    // TODO implement
-    
+  //Haluk Calin - ball hit the wall or paddle
+  
+  private void doHitPaddleOrWall(){  
     doHitPaddleOrWall();
     bounceBall();
-    return;
-  }
+   }
 
 
 //Melis Malki = ball out of bounds method
@@ -304,10 +296,11 @@ class PlayedGame {
   }
   
   private BouncePoint calculateBouncePointWall() {
-  	
+  	return null;
   }
   
   private BouncePoint calculateBouncePointPaddle() {
+<<<<<<< HEAD
   	java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX(), this.getCurrentPaddleY(), currentPaddleLength, 5);
   	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY(), 10, 10);
   	if(!rect.getBounds2D().intersects(ball.getBounds2D())) return null;
@@ -339,6 +332,9 @@ class PlayedGame {
   	if(currentBallX < currentPaddleX) {
   	
   	}
+=======
+  	return null;
+>>>>>>> branch 'master' of https://github.com/W2019-ECSE223/ecse223-group-project-p-1.git
   }
   
   private void bounceBall() {
