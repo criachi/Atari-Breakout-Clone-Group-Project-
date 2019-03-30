@@ -782,7 +782,7 @@ public class Block223Controller {
 	 */
 	public static List<TOPlayableGame> getPlayableGames() throws InvalidInputException {
 		if(!(Block223Application.getCurrentUserRole() instanceof Player)) {
-			throw new InvalidInputException("Player privileges are required to start a game.");
+			throw new InvalidInputException("Player privileges are required to play a game.");
 		}
 		
 		Player player = (Player) Block223Application.getCurrentUserRole();
