@@ -580,6 +580,7 @@ public class Block223Controller {
 		if(currentGame.getPlayStatus() == PlayStatus.GameOver) {
 			Block223Application.setCurrentPlayableGame(null);
 			if(currentGame.getPlayer() != null) {
+				currentGame.setBounce(null);
 				Block223 block223 = Block223Application.getBlock223();
 				Block223Persistence.save(block223);
 			}
