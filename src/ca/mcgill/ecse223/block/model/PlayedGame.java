@@ -976,11 +976,11 @@ public class PlayedGame implements Serializable
    private void doGameOver(){
     Player p  = getPlayer();
     if ( p != null){
-    	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p,game,block223);
     	Game game = getGame();
+    	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p,game,block223);
     	game.setMostRecentEntry(hof);
     	}
-    p.delete();
+    delete();
   }
 
 
