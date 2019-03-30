@@ -39,6 +39,8 @@ public class Block223Application {
 	 * @author Onur Cayci
 	 */
 	public static Block223 resetBlock223() {
+		setCurrentGame(null);
+		setCurrentPlayableGame(null);
 		block223 = Block223Persistence.load();
 		return block223;
 	}
