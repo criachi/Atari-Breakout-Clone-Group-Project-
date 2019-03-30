@@ -62,16 +62,13 @@ class PlayedGame {
     Game game = this.getGame();
     int nrLevels = game.numberOfLevels();
     this.setBounce(null);
-    if(nrLevels == this.currentLevel) {
-    	int nrBlocks = this.numberOfBlocks();
+    if(nrLevels == currentLevel) {
+    	int nrBlocks = numberOfBlocks();
     	if(nrBlocks == 1) {
     		PlayedBlockAssignment block = this.getBlock(0);
     		BouncePoint bp = this.calculateBouncePointBlock(block);
-    		if(bp == null) {
-    			return false;
-    		}
     		this.setBounce(bp);
-    		return true;
+    		return bp != null;
     	}
     }
     return false;
@@ -85,11 +82,8 @@ class PlayedGame {
     if(nrBlocks == 1) {
     	PlayedBlockAssignment block = this.getBlock(0);
     	BouncePoint bp = calculateBouncePointBlock(block);
-    	if(bp == null) {
-    		return false;
-    	}
     	this.setBounce(bp);
-    	return true;
+    	return bp != null;
     }
     return false;
   }
@@ -102,9 +96,6 @@ class PlayedGame {
     for(int i = 0; i < nrBlocks; i++) {
     	PlayedBlockAssignment block = this.getBlock(i);
     	BouncePoint bp = calculateBouncePointBlock(block);
-    	if(bp == null) {
-    		return false;
-    	}
     	BouncePoint bounce = this.getBounce();
     	boolean closer = isCloser(bp, bounce);
     	if(closer) {
@@ -201,19 +192,19 @@ class PlayedGame {
     BouncePoint bounce = this.getBounce();
     PlayedBlockAssignment pblock = bounce.getHitBlock();
     Block block = pblock.getBlock();
-    int bscore = block.getPoints();
-    this.setScore(score + bscore);
+    int points = block.getPoints();
+    this.setScore(score + points);
     pblock.delete();
-    this.bounceBall();
+    bounceBall();
   }
   
   //Onur Cayci - ball hits block method
   
   private void doHitBlockNextLevel() {
-    this.doHitBlock();
+    doHitBlock();
     int level = this.getCurrentLevel();
     this.setCurrentLevel(level + 1);
-    this.setCurrentPaddleLength(getGame().getPaddle().getMaxPaddleLength() - (getGame().getPaddle().getMinPaddleLength()) / (getGame().numberOfLevels()-1)*(getCurrentLevel()-1));
+    this.setCurrentPaddleLength(getGame().getPaddle().getMaxPaddleLength() - (getGame().getPaddle().getMaxPaddleLength() - getGame().getPaddle().getMinPaddleLength()) / (getGame().numberOfLevels()-1)*(getCurrentLevel()-1));
     this.setWaitTime(INITIAL_WAIT_TIME * java.lang.Math.pow(getGame().getBall().getBallSpeedIncreaseFactor(), (getCurrentLevel()-1)));
   }
 
