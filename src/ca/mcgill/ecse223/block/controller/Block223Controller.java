@@ -560,15 +560,17 @@ public class Block223Controller {
 		PlayedGame currentGame = Block223Application.getCurrentPlayableGame();
 		currentGame.play();
 		String inputs = ui.takeInputs();
-		
 		while(currentGame.getPlayStatus() == PlayStatus.Moving) {
 			inputs = ui.takeInputs();
-			updatePaddlePosition(inputs);
+			
+			if(inputs != null) {updatePaddlePosition(inputs);}
 			
 			currentGame.move();
 			
-			if(inputs.contains(" ")) {
-				currentGame.pause();
+			if(inputs != null) {
+				if(inputs.contains(" ")) {
+					currentGame.pause();
+				}
 			}
 			
 			long currentTime = System.currentTimeMillis();

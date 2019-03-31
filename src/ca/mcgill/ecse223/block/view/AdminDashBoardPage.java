@@ -299,6 +299,12 @@ public class AdminDashBoardPage {
 			return;
 		}
 		refreshComboBox();
+		try {
+			Block223Controller.saveGame();
+		}
+		catch (InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+		}
 	}
 	private void updateGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		// error msg is cleared when we call refresh methods at the end of actionperformed methods 

@@ -66,8 +66,9 @@ public class PlayerDashBoardPage {
 		gamesAvailableComboBox.addItem("");
 		
 		startGameBtn = new JButton("Start Game ");
-		startGameBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		startGameBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				startGameBtnActionPerformed(evt);
 			}
 		});
 		
@@ -78,6 +79,11 @@ public class PlayerDashBoardPage {
 		continueGamesComboBox.addItem("");
 		
 		continueGameBtn = new JButton("Continue Game");
+		continueGameBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				continueGameBtnActionPerformed(evt);
+			}
+		});
 		
 		errorMessage = new JLabel("");
 		errorMessage.setForeground(Color.RED);
@@ -135,6 +141,7 @@ public class PlayerDashBoardPage {
 		resumableGames = new HashMap<Integer, TOPlayableGame>();
 		continueGamesComboBox.removeAllItems();
 		continueGamesComboBox.addItem("");
+
 		try {
 			for(TOPlayableGame playableGame : Block223Controller.getPlayableGames()) {
 				if(playableGame.getNumber() != -1 && playableGame.getCurrentLevel() != 0) {
@@ -171,6 +178,31 @@ public class PlayerDashBoardPage {
 		frame.dispose();
 		new WelcomeWindow();
 		//new Block223Page().setVisible(true);
+	}
+	
+	private void startGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		errorMessage.setText("");
+		Integer index = gamesAvailableComboBox.getSelectedIndex();
+		if(index < 1) {
+			errorMessage.setText("A game needs to be selected to start.");
+			return;
+		}
+		
+		try {
+			Block223Controller.selectPlayableGame(gamesAvailableComboBox.getItemAt(index).toString(), -1);
+		} catch (InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+			return;
+		}
+		
+		new PlayModePage();
+		frame.dispose();
+		
+		
+	}
+	
+	private void continueGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		
 	}
 	
 }

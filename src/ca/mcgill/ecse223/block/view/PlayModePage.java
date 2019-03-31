@@ -16,28 +16,20 @@ import java.awt.Color;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
+
+import ca.mcgill.ecse223.block.application.Block223Application;
+import ca.mcgill.ecse223.block.controller.Block223Controller;
+import ca.mcgill.ecse223.block.controller.InvalidInputException;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class PlayModePage implements Block223PlayModeInterface {
 
 	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PlayModePage window = new PlayModePage();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JButton btnPlay;
+	private JButton btnTest;
+	private JLabel errorMessage;
 
 	/**
 	 * Create the application.
@@ -53,6 +45,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 797, 664);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
 		
 		JLabel lblCurrentLevel = new JLabel("Current Level");
 		lblCurrentLevel.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -64,8 +57,9 @@ public class PlayModePage implements Block223PlayModeInterface {
 		lblScore.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
 		JButton backBtn = new JButton("Back");
-		backBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		backBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				backBtnActionPerformed(evt);
 			}
 		});
 		
@@ -78,19 +72,61 @@ public class PlayModePage implements Block223PlayModeInterface {
 		JButton previousEntriesBtn = new JButton("Previous Entries");
 		
 		JButton followingEntriesBtn = new JButton("Following Entries");
+		
+		
+		btnPlay = new JButton("PLAY");
+		btnPlay.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				bntPlayActionPerformed(evt);
+			}
+		});
+		btnPlay.setFont(new Font("Tahoma", Font.PLAIN, 44));
+		
+		btnTest = new JButton("TEST");
+		btnTest.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				bntTestActionPerformed(evt);
+			}
+		});
+		btnTest.setFont(new Font("Tahoma", Font.PLAIN, 44));
+		System.out.println(Block223Application.getCurrentPlayableGame());
+		
+		if(Block223Application.getCurrentPlayableGame() == null) {
+			System.out.println("Setting btnplay to invisible");
+			btnPlay.setVisible(false);
+		}
+		else {
+			System.out.println("Setting btntest to invisible");
+			btnTest.setVisible(false);
+		}
+		
+		errorMessage = new JLabel("");
+		errorMessage.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(25)
-					.addComponent(lblCurrentLevel)
-					.addGap(152)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblLives)
-						.addComponent(lblScore))
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED, 210, Short.MAX_VALUE)
+							.addGap(120)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnTest, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnPlay, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(25)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(errorMessage, GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblCurrentLevel)
+									.addGap(152)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblLives)
+										.addComponent(lblScore))))))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED, 325, Short.MAX_VALUE)
 							.addComponent(lblHallOfFame)
 							.addGap(102))
 						.addGroup(groupLayout.createSequentialGroup()
@@ -104,25 +140,30 @@ public class PlayModePage implements Block223PlayModeInterface {
 					.addComponent(previousEntriesBtn)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(followingEntriesBtn)
-					.addContainerGap(75, Short.MAX_VALUE))
+					.addContainerGap(123, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(31)
+							.addComponent(errorMessage, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblCurrentLevel)
 								.addComponent(lblLives))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblScore))
+							.addComponent(lblScore)
+							.addGap(136)
+							.addComponent(btnPlay, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(btnTest, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
 							.addComponent(lblHallOfFame)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(hallOfFamePanel, GroupLayout.PREFERRED_SIZE, 507, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(backBtn)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
@@ -138,8 +179,31 @@ public class PlayModePage implements Block223PlayModeInterface {
 		return null;
 	}
 	
+	private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		frame.dispose();
+		new PlayerDashBoardPage();
+	}
+
+	
 	public void refresh() {
-		PlayedGameLevel.setBlockAssignments();
-		PlayedGameLevel.refreshGame();
+		//PlayedGameLevel.setBlockAssignments();
+		//PlayedGameLevel.refreshGame();
+	}
+	
+	private void bntPlayActionPerformed(java.awt.event.ActionEvent evt) {
+		btnPlay.setVisible(false);
+		System.out.println("Is Visible?"+btnPlay.isVisible());
+
+		try {
+			Block223Controller.startGame(PlayModePage.this);
+		} catch (InvalidInputException e) {
+			btnPlay.setVisible(true);
+			errorMessage.setText(e.getMessage());
+			return;
+		}
+	}
+	
+	private void bntTestActionPerformed(java.awt.event.ActionEvent evt) {
+		
 	}
 }
