@@ -134,6 +134,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 	}
 	
 	public String takeInputs() {
+		
 		return null;
 	}
 	

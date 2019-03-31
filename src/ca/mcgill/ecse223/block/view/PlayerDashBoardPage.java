@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
-import ca.mcgill.ecse223.block.controller.Block223Controller;
+import ca.mcgill.ecse223.block.controller.*;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -15,7 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class PlayerDashBoardPage {
 
@@ -27,12 +29,17 @@ public class PlayerDashBoardPage {
 	private JLabel lblContinueGames;
 	private JComboBox continueGamesComboBox;
 	private JButton continueGameBtn;
-
+	private JLabel errorMessage;
+	private HashMap<Integer, TOPlayableGame> resumableGames;
+	private HashMap<Integer, TOPlayableGame> startableGames;
+	
 	/**
 	 * Create the application.
 	 */
 	public PlayerDashBoardPage() {
 		initialize();
+		refreshContinueGamesComboBox();
+		refreshGamesAvailComboBox();
 	}
 
 	/**
@@ -71,6 +78,9 @@ public class PlayerDashBoardPage {
 		continueGamesComboBox.addItem("");
 		
 		continueGameBtn = new JButton("Continue Game");
+		
+		errorMessage = new JLabel("");
+		errorMessage.setForeground(Color.RED);
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -82,24 +92,26 @@ public class PlayerDashBoardPage {
 								.addComponent(lblGamesAvailable, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(gamesAvailableComboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addGroup(groupLayout.createSequentialGroup()
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 										.addComponent(continueGameBtn)
 										.addComponent(startGameBtn))
 									.addGap(260))
-								.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(logOutBtn)
 									.addGap(37))))
 						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
 							.addComponent(continueGamesComboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(lblContinueGames, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addComponent(lblContinueGames, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(errorMessage, GroupLayout.PREFERRED_SIZE, 532, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(24)
+					.addComponent(errorMessage)
+					.addGap(4)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblGamesAvailable)
 						.addComponent(logOutBtn))
@@ -113,9 +125,45 @@ public class PlayerDashBoardPage {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(continueGamesComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(continueGameBtn))
-					.addContainerGap(170, Short.MAX_VALUE))
+					.addContainerGap(116, Short.MAX_VALUE))
 		);
 		frame.getContentPane().setLayout(groupLayout);
+	}
+	private void refreshContinueGamesComboBox() {
+		Integer index = 0;
+		errorMessage.setText("");
+		resumableGames = new HashMap<Integer, TOPlayableGame>();
+		continueGamesComboBox.removeAllItems();
+		continueGamesComboBox.addItem("");
+		try {
+			for(TOPlayableGame playableGame : Block223Controller.getPlayableGames()) {
+				if(playableGame.getNumber() != -1 && playableGame.getCurrentLevel() != 0) {
+					resumableGames.put(index, playableGame);
+					continueGamesComboBox.addItem(playableGame.getName() + " " + playableGame.getNumber());
+				}
+				index++;
+			}
+		} catch (InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+		}
+	}
+	private void refreshGamesAvailComboBox() {
+		Integer index = 0;
+		errorMessage.setText("");
+		startableGames = new HashMap<Integer, TOPlayableGame>();
+		gamesAvailableComboBox.removeAllItems();
+		gamesAvailableComboBox.addItem("");
+		try {
+			for(TOPlayableGame playableGame : Block223Controller.getPlayableGames()) {
+				if(playableGame.getNumber() == -1 && playableGame.getCurrentLevel() == 0) {
+					startableGames.put(index, playableGame);
+					gamesAvailableComboBox.addItem(playableGame.getName());
+				}
+				index++;
+			}
+		} catch (InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+		}
 	}
 	private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		//frame.dispose() will delete the current page (from what i understand)

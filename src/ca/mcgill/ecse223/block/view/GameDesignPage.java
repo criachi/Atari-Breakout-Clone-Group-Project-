@@ -594,7 +594,7 @@ public class GameDesignPage {
 				int green = Integer.parseInt(greenTextField.getText());
 				int points = Integer.parseInt(pointsTextField.getText());
 				Block223Controller.updateBlock(block.getId(), red, green, blue, points);
-				refreshData();
+				refreshBlocks();
 				refreshBlockAssignmentComboBox();
 				((LevelLayout)levelLayout).setBlockAssignments();
 			} catch (InvalidInputException e) {
