@@ -454,10 +454,6 @@ public class GameDesignPage {
 		);
 		frame.getContentPane().setLayout(groupLayout);
 	}
-	// Confusion... we will decide eventually how to organize refresh methods once I and we understand UI better :')
-	private void refreshData(){
-		refreshBlocks();
-	}
 	// Christina
 	private void refreshBlocks() {
 			//populate page with data 

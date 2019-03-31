@@ -19,7 +19,7 @@ import javax.swing.border.LineBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class PlayModePage {
+public class PlayModePage implements Block223PlayModeInterface {
 
 	private JFrame frame;
 

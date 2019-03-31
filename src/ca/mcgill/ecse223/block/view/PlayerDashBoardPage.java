@@ -56,6 +56,7 @@ public class PlayerDashBoardPage {
 		lblGamesAvailable.setFont(new Font("Tahoma", Font.BOLD, 22));
 		
 		gamesAvailableComboBox = new JComboBox();
+		gamesAvailableComboBox.addItem("");
 		
 		startGameBtn = new JButton("Start Game ");
 		startGameBtn.addActionListener(new ActionListener() {
@@ -67,6 +68,7 @@ public class PlayerDashBoardPage {
 		lblContinueGames.setFont(new Font("Tahoma", Font.BOLD, 22));
 		
 		continueGamesComboBox = new JComboBox();
+		continueGamesComboBox.addItem("");
 		
 		continueGameBtn = new JButton("Continue Game");
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
