@@ -54,6 +54,8 @@ public class AdminDashBoardPage {
 	private JComboBox<String> yourGamesComboBox;
 	private int gameListSize;
 	private HashMap<Integer, TOGame> yourGames;
+	private JButton testGameBtn;
+	private JButton publishGameBtn;
 
 	/**
 	 * Create the application.
@@ -118,9 +120,22 @@ public class AdminDashBoardPage {
 		
 		errorMessage = new JLabel("");
 		errorMessage.setForeground(Color.RED);
+		
+		testGameBtn = new JButton("Test Game");
+		testGameBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				testGameBtnActionPerformed(evt);
+			}
+		});
+		publishGameBtn = new JButton("Publish Game");
+		publishGameBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				publishGameBtnActionPerformed(evt);
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -133,9 +148,11 @@ public class AdminDashBoardPage {
 								.addComponent(yourGamesComboBox, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(deleteGameBtn)
-								.addComponent(updateGameBtn))))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(testGameBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(deleteGameBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(publishGameBtn)
+								.addComponent(updateGameBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
 					.addGap(25))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(100)
@@ -149,10 +166,10 @@ public class AdminDashBoardPage {
 					.addPreferredGap(ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
 					.addComponent(createGameBtn)
 					.addGap(155))
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(errorMessage)
-					.addContainerGap(499, Short.MAX_VALUE))
+					.addContainerGap(568, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -163,19 +180,26 @@ public class AdminDashBoardPage {
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(logOutBtn)
 						.addComponent(lblYourGames))
-					.addPreferredGap(ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addComponent(yourGamesComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(deleteGameBtn))
-					.addGap(44)
+					.addGap(37)
 					.addComponent(updateGameBtn)
-					.addGap(112)
-					.addComponent(lblOr)
-					.addGap(26)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(createGameBtn)
-						.addComponent(lblGameName)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(40)
+					.addComponent(testGameBtn)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(50)
+							.addComponent(lblOr)
+							.addGap(26)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(createGameBtn)
+								.addComponent(lblGameName)
+								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(36)
+							.addComponent(publishGameBtn)))
 					.addGap(72))
 		);
 		frame.getContentPane().setLayout(groupLayout);
@@ -253,13 +277,31 @@ public class AdminDashBoardPage {
 			return;
 		}
 		refreshComboBox();
-		//yourGamesComboBox.remove(yourGamesComboBox.getSelectedIndex());
-		//yourGamesComboBox.updateUI();
 	} 
-	// here set up mechanism to take the game name from the previous page and then on the update settings page start it out with the textfields alrdy filled out w/ the characteristics of the game
-    // use the select game method in the feature
+	private void publishGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		int selectedGameIndex = yourGamesComboBox.getSelectedIndex();
+		if(selectedGameIndex < 1) {
+			errorMessage.setText("A game needs to be selected to be published! ");
+			return;
+		}
+		
+		try { 
+			Block223Controller.selectGame(yourGamesComboBox.getItemAt(selectedGameIndex));
+		} catch (InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+			return;
+		}
+		
+		try {
+			Block223Controller.publishGame();
+		} catch (InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+			return;
+		}
+		refreshComboBox();
+	}
 	private void updateGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
-		// clear error msg and basic input validation
+		// error msg is cleared when we call refresh methods at the end of actionperformed methods 
     	
     	int selectedGameIndex = yourGamesComboBox.getSelectedIndex();
 		if (selectedGameIndex < 1) {
@@ -277,5 +319,23 @@ public class AdminDashBoardPage {
 		
 		frame.dispose();
 		new UpdateSettingPage();
+	}
+	private void testGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		int selectedGameIndex = yourGamesComboBox.getSelectedIndex();
+		if(selectedGameIndex < 1) {
+			errorMessage.setText("A game needs to be selected to be tested! ");
+			return; 
+		}
+		
+		try {
+			Block223Controller.selectGame(yourGamesComboBox.getItemAt(selectedGameIndex));
+		} catch (InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+			return;
+		}
+		
+		/*try {
+			Block223Controller.testGame(Block223PlayModeInterface ui)
+		}*/
 	}
 }

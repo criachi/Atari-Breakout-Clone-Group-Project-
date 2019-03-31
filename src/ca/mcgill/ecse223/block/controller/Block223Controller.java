@@ -574,7 +574,15 @@ public class Block223Controller {
 			long currentTime = System.currentTimeMillis();
 			while(System.currentTimeMillis() <= (currentTime + currentGame.getWaitTime()));
 			
-			ui.refresh();
+			// From Cyril discussion post: 
+			// when we call game.move() above, the game may have ended, but the methods for ending a game 
+			// never set the currentPlayableGame in the application class to null so when we call ui.refresh() the prog
+			// thinks we STILL have a currentPlayableGame even tho it is deleted in the doGameOver() state machine method
+			// FIX: only refresh in the game loop if game.getPlayStatus() != PlayStatus.GameOver
+			
+			if(currentGame.getPlayStatus() != PlayStatus.GameOver) { 
+				ui.refresh();
+			}
 		}
 		
 		if(currentGame.getPlayStatus() == PlayStatus.GameOver) {
