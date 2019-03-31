@@ -454,8 +454,12 @@ class PlayedGame {
   		}
   		double oldDirectionX = ballDirectionX;
   		double oldDirectionY = ballDirectionY;
-  		ballDirectionX = oldDirectionX + (0.1 * oldDirectionY);
   		ballDirectionY = (oldDirectionY * (-1));
+  		if(oldDirectionX == 0) {
+  			ballDirectionX = 0.1 * java.lang.Math.abs(ballDirectionY);
+  		} else {
+  			ballDirectionX = oldDirectionX + (java.lang.Math.signum(oldDirectionX) * 0.1 * java.lang.Math.abs(ballDirectionY));
+  		}
   		currentBallX = bounce.getX() + rem/oldDirectionX * ballDirectionX;
   		currentBallY = bounce.getY() + rem/oldDirectionY * ballDirectionY;
   	}
@@ -470,7 +474,11 @@ class PlayedGame {
   		double oldDirectionX = ballDirectionX;
   		double oldDirectionY = ballDirectionY;
   		ballDirectionX = (oldDirectionX * (-1));
-  		ballDirectionY = oldDirectionY + (0.1 * oldDirectionX);
+  		if(oldDirectionY == 0) {
+  			ballDirectionY = 0.1 * java.lang.Math.abs(ballDirectionX);
+  		} else {
+  			ballDirectionY = oldDirectionY + (java.lang.Math.signum(oldDirectionY) * 0.1 * java.lang.Math.abs(ballDirectionX));
+  		}
   		currentBallX = bounce.getX() + rem/oldDirectionX * ballDirectionX;
   		currentBallY = bounce.getY() + rem/oldDirectionY * ballDirectionY;
   	}

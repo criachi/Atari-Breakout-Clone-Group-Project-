@@ -132,4 +132,13 @@ public class PlayModePage {
 		);
 		frame.getContentPane().setLayout(groupLayout);
 	}
+	
+	public String takeInputs() {
+		return null;
+	}
+	
+	public void refresh() {
+		PlayedGameLevel.setBlockAssignments();
+		PlayedGameLevel.refreshGame();
+	}
 }
