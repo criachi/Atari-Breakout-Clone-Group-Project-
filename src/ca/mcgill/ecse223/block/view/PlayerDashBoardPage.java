@@ -193,7 +193,7 @@ public class PlayerDashBoardPage {
 		
 		try {
 			//(String) gamesAvailableComboBox.getItemAt(index)
-			Block223Controller.selectPlayableGame((startableGames.get(selectedGameIndex)).getName(), -1);
+			Block223Controller.selectPlayableGame((startableGames.get(selectedGameIndex-1)).getName(), -1);
 		} catch (InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 			return;
@@ -212,7 +212,7 @@ public class PlayerDashBoardPage {
 		}
 		
 		try {
-			Block223Controller.selectPlayableGame(null, (resumableGames.get(selectedPlayedGameIndex)).getNumber());
+			Block223Controller.selectPlayableGame(null, (resumableGames.get(selectedPlayedGameIndex-1)).getNumber());
 		} catch(InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 			return;
