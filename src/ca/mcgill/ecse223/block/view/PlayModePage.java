@@ -21,15 +21,18 @@ import ca.mcgill.ecse223.block.application.Block223Application;
 import ca.mcgill.ecse223.block.controller.Block223Controller;
 import ca.mcgill.ecse223.block.controller.InvalidInputException;
 
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class PlayModePage implements Block223PlayModeInterface {
 
 	private JFrame frame;
-	private JButton btnPlay;
-	private JButton btnTest;
+	private JButton playBtn;
+	private JButton testBtn;
 	private JLabel errorMessage;
+	
+	Block223Listener gameListener;
 
 	/**
 	 * Create the application.
@@ -74,30 +77,30 @@ public class PlayModePage implements Block223PlayModeInterface {
 		JButton followingEntriesBtn = new JButton("Following Entries");
 		
 		
-		btnPlay = new JButton("PLAY");
-		btnPlay.addActionListener(new java.awt.event.ActionListener() {
+		playBtn = new JButton("PLAY");
+		playBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				bntPlayActionPerformed(evt);
+				playBtnActionPerformed(evt);
 			}
 		});
-		btnPlay.setFont(new Font("Tahoma", Font.PLAIN, 44));
+		playBtn.setFont(new Font("Tahoma", Font.PLAIN, 44));
 		
-		btnTest = new JButton("TEST");
-		btnTest.addActionListener(new java.awt.event.ActionListener() {
+		testBtn = new JButton("TEST");
+		testBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				bntTestActionPerformed(evt);
+				testBtnActionPerformed(evt);
 			}
 		});
-		btnTest.setFont(new Font("Tahoma", Font.PLAIN, 44));
+		testBtn.setFont(new Font("Tahoma", Font.PLAIN, 44));
 		System.out.println(Block223Application.getCurrentPlayableGame());
 		
 		if(Block223Application.getCurrentPlayableGame() == null) {
 			System.out.println("Setting btnplay to invisible");
-			btnPlay.setVisible(false);
+			playBtn.setVisible(false);
 		}
 		else {
 			System.out.println("Setting btntest to invisible");
-			btnTest.setVisible(false);
+			testBtn.setVisible(false);
 		}
 		
 		errorMessage = new JLabel("");
@@ -112,8 +115,8 @@ public class PlayModePage implements Block223PlayModeInterface {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(120)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnTest, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnPlay, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(testBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
+								.addComponent(playBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(25)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
@@ -156,9 +159,9 @@ public class PlayModePage implements Block223PlayModeInterface {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(lblScore)
 							.addGap(136)
-							.addComponent(btnPlay, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
+							.addComponent(playBtn, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
-							.addComponent(btnTest, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE))
+							.addComponent(testBtn, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblHallOfFame)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -174,11 +177,6 @@ public class PlayModePage implements Block223PlayModeInterface {
 		frame.getContentPane().setLayout(groupLayout);
 	}
 	
-	public String takeInputs() {
-		
-		return null;
-	}
-	
 	private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		frame.dispose();
 		new PlayerDashBoardPage();
@@ -186,24 +184,67 @@ public class PlayModePage implements Block223PlayModeInterface {
 
 	
 	public void refresh() {
+		System.out.println("UI");
 		//PlayedGameLevel.setBlockAssignments();
 		//PlayedGameLevel.refreshGame();
 	}
 	
-	private void bntPlayActionPerformed(java.awt.event.ActionEvent evt) {
-		btnPlay.setVisible(false);
-		System.out.println("Is Visible?"+btnPlay.isVisible());
-
+	private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		playBtn.setVisible(false);
+		//System.out.println("Is Visible?"+playBtn.isVisible());
+		
+		
+		// initiating a thread to start listening to keyboard inputs
+		gameListener = new Block223Listener();
+		Runnable r1 = new Runnable() {
+			@Override
+			public void run() {
+				// in the actual game, add keyListener to the game window
+				frame.addKeyListener(gameListener);
+			}
+		};
+		Thread t1 = new Thread(r1);
+		t1.start();
+		// to be on the safe side use join to start executing thread t1 before executing the next thread
 		try {
+			t1.join();
+		} catch (InterruptedException e1) {
+			
+		}
+		//initiating a thread to start the game loop 
+		Runnable r2 = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Block223Controller.startGame(PlayModePage.this);
+					playBtn.setVisible(true);
+				} catch (InvalidInputException e) {
+				}
+			}
+		};
+		//old code before doing move paddle; not bad 
+		/*try {
 			Block223Controller.startGame(PlayModePage.this);
 		} catch (InvalidInputException e) {
-			btnPlay.setVisible(true);
+			playBtn.setVisible(true);
 			errorMessage.setText(e.getMessage());
 			return;
-		}
+		}*/
+		
+		Thread t2 = new Thread(r2);
+		t2.start();
 	}
 	
-	private void bntTestActionPerformed(java.awt.event.ActionEvent evt) {
+	
+	public String takeInputs() {
+		if(gameListener == null) {
+			return "";
+		}
+		// check the takeInputs() implementation in the Block223Listener class
+		// it saves the keyInputs string in a temp variable and then clears it
+		return gameListener.takeInputs();
+	}
+	private void testBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		
 	}
 }

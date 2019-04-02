@@ -6,7 +6,6 @@ import ca.mcgill.ecse223.block.model.Block223;
 import ca.mcgill.ecse223.block.model.Game;
 import ca.mcgill.ecse223.block.model.PlayedGame;
 import ca.mcgill.ecse223.block.model.UserRole;
-import ca.mcgill.ecse223.block.view.Block223Page;
 import ca.mcgill.ecse223.block.view.WelcomeWindow;
 import ca.mcgill.ecse223.block.persistence.*;
 
