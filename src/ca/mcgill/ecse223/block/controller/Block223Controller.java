@@ -606,13 +606,17 @@ public class Block223Controller {
 			Double currentPaddleX = Block223Application.getCurrentPlayableGame().getCurrentPaddleX();
 			if(inputs.charAt(i) == 'l') {
 				currentPaddleX += PlayedGame.PADDLE_MOVE_LEFT;
-				Block223Application.getCurrentPlayableGame().setCurrentPaddleX(currentPaddleX);
+				if(currentPaddleX >= 0) {
+					Block223Application.getCurrentPlayableGame().setCurrentPaddleX(currentPaddleX);
+				}
 			}
-			if(inputs.charAt(i) == 'r') {
+			else if(inputs.charAt(i) == 'r') {
 				currentPaddleX += PlayedGame.PADDLE_MOVE_RIGHT;
-				Block223Application.getCurrentPlayableGame().setCurrentPaddleX(currentPaddleX);
+				if(currentPaddleX <= 370) {
+					Block223Application.getCurrentPlayableGame().setCurrentPaddleX(currentPaddleX);
+				}
 			}
-			if(inputs.charAt(i) == ' ') {
+			else if(inputs.charAt(i) == ' ') {
 				return;
 			}
 		}
