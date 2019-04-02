@@ -107,7 +107,7 @@ public class AdminDashBoardPage {
 				updateGameBtnActionPerformed(evt);
 			}
 		});
-		yourGamesComboBox = new JComboBox();
+		yourGamesComboBox = new JComboBox<String>();
 		yourGamesComboBox.addItem("");
 		lblOr = new JLabel("OR:");
 		lblOr.setFont(new Font("Tahoma", Font.BOLD, 25));
@@ -263,13 +263,13 @@ public class AdminDashBoardPage {
 		//new Block223Page().setVisible(true);
 	}
 	private void deleteGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
-		int selectedGame = yourGamesComboBox.getSelectedIndex();
-		if (selectedGame < 1) {
+		int selectedGameIndex = yourGamesComboBox.getSelectedIndex();
+		if (selectedGameIndex < 1) {
 			errorMessage.setText("A game needs to be selected to be deleted! ");
 			return;
 		}
 		try {
-			Block223Controller.deleteGame(yourGamesComboBox.getItemAt(yourGamesComboBox.getSelectedIndex()));
+			Block223Controller.deleteGame(yourGamesComboBox.getItemAt(selectedGameIndex));
 		}
 		catch(InvalidInputException e) {
 			//System.out.println(e.getMessage());

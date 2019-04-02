@@ -39,6 +39,9 @@ public class PlayModePage implements Block223PlayModeInterface {
 	 */
 	public PlayModePage() {
 		initialize();
+		// if u hve a current playable game set alrdy, then it will display the info of where u left off 
+		// if u dont, it will display empty play area
+		refresh();
 	}
 
 	/**
@@ -184,6 +187,8 @@ public class PlayModePage implements Block223PlayModeInterface {
 
 	
 	public void refresh() {
+		// we shld have a conditional: if the currentPlayableGame is set, then refresh blockassignments and ball and paddle and set them obv 
+		// if not, then just leave it empty (for test game) 
 		System.out.println("UI");
 		//PlayedGameLevel.setBlockAssignments();
 		//PlayedGameLevel.refreshGame();
@@ -245,6 +250,38 @@ public class PlayModePage implements Block223PlayModeInterface {
 		return gameListener.takeInputs();
 	}
 	private void testBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		testBtn.setVisible(false);
 		
+		// initiating a thread to start listening to keyboard inputs
+		gameListener = new Block223Listener();
+		Runnable r1 = new Runnable() {
+			@Override
+			public void run() {
+				// in the actual game, add keyListener to the game window
+				frame.addKeyListener(gameListener);
+			}
+		};
+		Thread t1 = new Thread(r1);
+		t1.start();
+		// to be on the safe side use join to start executing thread t1 before executing the next thread
+		try {
+			t1.join();
+		} catch (InterruptedException e1) {
+			
+		}
+		//initiating a thread to start the game loop 
+		Runnable r2 = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Block223Controller.testGame(PlayModePage.this);
+					playBtn.setVisible(true);
+				} catch (InvalidInputException e) {
+				}
+			}
+		};
+		Thread t2 = new Thread(r2);
+		t2.start();
 	}
-}
+	}
+

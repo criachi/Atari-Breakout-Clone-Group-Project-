@@ -471,7 +471,6 @@ public class GameDesignPage {
 			gameBlocks = new HashMap<Integer,TOBlock>();
 			yourBlocksComboBox.removeAllItems();
 			yourBlocksComboBox.addItem("");
-			index = 0;
 			try {
 			for(TOBlock block : Block223Controller.getBlocksOfCurrentDesignableGame()) {
 				gameBlocks.put(index, block);

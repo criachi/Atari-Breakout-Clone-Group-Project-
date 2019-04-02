@@ -45,6 +45,7 @@ public class PlayerDashBoardPage {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@SuppressWarnings("unchecked")
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 641, 437);
@@ -62,7 +63,7 @@ public class PlayerDashBoardPage {
 		lblGamesAvailable = new JLabel("Games Available");
 		lblGamesAvailable.setFont(new Font("Tahoma", Font.BOLD, 22));
 		
-		gamesAvailableComboBox = new JComboBox();
+		gamesAvailableComboBox = new JComboBox<String>();
 		gamesAvailableComboBox.addItem("");
 		
 		startGameBtn = new JButton("Start Game ");
@@ -75,7 +76,7 @@ public class PlayerDashBoardPage {
 		lblContinueGames = new JLabel("Continue Games");
 		lblContinueGames.setFont(new Font("Tahoma", Font.BOLD, 22));
 		
-		continueGamesComboBox = new JComboBox();
+		continueGamesComboBox = new JComboBox<String>();
 		continueGamesComboBox.addItem("");
 		
 		continueGameBtn = new JButton("Continue Game");
@@ -135,6 +136,7 @@ public class PlayerDashBoardPage {
 		);
 		frame.getContentPane().setLayout(groupLayout);
 	}
+	@SuppressWarnings("unchecked")
 	private void refreshContinueGamesComboBox() {
 		Integer index = 0;
 		errorMessage.setText("");
@@ -154,6 +156,7 @@ public class PlayerDashBoardPage {
 			errorMessage.setText(e.getMessage());
 		}
 	}
+	@SuppressWarnings("unchecked")
 	private void refreshGamesAvailComboBox() {
 		Integer index = 0;
 		errorMessage.setText("");
@@ -182,27 +185,40 @@ public class PlayerDashBoardPage {
 	
 	private void startGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		errorMessage.setText("");
-		Integer index = gamesAvailableComboBox.getSelectedIndex();
-		if(index < 1) {
+		Integer selectedGameIndex = gamesAvailableComboBox.getSelectedIndex();
+		if(selectedGameIndex < 1) {
 			errorMessage.setText("A game needs to be selected to start.");
 			return;
 		}
 		
 		try {
-			Block223Controller.selectPlayableGame(gamesAvailableComboBox.getItemAt(index).toString(), -1);
+			//(String) gamesAvailableComboBox.getItemAt(index)
+			Block223Controller.selectPlayableGame((startableGames.get(selectedGameIndex)).getName(), -1);
 		} catch (InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
 			return;
 		}
-		
-		new PlayModePage();
 		frame.dispose();
-		
+		new PlayModePage();
 		
 	}
 	
 	private void continueGameBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		errorMessage.setText("");
+		Integer selectedPlayedGameIndex = continueGamesComboBox.getSelectedIndex();
+		if(selectedPlayedGameIndex <1) {
+			errorMessage.setText("A game needs to be selected to continue it.");
+			return;
+		}
 		
+		try {
+			Block223Controller.selectPlayableGame(null, (resumableGames.get(selectedPlayedGameIndex)).getNumber());
+		} catch(InvalidInputException e) {
+			errorMessage.setText(e.getMessage());
+			return;
+		}
+		frame.dispose();
+		new PlayModePage();
 	}
 	
 }
