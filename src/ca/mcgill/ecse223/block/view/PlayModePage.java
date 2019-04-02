@@ -38,7 +38,9 @@ public class PlayModePage implements Block223PlayModeInterface {
 	 * Create the application.
 	 */
 	public PlayModePage() {
+		System.out.println("hehe");
 		initialize();
+		// THIS IS WRONG MY COMMENT
 		// if u hve a current playable game set alrdy, then it will display the info of where u left off 
 		// if u dont, it will display empty play area
 		refresh();
