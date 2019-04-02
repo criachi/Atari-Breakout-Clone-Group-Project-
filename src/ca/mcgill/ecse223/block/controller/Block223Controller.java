@@ -589,6 +589,7 @@ public class Block223Controller {
 		
 		if(currentGame.getPlayStatus() == PlayStatus.GameOver) {
 			Block223Application.setCurrentPlayableGame(null);
+			ui.gameOver();
 			if(currentGame.getPlayer() != null) {
 				currentGame.setBounce(null);
 				Block223 block223 = Block223Application.getBlock223();
@@ -633,12 +634,17 @@ public class Block223Controller {
 				throw new InvalidInputException("Only the admin who created the game can test it.");
 			}
 			Game game = Block223Application.getCurrentGame();
+			if(game.getBlocks().size() < 1) {
+				throw new InvalidInputException("At least one block must be defined for a game to be tested.");
+			}
+			
 			UserRole admin = Block223Application.getCurrentUserRole();
 			Block223 block223 = Block223Application.getBlock223();
 			String username = block223.findUsername(admin);
 			PlayedGame pgame = new PlayedGame(username, game, block223);
 			pgame.setPlayer(null);
 			Block223Application.setCurrentPlayableGame(pgame);
+			ui.refresh();
 			startGame(ui);
 	}
 
