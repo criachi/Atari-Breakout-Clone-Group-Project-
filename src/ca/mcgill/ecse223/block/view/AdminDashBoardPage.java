@@ -340,8 +340,16 @@ public class AdminDashBoardPage {
 			return;
 		}
 		
-		/*try {
-			Block223Controller.testGame(Block223PlayModeInterface ui)
-		}*/
+		PlayModePage testGame = new PlayModePage();
+		//FOr some reason the startGame call in testGame results inthe screen being blank... still working on it
+		try {
+			frame.dispose();
+			Block223Controller.testGame(testGame);
+		} catch (InvalidInputException e) {
+			AdminDashBoardPage catchPage = new AdminDashBoardPage();
+			catchPage.errorMessage.setText(e.getMessage());
+			testGame.deletePage();
+		}
+		
 	}
 }

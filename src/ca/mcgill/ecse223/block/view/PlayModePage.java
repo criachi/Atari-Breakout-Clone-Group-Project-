@@ -97,15 +97,6 @@ public class PlayModePage implements Block223PlayModeInterface {
 		testBtn.setFont(new Font("Tahoma", Font.PLAIN, 44));
 		System.out.println(Block223Application.getCurrentPlayableGame());
 		
-		if(Block223Application.getCurrentPlayableGame() == null) {
-			System.out.println("Setting btnplay to invisible");
-			playBtn.setVisible(false);
-		}
-		else {
-			System.out.println("Setting btntest to invisible");
-			testBtn.setVisible(false);
-		}
-		
 		errorMessage = new JLabel("");
 		errorMessage.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
@@ -178,10 +169,26 @@ public class PlayModePage implements Block223PlayModeInterface {
 					.addContainerGap())
 		);
 		frame.getContentPane().setLayout(groupLayout);
+		
+		if(Block223Application.getCurrentPlayableGame() == null) {
+			hallOfFamePanel.setVisible(false);
+			lblHallOfFame.setVisible(false);
+			previousEntriesBtn.setVisible(false);
+			followingEntriesBtn.setVisible(false);
+			playBtn.setVisible(false);
+		}
+		else {
+			testBtn.setVisible(false);
+		}
+		System.out.println("Setup complete.");
 	}
 	
 	private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		frame.dispose();
+		if(Block223Application.getCurrentPlayableGame().getPlayer() == null) {
+			new AdminDashBoardPage();
+			return;
+		}
 		new PlayerDashBoardPage();
 	}
 
@@ -192,6 +199,16 @@ public class PlayModePage implements Block223PlayModeInterface {
 		System.out.println("UI");
 		//PlayedGameLevel.setBlockAssignments();
 		//PlayedGameLevel.refreshGame();
+	}
+	
+	public void gameOver() {
+		//reset paddle & ball
+		//clear block assignments
+		//show caio message
+	}
+	
+	public void deletePage() {
+		frame.dispose();
 	}
 	
 	private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {
