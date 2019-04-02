@@ -61,6 +61,7 @@ public class PlayedGameLevel extends JComponent {
 			game = Block223Controller.getCurrentPlayableGame();
 			if(game.getCurrentLevel() != level) {
 				level = game.getCurrentLevel();
+				blockAssignments = Block223Controller.getBlocksAtLevelOfCurrentDesignableGame(level);
 			}
 			repaint();
 		} catch (InvalidInputException e) {
