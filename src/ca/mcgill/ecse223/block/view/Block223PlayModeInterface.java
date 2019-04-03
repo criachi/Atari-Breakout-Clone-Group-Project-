@@ -6,6 +6,7 @@ public interface Block223PlayModeInterface {
 	
 	public void refresh();
 
-	public void gameOver();
+	// no need: alex 
+	//public void gameOver();
 
 }

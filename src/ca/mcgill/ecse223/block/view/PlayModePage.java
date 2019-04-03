@@ -9,10 +9,13 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
@@ -31,19 +34,20 @@ public class PlayModePage implements Block223PlayModeInterface {
 	private JButton playBtn;
 	private JButton testBtn;
 	private JLabel errorMessage;
-	
+	private JLayeredPane playLevelLayout;
 	Block223Listener gameListener;
 
 	/**
 	 * Create the application.
 	 */
 	public PlayModePage() {
-		System.out.println("hehe");
+		//System.out.println("hehe");
 		initialize();
 		// THIS IS WRONG MY COMMENT
 		// if u hve a current playable game set alrdy, then it will display the info of where u left off 
 		// if u dont, it will display empty play area
-		refresh();
+		refresh(); // refresh shld call repaint on the JComponent PlayLevelLayout
+		
 	}
 
 	/**
@@ -51,7 +55,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 797, 664);
+		frame.setBounds(100, 100, 952, 778);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		
@@ -81,7 +85,6 @@ public class PlayModePage implements Block223PlayModeInterface {
 		
 		JButton followingEntriesBtn = new JButton("Following Entries");
 		
-		
 		playBtn = new JButton("PLAY");
 		playBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,44 +105,51 @@ public class PlayModePage implements Block223PlayModeInterface {
 		errorMessage = new JLabel("");
 		errorMessage.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
+		playLevelLayout = new JLayeredPane();
+		playLevelLayout.setPreferredSize(new Dimension(390,390));
 		
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(25)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(120)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addGap(19)
+							.addComponent(playLevelLayout, GroupLayout.PREFERRED_SIZE, 556, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addComponent(errorMessage, GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addComponent(backBtn, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+								.addGap(18)
 								.addComponent(testBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-								.addComponent(playBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(25)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(errorMessage, GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblCurrentLevel)
-									.addGap(152)
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblLives)
-										.addComponent(lblScore))))))
+								.addGap(30)
+								.addComponent(playBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
+								.addGap(124))
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+									.addComponent(lblScore)
+									.addGroup(groupLayout.createSequentialGroup()
+										.addComponent(lblCurrentLevel)
+										.addGap(245)
+										.addComponent(lblLives)))
+								.addPreferredGap(ComponentPlacement.RELATED))))
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED, 325, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
 							.addComponent(lblHallOfFame)
 							.addGap(102))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(135)
+							.addGap(27)
 							.addComponent(hallOfFamePanel, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE)
 							.addContainerGap())))
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(325)
-					.addComponent(backBtn, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-					.addGap(53)
+					.addContainerGap(591, Short.MAX_VALUE)
 					.addComponent(previousEntriesBtn)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(26)
 					.addComponent(followingEntriesBtn)
-					.addContainerGap(123, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -149,27 +159,34 @@ public class PlayModePage implements Block223PlayModeInterface {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(errorMessage, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblCurrentLevel)
-								.addComponent(lblLives))
+							.addComponent(lblCurrentLevel)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblScore)
-							.addGap(136)
-							.addComponent(playBtn, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
-							.addGap(18)
-							.addComponent(testBtn, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblHallOfFame)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(hallOfFamePanel, GroupLayout.PREFERRED_SIZE, 507, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(backBtn)
+							.addComponent(lblLives)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(hallOfFamePanel, GroupLayout.PREFERRED_SIZE, 507, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(8)
+									.addComponent(lblScore)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(playLevelLayout, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+						.addComponent(lblHallOfFame))
+					.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(followingEntriesBtn)
 							.addComponent(previousEntriesBtn)
-							.addComponent(followingEntriesBtn)))
+							.addComponent(backBtn))
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(testBtn, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
+							.addComponent(playBtn, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(70, 36, 390, 390);
+		playLevelLayout.add(panel);
 		frame.getContentPane().setLayout(groupLayout);
 		
 		if(Block223Application.getCurrentPlayableGame() == null) {
