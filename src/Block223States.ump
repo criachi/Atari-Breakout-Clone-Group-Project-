@@ -372,7 +372,9 @@ class PlayedGame {
 	 }
   
   
- private BouncePoint calculateBouncePointPaddle(){
+private BouncePoint calculateBouncePointPaddle(){
+	java.awt.geom.Rectangle2D paddle = new java.awt.geom.Rectangle2D.Double(currentPaddleX, currentPaddleY, currentPaddleLength, 5);
+	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(currentBallX + ballDirectionX, currentBallY + ballDirectionY, 10, 10);
     java.awt.geom.Rectangle2D A = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX(), this.getCurrentPaddleY() - 5, currentPaddleLength, 5);
     java.awt.geom.Rectangle2D B = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX() - 5 , this.getCurrentPaddleY(), 5, 5);
     java.awt.geom.Rectangle2D C = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX() + currentPaddleLength + 5, this.getCurrentPaddleY(), 5, 5);
@@ -380,94 +382,229 @@ class PlayedGame {
     java.awt.geom.Rectangle2D F = new java.awt.geom.Rectangle2D.Double(currentPaddleX + currentPaddleLength, currentPaddleY - 5, 5, 5);
     java.awt.geom.Line2D movement = new java.awt.geom.Line2D.Double(this.getCurrentBallX(), this.getCurrentBallY(), this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY());
     
+    double nextX = currentBallX + ballDirectionX;
+	double nextY = currentBallY + ballDirectionY;
+    
+    BouncePoint bp = null;
+    
+    if(!paddle.getBounds().intersects(ball.getBounds())) {
+    	return null;
+    }
+    
 	//A   
-  	if(A.intersectsLine(movement) && ballDirectionY > 0) {
-  		return new BouncePoint(currentBallX + 2 + ballDirectionY / 10, currentBallY, BouncePoint.BounceDirection.FLIP_Y);
+  	if(A.intersectsLine(movement)) {
+  		BouncePoint tmp = new BouncePoint(currentBallX + (ballDirectionX * (currentPaddleY-5-currentBallY) / ballDirectionY), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  		if(isCloser(tmp, bp)) {
+  			bp = tmp;
+  		}
   	}
   	//B
-  	if(B.intersectsLine(movement) && ballDirectionX > 0) {
-  		return new BouncePoint(currentBallX, currentBallY + 2 + ballDirectionX / 10, BouncePoint.BounceDirection.FLIP_X);
+  	if(B.intersectsLine(movement)) {
+  		BouncePoint tmp = new BouncePoint(currentPaddleX-5, currentBallY + (ballDirectionY * (currentPaddleX-5-currentBallX) / ballDirectionX), BouncePoint.BounceDirection.FLIP_X);
+  		if(isCloser(tmp, bp)) {
+  			bp = tmp;
+  		}
   	}
   	//C
-  	if(C.intersectsLine(movement) && ballDirectionX < 0) {
-  		return new BouncePoint(currentBallX, currentBallY + 2 - ballDirectionX / 10, BouncePoint.BounceDirection.FLIP_X);
+  	if(C.intersectsLine(movement)) {
+  		BouncePoint tmp = new BouncePoint(currentPaddleX+currentPaddleLength+5,currentBallY + (ballDirectionY * (currentPaddleX+currentPaddleLength+5-currentBallX) / ballDirectionX), BouncePoint.BounceDirection.FLIP_X);
+  		if(isCloser(tmp, bp)) {
+  			bp = tmp;
+  		}
   	}
-  	//E left
-  	if(E.intersectsLine(movement) && ballDirectionX > 0) {
-  		return new BouncePoint(currentBallX, currentBallY - 1 - ballDirectionX / 10, BouncePoint.BounceDirection.FLIP_X);
-  	}
-  	//E right
-  	if(E.intersectsLine(movement) && ballDirectionX < 0) {
-  		return new BouncePoint(currentBallX - 1 - ballDirectionY / 10, currentBallY, BouncePoint.BounceDirection.FLIP_Y);
-  	}
-  	//F left
-  	if(F.intersectsLine(movement) && ballDirectionX > 0) {
-  		return new BouncePoint(currentBallX + 1 + ballDirectionY / 10, currentBallY, BouncePoint.BounceDirection.FLIP_Y);
-  	}
-  	//F right
-  	if(F.intersectsLine(movement) && ballDirectionX < 0) {
-  		return new BouncePoint(currentBallX, currentBallY + 1 - ballDirectionX / 10, BouncePoint.BounceDirection.FLIP_X);
-  	}
-  	return null;
+  	// compute the euclidean distance between A and B
+    double LAB = java.lang.Math.sqrt((ballDirectionX * ballDirectionX)+(ballDirectionY * ballDirectionY));
+
+    // compute the direction vector D from A to B
+    double Dx = (ballDirectionX)/LAB;
+    double Dy = (ballDirectionY)/LAB;
+
+    // the equation of the line AB is x = Dx*t + Ax, y = Dy*t + Ay with 0 <= t <= LAB.
+
+    // compute the distance between the points A and E, where
+    // E is the point of AB closest the circle center (Cx, Cy)
+    //For corner E
+    double t = Dx*(currentPaddleX-currentBallX) + Dy*(currentPaddleY-currentBallY); 
+    //For corner F
+    double k = Dx*(currentPaddleX+currentPaddleLength-currentBallX) + Dy*(currentPaddleY-currentBallY);
+
+    // compute the coordinates of the point E
+    //for corner E
+    double Ex = t * Dx + currentBallX;
+    double Ey = t * Dy + currentBallY;
+    //for corner F
+    double Fx = k * Dx + currentBallX;
+    double Fy = k * Dy + currentBallY;
+
+    // compute the euclidean distance between E and C, for E
+    double LEC = java.lang.Math.sqrt(((Ex-currentPaddleX)*(Ex-currentPaddleX))+((Ey-currentPaddleY)*(currentPaddleY)));
+    //for F
+    double LFC = java.lang.Math.sqrt(((Fx-currentPaddleX-currentPaddleLength)*(Fx-currentPaddleX-currentPaddleLength)+(Fy-currentPaddleY)*(Fy-currentPaddleY)));
+
+    // test if the line intersects the circle
+    if(LEC < 5) {
+        // compute distance from t to circle intersection point
+        double dt = java.lang.Math.sqrt( 25 - (LEC*LEC));
+
+        // compute first intersection point
+        double Gx = (t-dt)*Dx + currentBallX;
+        double Gy = (t-dt)*Dy + currentBallY;
+        // compute second intersection point
+        double Hx = (t+dt)*Dx + currentBallX;
+        double Hy = (t+dt)*Dy + currentBallY;
+        if(ballDirectionX < 0) {
+        	BouncePoint tmp1 = new BouncePoint(Gx, Gy, BouncePoint.BounceDirection.FLIP_Y);
+        	BouncePoint tmp2 = new BouncePoint(Hx, Hy, BouncePoint.BounceDirection.FLIP_Y);
+        	if(isCloser(tmp1, bp)) {
+        		bp = tmp1;
+        	}
+        	else if(isCloser(tmp2, bp)) {
+        		bp = tmp2;
+        	}
+        } else {
+        	BouncePoint tmp1 = new BouncePoint(Fx, Fy, BouncePoint.BounceDirection.FLIP_X);
+        	BouncePoint tmp2 = new BouncePoint(Gx, Gy, BouncePoint.BounceDirection.FLIP_X);
+        	if(isCloser(tmp1, bp)) {
+        		bp =tmp1;
+        	}
+        	else if (isCloser(tmp2, bp)) {
+        		bp = tmp2;
+        	}
+        }
+    }
+
+    // else test if the line is tangent to circle
+    else if( LEC == 5 ) {
+        // tangent point to circle is E
+    	if(ballDirectionX < 0) {
+    		BouncePoint tmp = new BouncePoint(Ex, Ey, BouncePoint.BounceDirection.FLIP_Y);
+    		if(isCloser(tmp, bp)) {
+    			bp = tmp;
+    		}
+    	} else {
+    		BouncePoint tmp = new BouncePoint(Ex, Ey, BouncePoint.BounceDirection.FLIP_X);
+    		if(isCloser(tmp, bp)) {
+    			bp = tmp;
+    		}
+    	}
+    } else {
+        // line doesn't touch circle
+    	return null;
+    }
+    
+    if(LFC < 5) {
+        // compute distance from t to circle intersection point
+        double dt = java.lang.Math.sqrt( 25 - (LFC*LFC));
+
+        // compute first intersection point
+        double Gx = (k-dt)*Dx + currentBallX;
+        double Gy = (k-dt)*Dy + currentBallY;
+        // compute second intersection point
+        double Hx = (k+dt)*Dx + currentBallX;
+        double Hy = (k+dt)*Dy + currentBallY;
+        if(ballDirectionX < 0) {
+        	BouncePoint tmp1 = new BouncePoint(Gx, Gy, BouncePoint.BounceDirection.FLIP_X);
+        	BouncePoint tmp2 = new BouncePoint(Hx, Hy, BouncePoint.BounceDirection.FLIP_X);
+        	if(isCloser(tmp1, bp)) {
+        		bp = tmp1;
+        	}
+        	else if(isCloser(tmp2, bp)) {
+        		bp = tmp2;
+        	}
+        } else {
+        	BouncePoint tmp1 = new BouncePoint(Fx, Fy, BouncePoint.BounceDirection.FLIP_Y);
+        	BouncePoint tmp2 = new BouncePoint(Gx, Gy, BouncePoint.BounceDirection.FLIP_Y);
+        	if(isCloser(tmp1, bp)) {
+        		bp =tmp1;
+        	}
+        	else if (isCloser(tmp2, bp)) {
+        		bp = tmp2;
+        	}
+        }
+    }
+
+    // else test if the line is tangent to circle
+    else if( LFC == 5 ) {
+        // tangent point to circle is E
+    	if(ballDirectionX < 0) {
+    		BouncePoint tmp = new BouncePoint(Fx, Fy, BouncePoint.BounceDirection.FLIP_X);
+    		if(isCloser(tmp, bp)) {
+    			bp = tmp;
+    		}
+    	} else {
+    		BouncePoint tmp = new BouncePoint(Fx, Fy, BouncePoint.BounceDirection.FLIP_Y);
+    		if(isCloser(tmp, bp)) {
+    			bp = tmp;
+    		}
+    	}
+    } else {
+        // line doesn't touch circle
+    	return null;
+    }
+
+  	if(bp != null && nextX == bp.getX() && nextY == bp.getY()) {
+		   return null;
+	   }
+  	return bp;
   }
   
-  private void bounceBall() {
-  //FLIP_Y case
-  	BouncePoint.BounceDirection bd = this.bounce.getDirection();
-  	if(bd.equals(BouncePoint.BounceDirection.FLIP_Y)) {
-  		double in = bounce.getY() - currentBallY;
-  		double rem = ballDirectionY - in;
-  		if(rem == 0) {
-  			currentBallX = bounce.getX();
-  			currentBallY = bounce.getY();
-  		}
-  		double oldDirectionX = ballDirectionX;
-  		double oldDirectionY = ballDirectionY;
-  		ballDirectionY = (oldDirectionY * (-1));
-  		if(oldDirectionX == 0) {
-  			ballDirectionX = 0.1 * java.lang.Math.abs(ballDirectionY);
-  		} else {
-  			ballDirectionX = oldDirectionX + (java.lang.Math.signum(oldDirectionX) * 0.1 * java.lang.Math.abs(ballDirectionY));
-  		}
-  		currentBallX = bounce.getX() + rem/oldDirectionX * ballDirectionX;
-  		currentBallY = bounce.getY() + rem/oldDirectionY * ballDirectionY;
-  	}
-  	//FLIP_X case
-  	if(bd.equals(BouncePoint.BounceDirection.FLIP_X)) {
-  		double in = bounce.getX() - currentBallX;
-  		double rem = ballDirectionX - in;
-  		if(rem == 0) {
-  			currentBallX = bounce.getX();
-  			currentBallY = bounce.getY();
-  		}
-  		double oldDirectionX = ballDirectionX;
-  		double oldDirectionY = ballDirectionY;
-  		ballDirectionX = (oldDirectionX * (-1));
-  		if(oldDirectionY == 0) {
-  			ballDirectionY = 0.1 * java.lang.Math.abs(ballDirectionX);
-  		} else {
-  			ballDirectionY = oldDirectionY + (java.lang.Math.signum(oldDirectionY) * 0.1 * java.lang.Math.abs(ballDirectionX));
-  		}
-  		currentBallX = bounce.getX() + rem/oldDirectionX * ballDirectionX;
-  		currentBallY = bounce.getY() + rem/oldDirectionY * ballDirectionY;
-  	}
-  	//FLIP_BOTH case
-  	if(bd.equals(BouncePoint.BounceDirection.FLIP_BOTH)) {
-  		double inX = bounce.getX() - currentBallX;
-  		double remX = ballDirectionX - inX;
-  		double inY = bounce.getY() - currentBallY;
-  		double remY = ballDirectionY - inY;
-  		if(remX == 0 && remY == 0) {
-  			currentBallX = bounce.getX();
-  			currentBallY = bounce.getY();
-  		}
-  		double oldDirectionX = ballDirectionX;
-  		double oldDirectionY = ballDirectionY;
-  		ballDirectionX = (oldDirectionX * (-1));
-  		ballDirectionY = (oldDirectionY * (-1));
-  		currentBallX = bounce.getX() + remX/oldDirectionX * ballDirectionX;
-  		currentBallY = bounce.getY() + remY/oldDirectionY * ballDirectionY;
-  	}
-  }
+ private void bounceBall() {
+	   //FLIP_Y case
+	   	BouncePoint.BounceDirection bd = this.bounce.getDirection();
+	   	if(bd.equals(BouncePoint.BounceDirection.FLIP_Y)) {
+	   		double in = bounce.getY() - currentBallY; //incoming distance
+	   		double out = ballDirectionY - in; //outgoing distance
+	   		if(out == 0) {
+	   			currentBallX = bounce.getX();
+	   			currentBallY = bounce.getY();
+	   		}
+	   		double DirectionX = ballDirectionX;
+	   		double DirectionY = ballDirectionY;
+	   		ballDirectionY = (-1)*DirectionY;
+	   		if(DirectionX == 0) {
+	   			ballDirectionX = 0.1 * java.lang.Math.abs(ballDirectionY);
+	   		} else {
+	   			ballDirectionX = DirectionX + (0.1 * java.lang.Math.abs(ballDirectionY));
+	   		}
+	   		currentBallY = bounce.getY() + (out/DirectionY * ballDirectionY);
+	   		currentBallX = bounce.getX() + (out/DirectionY * ballDirectionX);
+	   	}
+	   	//FLIP_X case
+	   	if(bd.equals(BouncePoint.BounceDirection.FLIP_X)) {
+	   		double in = bounce.getX() - currentBallX;
+	   		double out = ballDirectionX - in;
+	   		if(out == 0) {
+	   			currentBallX = bounce.getX();
+	   			currentBallY = bounce.getY();
+	   		}
+	   		double DirectionX = ballDirectionX;
+	   		double DirectionY = ballDirectionY;
+	   		ballDirectionX = -DirectionX;
+	   		if(DirectionY == 0) {
+	   			ballDirectionY = 0.1 * java.lang.Math.abs(ballDirectionX);
+	   		} else {
+	   			ballDirectionY = DirectionY + (0.1 * java.lang.Math.abs(ballDirectionX));
+	   		}
+	   		currentBallX = bounce.getX() + (out/DirectionX * ballDirectionX);
+	   		currentBallY = bounce.getY() + (out/DirectionX * ballDirectionY);
+	   	}
+	   	//FLIP_BOTH case
+	   	if(bd.equals(BouncePoint.BounceDirection.FLIP_BOTH)) {
+	   		double inX = bounce.getX() - currentBallX;
+	   		double remX = ballDirectionX - inX;
+	   		double inY = bounce.getY() - currentBallY;
+	   		double remY = ballDirectionY - inY;
+	   		if(remX == 0 && remY == 0) {
+	   			currentBallX = bounce.getX();
+	   			currentBallY = bounce.getY();
+	   		}
+	   		double DirectionX = ballDirectionX;
+	   		double DirectionY = ballDirectionY;
+	   		ballDirectionX = -DirectionX;
+	   		ballDirectionY = -DirectionY;
+	   		currentBallX = bounce.getX() + (remX/DirectionX * ballDirectionX);
+	   		currentBallY = bounce.getY() + (remY/DirectionY * ballDirectionY);
+	   	}
+   }
   
 }
