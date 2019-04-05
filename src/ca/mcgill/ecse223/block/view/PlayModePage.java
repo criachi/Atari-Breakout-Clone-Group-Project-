@@ -23,7 +23,7 @@ import javax.swing.border.LineBorder;
 import ca.mcgill.ecse223.block.application.Block223Application;
 import ca.mcgill.ecse223.block.controller.Block223Controller;
 import ca.mcgill.ecse223.block.controller.InvalidInputException;
-
+import ca.mcgill.ecse223.block.controller.TOHallOfFameEntry;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -220,7 +220,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 		//PlayedGameLevel.refreshGame();
 	}
 	
-	public void gameOver() {
+	public void endGame(int nrOfLives, TOHallOfFameEntry hof) {
 		//reset paddle & ball
 		//clear block assignments
 		//show caio message
