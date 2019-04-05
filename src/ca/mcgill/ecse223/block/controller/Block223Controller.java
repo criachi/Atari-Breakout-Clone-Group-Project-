@@ -582,20 +582,26 @@ public class Block223Controller {
 			// thinks we STILL have a currentPlayableGame even tho it is deleted in the doGameOver() state machine method
 			// FIX: only refresh in the game loop if game.getPlayStatus() != PlayStatus.GameOver
 			
-			if(currentGame.getPlayStatus() != PlayStatus.GameOver) { 
+			if(currentGame.getPlayStatus() != PlayStatus.GameOver) { //if we have a refresh method w/ just the check w/ the boolean
+				//isGameOver() then it wld make custom refresh steps in the method and just display game over msln
 				ui.refresh();
 			}
 		}
-		
+		// this used to be 2 if statements for the conditions but this is wrong; the sequence diagram says use an alt block 
 		if(currentGame.getPlayStatus() == PlayStatus.GameOver) {
 			Block223Application.setCurrentPlayableGame(null);
-			ui.gameOver();
-			if(currentGame.getPlayer() != null) {
+			//ui.gameOver(); // do we rly need this sep refresh method for game over state? we can have one main UI refresh method which uses the boolean method below to decide what to do
+		} else if(currentGame.getPlayer() != null) {
 				currentGame.setBounce(null);
 				Block223 block223 = Block223Application.getBlock223();
 				Block223Persistence.save(block223);
-			}
 		}
+	}
+	
+	// Christina
+	public static boolean isGameOver() {
+		PlayedGame currentPlayedGame = Block223Application.getCurrentPlayableGame();
+		return currentPlayedGame.getPlayStatus() == PlayStatus.GameOver;
 	}
 	
 	/*
@@ -644,7 +650,7 @@ public class Block223Controller {
 			PlayedGame pgame = new PlayedGame(username, game, block223);
 			pgame.setPlayer(null);
 			Block223Application.setCurrentPlayableGame(pgame);
-			ui.refresh();
+			//ui.refresh();
 			startGame(ui);
 	}
 

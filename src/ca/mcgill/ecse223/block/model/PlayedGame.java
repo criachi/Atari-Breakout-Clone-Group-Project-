@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.*;
 
 // line 11 "../../../../../Block223PlayMode.ump"
-// line 100 "../../../../../Block223Persistence.ump"
+// line 109 "../../../../../Block223Persistence.ump"
 // line 1 "../../../../../Block223States.ump"
 public class PlayedGame implements Serializable
 {
@@ -35,12 +35,12 @@ public class PlayedGame implements Serializable
    * no direct link to Paddle, because the paddle can be found by navigating to Game and then Paddle
    * pixels moved when right arrow key is pressed
    */
-  public static final int PADDLE_MOVE_RIGHT = 1;
+  public static final int PADDLE_MOVE_RIGHT = 5;
 
   /**
    * pixels moved when left arrow key is pressed
    */
-  public static final int PADDLE_MOVE_LEFT = -1;
+  public static final int PADDLE_MOVE_LEFT = -5;
 
   //------------------------
   // MEMBER VARIABLES
@@ -720,7 +720,7 @@ public class PlayedGame implements Serializable
     }
   }
 
-  // line 105 "../../../../../Block223Persistence.ump"
+  // line 114 "../../../../../Block223Persistence.ump"
    public static  void reinitializeAutouniqueID(List<PlayedGame> playedGames){
     nextId = 0;
   		for(PlayedGame playedGame : playedGames) {
@@ -1321,7 +1321,7 @@ public class PlayedGame implements Serializable
   // DEVELOPER CODE - PROVIDED AS-IS
   //------------------------
   
-  // line 103 "../../../../../Block223Persistence.ump"
+  // line 112 "../../../../../Block223Persistence.ump"
   private static final long serialVersionUID = 8597675110221231714L ;
 
   
