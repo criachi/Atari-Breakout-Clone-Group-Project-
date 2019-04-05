@@ -249,96 +249,111 @@ class PlayedGame {
   
   //Onur Cayci - ball hits block method
  
-  private BouncePoint calculateBouncePointBlock(PlayedBlockAssignment block) {
-  	double blockX = 25 * (block.getX() - 1); //top left corner x-coordinate of the block
-  	double blockY = 22 * (block.getY() - 1); //top left corner y-coordinate of the block
-  	java.awt.geom.Rectangle2D rect = new java.awt.geom.Rectangle2D.Double(blockX, blockY, 30, 30);
-  	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY(), 10, 10);
-  	if(!rect.getBounds2D().intersects(ball.getBounds2D())) return null;
+  private BouncePoint calculateBouncePointBlock(PlayedBlockAssignment block){
+    double blockX = 25 * (block.getX() - 1) + 10; //top left corner x-coordinate of the block
+  	double blockY = 22 * (block.getY() - 1) + 10; //top left corner y-coordinate of the block
+  	java.awt.geom.Rectangle2D blk = new java.awt.geom.Rectangle2D.Double(blockX, blockY, 20, 20);
+  	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(currentBallX + ballDirectionX, currentBallY + ballDirectionY, 10, 10);
+  	java.awt.geom.Rectangle2D A = new java.awt.geom.Rectangle2D.Double(blockX, blockY - 5, 20, 5);
+  	java.awt.geom.Rectangle2D B = new java.awt.geom.Rectangle2D.Double(blockX - 5, blockY, 5, 20);
+  	java.awt.geom.Rectangle2D C = new java.awt.geom.Rectangle2D.Double(blockX + 20, blockY, 5, 20);
+  	java.awt.geom.Rectangle2D D = new java.awt.geom.Rectangle2D.Double(blockX + 20, blockY + 20, 20, 5);
+  	java.awt.geom.Rectangle2D E = new java.awt.geom.Rectangle2D.Double(blockX - 5, blockY - 5, 5, 5);
+  	java.awt.geom.Rectangle2D F = new java.awt.geom.Rectangle2D.Double(blockX + 20, blockY - 5, 5, 5);
+  	java.awt.geom.Rectangle2D G = new java.awt.geom.Rectangle2D.Double(blockX - 5, blockY + 20, 5, 5);
+  	java.awt.geom.Rectangle2D H = new java.awt.geom.Rectangle2D.Double(blockX + 20, blockY + 20, 5, 5);
+  	java.awt.geom.Line2D movement = new java.awt.geom.Line2D.Double(currentBallX, currentBallY, currentBallX + ballDirectionX, currentBallY + ballDirectionY);
   	
-  	if(blockY > this.getCurrentBallY()) {
-  	//option A
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) != blockX || (this.getCurrentBallX() + this.getBallDirectionX()) != (blockX + 20)) {
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY)), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
-  		}
-  	//option E approaching from right
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX && (this.getCurrentBallX() + this.getBallDirectionX()) < this.getBallDirectionX()) { 
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY)), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
-  		}
-  	//option E approaching from left
-  		if((currentBallX + ballDirectionX) == blockX && (currentBallX + ballDirectionX) > currentBallX) {
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY)), blockY - 5, BouncePoint.BounceDirection.FLIP_X);
-  		}
-  	//option F aproaching from right
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20) && (currentBallX + ballDirectionX) < currentBallX) {
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY)), blockY - 5, BouncePoint.BounceDirection.FLIP_X);
-  		}
-  	//option F approaching from left
-  		if((currentBallX + ballDirectionX) == (blockX + 20) && (currentBallX + ballDirectionX) > currentBallX) {
-  		return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY - 5)/(2*currentBallY + ballDirectionY)), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
-  		}
+  	BouncePoint bp = null;
+  	
+  	double nextX = currentBallX + ballDirectionX;
+	double nextY = currentBallY + ballDirectionY;
+  	
+  	if(!blk.getBounds().intersects(ball.getBounds())) {
+  		return null;
   	}
   	
-  	//if the ball comes from the bottom
-  	
-  	if((blockY + 20) < this.getCurrentBallY()) {
-  	//option D
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) != blockX || (this.getCurrentBallX() + this.getBallDirectionX()) != (blockX + 20)) {
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY)), blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
-  		}
-  	//option G approaching from right
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) == blockX && (currentBallX + ballDirectionX) < currentBallX) {
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY)), blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
-  		}
-  	//option E approaching from left
-  		if((currentBallX + ballDirectionX) == blockX && (currentBallX + ballDirectionX) > currentBallX) {
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY)), blockY + 25, BouncePoint.BounceDirection.FLIP_X);
-  		}
-  	//option F aproaching from right
-  		if((this.getCurrentBallX() + this.getBallDirectionX()) == (blockX + 20) && (currentBallX + ballDirectionX) < currentBallX) {
-  			return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY)), blockY + 25, BouncePoint.BounceDirection.FLIP_X);
-  		}
-  	//option F approaching from left
-  		if((currentBallX + ballDirectionX) == (blockX + 20) && (currentBallX + ballDirectionX) > currentBallX) {
-  		return new BouncePoint(((2*currentBallX + ballDirectionX)*(blockY + 25)/(2*currentBallY + ballDirectionY)), blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
+  	if(A.intersectsLine(movement)) {
+  		BouncePoint tmp = new BouncePoint(currentBallX + (ballDirectionX * (blockY-5-currentBallY) / ballDirectionY), blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
+  		 if(isCloser(tmp, bp)) {
+			   bp = tmp;
+		   }
+  	}
+  	if(B.intersectsLine(movement)) {
+  		BouncePoint tmp = new BouncePoint(blockX-5, currentBallY + (ballDirectionY * (blockX-5-currentBallX) / ballDirectionX), BouncePoint.BounceDirection.FLIP_X);
+  		 if(isCloser(tmp, bp)) {
+			   bp = tmp;
+		   }
+  	}
+  	if(C.intersectsLine(movement)) {
+  		BouncePoint tmp = new BouncePoint(blockX+5,currentBallY + (ballDirectionY * (blockX+5-currentBallX) / ballDirectionX), BouncePoint.BounceDirection.FLIP_Y);
+  		 if(isCloser(tmp, bp)) {
+			   bp = tmp;
+		   }
+  	}
+  	if(D.intersectsLine(movement)) {
+  		BouncePoint tmp = new BouncePoint(currentBallX + (ballDirectionX * (blockY+25-currentBallY) / ballDirectionY), blockY + 25, BouncePoint.BounceDirection.FLIP_X);
+  		 if(isCloser(tmp, bp)) {
+			   bp = tmp;
+		   }
+  	}
+  	if(E.intersectsLine(movement)) {
+  		if(ballDirectionX > 0) {
+  			BouncePoint tmp = new BouncePoint(currentBallX, currentBallY - 1 - ballDirectionX / 10, BouncePoint.BounceDirection.FLIP_X);
+  			if(isCloser(tmp, bp)) {
+  				bp = tmp;
+  			}
+  		} else {
+  			BouncePoint tmp = new BouncePoint(currentBallX - 1 - ballDirectionY / 10, currentBallY, BouncePoint.BounceDirection.FLIP_Y);
+  	  		if(isCloser(tmp, bp)) {
+  	  			bp = tmp;
+  	  		}
   		}
   	}
-  	
-  	//if the ball comes from the left
-  	
-  	if(blockX > this.getCurrentBallX()) {
-  	//option B
-  	if((this.getCurrentBallY() + this.getBallDirectionY()) != blockY || (this.getCurrentBallY() + this.getBallDirectionY()) != (blockY + 20)) {
-  			return new BouncePoint(blockX - 5, this.getCurrentBallY() + this.getBallDirectionY(), BouncePoint.BounceDirection.FLIP_X);
-  		}
-  	//option E
-  		if((this.getCurrentBallY() + this.getBallDirectionY()) == blockY) { 
-  			return new BouncePoint(blockX - 5, blockY - 5, BouncePoint.BounceDirection.FLIP_X);
-  		}
-  	//option G
- 		if((this.getCurrentBallY() + this.getBallDirectionY()) == (blockY + 20)) {
-  			return new BouncePoint(blockX - 5, blockY + 25, BouncePoint.BounceDirection.FLIP_X);
+  	if(F.intersectsLine(movement)) {
+  		if(ballDirectionX > 0) {
+  			BouncePoint tmp = new BouncePoint(currentBallX + 1 + ballDirectionY / 10, currentBallY, BouncePoint.BounceDirection.FLIP_Y);
+  			if(isCloser(tmp, bp)) {
+  				bp = tmp;
+  			}
+  		} else {
+  			BouncePoint tmp = new BouncePoint(currentBallX, currentBallY + 1 - ballDirectionX / 10, BouncePoint.BounceDirection.FLIP_X);
+  	  		if(isCloser(tmp, bp)) {
+  	  			bp = tmp;
+  	  		}
   		}
   	}
-  	
-  	//if the ball comes from the right
-  	
-  	if(blockX + 20 < this.getCurrentBallX()) {
-  	//option C
-  		if((this.getCurrentBallY() + this.getBallDirectionY()) != blockY || (this.getCurrentBallY() + this.getBallDirectionY()) != (blockY + 20)) {
-  			return new BouncePoint(blockX + 25, this.getCurrentBallY() + this.getBallDirectionY(), BouncePoint.BounceDirection.FLIP_X);
-  		}
-  	//option F
-  		if((this.getCurrentBallY() + this.getBallDirectionY()) == blockY) { //might need to add extra if statement to better detect the bounce on the edge, it should be good so far without it
-  			return new BouncePoint(blockX + 25, blockY - 5, BouncePoint.BounceDirection.FLIP_Y);
-  		}
-  	//option H
-  		if((this.getCurrentBallY() + this.getBallDirectionY()) == (blockY + 20)) {
-  			return new BouncePoint(blockX + 25, blockY + 25, BouncePoint.BounceDirection.FLIP_Y);
+  	if(G.intersectsLine(movement)) {
+  		if(ballDirectionX > 0) {
+  			BouncePoint tmp = new BouncePoint(currentBallX, currentBallY, BouncePoint.BounceDirection.FLIP_X);
+  			if(isCloser(tmp, bp)) {
+  				bp = tmp;
+  			}
+  		} else {
+  			BouncePoint tmp = new BouncePoint(currentBallX, currentBallY, BouncePoint.BounceDirection.FLIP_Y);
+  			if(isCloser(tmp, bp)) {
+  				bp = tmp;
+  			}
   		}
   	}
-  	return null;
-  }
+  	if(H.intersectsLine(movement)) {
+  		if(ballDirectionX > 0) {
+  			BouncePoint tmp = new BouncePoint(currentBallX, currentBallY, BouncePoint.BounceDirection.FLIP_Y);
+  			if(isCloser(tmp, bp)) {
+  				bp = tmp;
+  			}
+  		} else {
+  			BouncePoint tmp = new BouncePoint(currentBallX, currentBallY, BouncePoint.BounceDirection.FLIP_X);
+  			if(isCloser(tmp, bp)) {
+  				bp = tmp;
+  			}
+  		}
+  	}
+  	if(bp != null && nextX == bp.getX() && nextY == bp.getY()) {
+		   return null;
+	   }
+	   return bp;
+   }
   
   //Haluk ball hits wall method
   
@@ -398,9 +413,9 @@ class PlayedGame {
 private BouncePoint calculateBouncePointPaddle(){
 	java.awt.geom.Rectangle2D paddle = new java.awt.geom.Rectangle2D.Double(currentPaddleX, currentPaddleY, currentPaddleLength, 5);
 	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(currentBallX + ballDirectionX, currentBallY + ballDirectionY, 10, 10);
-    java.awt.geom.Rectangle2D A = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX(), this.getCurrentPaddleY() - 5, currentPaddleLength, 5);
-    java.awt.geom.Rectangle2D B = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX() - 5 , this.getCurrentPaddleY(), 5, 5);
-    java.awt.geom.Rectangle2D C = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX() + currentPaddleLength + 5, this.getCurrentPaddleY(), 5, 5);
+    java.awt.geom.Rectangle2D A = new java.awt.geom.Rectangle2D.Double(CurrentPaddleX, CurrentPaddleY - 5, currentPaddleLength, 5);
+    java.awt.geom.Rectangle2D B = new java.awt.geom.Rectangle2D.Double(CurrentPaddleX - 5 , getCurrentPaddleY, 5, 5);
+    java.awt.geom.Rectangle2D C = new java.awt.geom.Rectangle2D.Double(CurrentPaddleX + currentPaddleLength + 5, CurrentPaddleY, 5, 5);
     java.awt.geom.Rectangle2D E = new java.awt.geom.Rectangle2D.Double(currentPaddleX - 5, currentPaddleY - 5, 5, 5);
     java.awt.geom.Rectangle2D F = new java.awt.geom.Rectangle2D.Double(currentPaddleX + currentPaddleLength, currentPaddleY - 5, 5, 5);
     java.awt.geom.Line2D movement = new java.awt.geom.Line2D.Double(this.getCurrentBallX(), this.getCurrentBallY(), this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY());
