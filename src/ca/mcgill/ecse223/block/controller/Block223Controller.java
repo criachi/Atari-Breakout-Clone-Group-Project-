@@ -608,10 +608,13 @@ public class Block223Controller {
 	 * @Author - Anthony
 	 */
 	private static void updatePaddlePosition(String inputs) {
+		System.out.println("im here taking inputs");
 		int stringLength = inputs.length();
 		for(int i = 0; i < stringLength; i++) {
+			System.out.println("im in for loop");
 			Double currentPaddleX = Block223Application.getCurrentPlayableGame().getCurrentPaddleX();
 			if(inputs.charAt(i) == 'l') {
+				System.out.println("left was just clicked");
 				currentPaddleX += PlayedGame.PADDLE_MOVE_LEFT;
 				if(currentPaddleX >= 0) {
 					Block223Application.getCurrentPlayableGame().setCurrentPaddleX(currentPaddleX);

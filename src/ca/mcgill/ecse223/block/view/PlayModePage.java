@@ -24,9 +24,11 @@ import ca.mcgill.ecse223.block.application.Block223Application;
 import ca.mcgill.ecse223.block.controller.Block223Controller;
 import ca.mcgill.ecse223.block.controller.InvalidInputException;
 import ca.mcgill.ecse223.block.controller.TOHallOfFameEntry;
+import ca.mcgill.ecse223.block.model.PlayedGame;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
 
 public class PlayModePage implements Block223PlayModeInterface {
 
@@ -36,6 +38,13 @@ public class PlayModePage implements Block223PlayModeInterface {
 	private JLabel errorMessage;
 	private JLayeredPane playLevelLayout;
 	Block223Listener gameListener;
+	private JButton previousEntriesBtn;
+	private JButton followingEntriesBtn;
+	private JLabel currentLevelLbl;
+	private JLabel livesLbl;
+	private JLabel scoreLbl;
+	private JLabel levelLbl;
+	private JTextArea dummyArea;
 
 	/**
 	 * Create the application.
@@ -81,9 +90,9 @@ public class PlayModePage implements Block223PlayModeInterface {
 		JLabel lblHallOfFame = new JLabel("Hall of Fame");
 		lblHallOfFame.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton previousEntriesBtn = new JButton("Previous Entries");
+		previousEntriesBtn = new JButton("Previous Entries");
 		
-		JButton followingEntriesBtn = new JButton("Following Entries");
+		followingEntriesBtn = new JButton("Following Entries");
 		
 		playBtn = new JButton("PLAY");
 		playBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -105,36 +114,68 @@ public class PlayModePage implements Block223PlayModeInterface {
 		errorMessage = new JLabel("");
 		errorMessage.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		playLevelLayout = new JLayeredPane();
+		playLevelLayout = new PlayLevelLayout();
 		playLevelLayout.setPreferredSize(new Dimension(390,390));
+		playLevelLayout.setVisible(true);
+		
+		currentLevelLbl = new JLabel("");
+		
+		livesLbl = new JLabel("");
+		
+		scoreLbl = new JLabel("");
+		
+		levelLbl = new JLabel("");
+		
+		dummyArea = new JTextArea();
+		dummyArea.setVisible(false);
 		
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(25)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(19)
-							.addComponent(playLevelLayout, GroupLayout.PREFERRED_SIZE, 556, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED))
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-							.addComponent(errorMessage, GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
-							.addGroup(groupLayout.createSequentialGroup()
-								.addComponent(backBtn, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-								.addGap(18)
-								.addComponent(testBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-								.addGap(30)
-								.addComponent(playBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-								.addGap(124))
-							.addGroup(groupLayout.createSequentialGroup()
-								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-									.addComponent(lblScore)
-									.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(lblCurrentLevel)
-										.addGap(245)
-										.addComponent(lblLives)))
-								.addPreferredGap(ComponentPlacement.RELATED))))
+							.addGap(25)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(errorMessage, GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(backBtn, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+									.addGap(18)
+									.addComponent(testBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
+									.addGap(30)
+									.addComponent(playBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
+									.addGap(124))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+										.addGroup(groupLayout.createSequentialGroup()
+											.addComponent(lblCurrentLevel)
+											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+												.addGroup(groupLayout.createSequentialGroup()
+													.addGap(245)
+													.addComponent(lblLives))
+												.addGroup(groupLayout.createSequentialGroup()
+													.addGap(18)
+													.addComponent(currentLevelLbl))
+												.addGroup(groupLayout.createSequentialGroup()
+													.addPreferredGap(ComponentPlacement.RELATED)
+													.addComponent(levelLbl))))
+										.addGroup(groupLayout.createSequentialGroup()
+											.addGap(15)
+											.addComponent(dummyArea, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(lblScore)))
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addGroup(groupLayout.createSequentialGroup()
+											.addGap(22)
+											.addComponent(livesLbl))
+										.addGroup(groupLayout.createSequentialGroup()
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(scoreLbl)))
+									.addGap(23))))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(playLevelLayout, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(110)))
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
@@ -159,18 +200,30 @@ public class PlayModePage implements Block223PlayModeInterface {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(errorMessage, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblCurrentLevel)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblLives)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblCurrentLevel)
+								.addComponent(currentLevelLbl)
+								.addComponent(levelLbl))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(hallOfFamePanel, GroupLayout.PREFERRED_SIZE, 507, GroupLayout.PREFERRED_SIZE))
+									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblLives)
+										.addComponent(livesLbl))
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addGroup(groupLayout.createSequentialGroup()
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(hallOfFamePanel, GroupLayout.PREFERRED_SIZE, 507, GroupLayout.PREFERRED_SIZE))
+										.addGroup(groupLayout.createSequentialGroup()
+											.addGap(8)
+											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+												.addComponent(lblScore)
+												.addComponent(scoreLbl))
+											.addGap(45)
+											.addComponent(playLevelLayout, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(8)
-									.addComponent(lblScore)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(playLevelLayout, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+									.addGap(50)
+									.addComponent(dummyArea, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 						.addComponent(lblHallOfFame))
 					.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -183,10 +236,6 @@ public class PlayModePage implements Block223PlayModeInterface {
 							.addComponent(playBtn, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(70, 36, 390, 390);
-		playLevelLayout.add(panel);
 		frame.getContentPane().setLayout(groupLayout);
 		
 		if(Block223Application.getCurrentPlayableGame() == null) {
@@ -215,15 +264,29 @@ public class PlayModePage implements Block223PlayModeInterface {
 	public void refresh() {
 		// we shld have a conditional: if the currentPlayableGame is set, then refresh blockassignments and ball and paddle and set them obv 
 		// if not, then just leave it empty (for test game) 
-		System.out.println("UI");
+		System.out.println("refreshing UI");
 		//PlayedGameLevel.setBlockAssignments();
 		//PlayedGameLevel.refreshGame();
+		playLevelLayout.repaint();
+		// Update lives label
+		int lives = ((PlayLevelLayout) playLevelLayout).getLives();
+		String livesStr = String.valueOf(lives);
+		livesLbl.setText(livesStr);
+		// Update score label
+		int score = ((PlayLevelLayout) playLevelLayout).getScore();
+		String scoreStr =String.valueOf(score);
+		scoreLbl.setText(scoreStr);
+		// Update the level label
+		int level = ((PlayLevelLayout) playLevelLayout).getCurrentLevel();
+		String levelStr = String.valueOf(level);
+		levelLbl.setText(levelStr);
+		
 	}
 	
 	public void endGame(int nrOfLives, TOHallOfFameEntry hof) {
 		//reset paddle & ball
 		//clear block assignments
-		//show caio message
+ 		
 	}
 	
 	public void deletePage() {
@@ -241,14 +304,17 @@ public class PlayModePage implements Block223PlayModeInterface {
 			@Override
 			public void run() {
 				// in the actual game, add keyListener to the game window
-				frame.addKeyListener(gameListener);
+				dummyArea.addKeyListener(gameListener);
 			}
 		};
 		Thread t1 = new Thread(r1);
+		System.out.println(t1.getState());
 		t1.start();
+		System.out.println(t1.getState());
 		// to be on the safe side use join to start executing thread t1 before executing the next thread
 		try {
 			t1.join();
+			System.out.println(t1.getState());
 		} catch (InterruptedException e1) {
 			
 		}
@@ -263,17 +329,11 @@ public class PlayModePage implements Block223PlayModeInterface {
 				}
 			}
 		};
-		//old code before doing move paddle; not bad 
-		/*try {
-			Block223Controller.startGame(PlayModePage.this);
-		} catch (InvalidInputException e) {
-			playBtn.setVisible(true);
-			errorMessage.setText(e.getMessage());
-			return;
-		}*/
 		
 		Thread t2 = new Thread(r2);
 		t2.start();
+		System.out.println("thread 2" + t1.getState());
+		System.out.println("thread 2 was started bitch");
 	}
 	
 	
@@ -294,7 +354,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 			@Override
 			public void run() {
 				// in the actual game, add keyListener to the game window
-				frame.addKeyListener(gameListener);
+				dummyArea.addKeyListener(gameListener);
 			}
 		};
 		Thread t1 = new Thread(r1);

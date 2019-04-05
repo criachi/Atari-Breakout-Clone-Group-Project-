@@ -33,11 +33,10 @@ public class PlayLevelLayout extends JLayeredPane {
 	public void doDrawing(Graphics g) {
 		TOCurrentlyPlayedGame currentPlayableGame = null;
 		try {
-			Block223Controller.getCurrentPlayableGame();
+			currentPlayableGame = Block223Controller.getCurrentPlayableGame();
 		} catch (InvalidInputException e) {
 			
 		} catch (Exception e) {
-			return;
 		}
 		if(currentPlayableGame != null) {
 			Graphics2D g2d = (Graphics2D) g.create();

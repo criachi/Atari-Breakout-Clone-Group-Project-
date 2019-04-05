@@ -38,6 +38,7 @@ public class Block223Listener implements KeyListener {
 	 */
 	public synchronized String takeInputs() {
 		String passString = keyString;
+		System.out.println(passString + "this is pass string");
 		keyString = "";
 		return passString;
 	}

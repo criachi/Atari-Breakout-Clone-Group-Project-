@@ -339,8 +339,9 @@ public class AdminDashBoardPage {
 			errorMessage.setText(e.getMessage());
 			return;
 		}
-		
-		PlayModePage testGame = new PlayModePage();
+		frame.dispose();
+		new PlayModePage();
+		/*PlayModePage testGame = new PlayModePage();
 		//FOr some reason the startGame call in testGame results inthe screen being blank... still working on it
 		try {
 			frame.dispose();
@@ -349,7 +350,7 @@ public class AdminDashBoardPage {
 			AdminDashBoardPage catchPage = new AdminDashBoardPage();
 			catchPage.errorMessage.setText(e.getMessage());
 			testGame.deletePage();
-		}
+		}*/
 		
 	}
 }
