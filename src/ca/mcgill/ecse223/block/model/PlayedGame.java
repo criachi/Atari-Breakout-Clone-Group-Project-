@@ -2,7 +2,6 @@
 /*This code was generated using the UMPLE 1.29.0.4181.a593105a9 modeling language!*/
 
 package ca.mcgill.ecse223.block.model;
-import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.*;
 
@@ -739,9 +738,6 @@ public class PlayedGame implements Serializable
   // line 34 "../../../../../Block223States.ump"
    private boolean hitPaddle(){
     BouncePoint bp = calculateBouncePointPaddle();
-	 if(bp == null) { 
-		 return false;
-     }
      setBounce(bp);
      return bp!=null;
   }
@@ -750,7 +746,7 @@ public class PlayedGame implements Serializable
   /**
    * Melis Malki = ball out of bounds method
    */
-  // line 45 "../../../../../Block223States.ump"
+  // line 42 "../../../../../Block223States.ump"
    private boolean isOutOfBoundsAndLastLife(){
     if (getLives() == 1){ 
      return isOutOfBounds();
@@ -762,9 +758,9 @@ public class PlayedGame implements Serializable
   /**
    * Melis Malki = ball out of bounds method
    */
-  // line 53 "../../../../../Block223States.ump"
+  // line 50 "../../../../../Block223States.ump"
    private boolean isOutOfBounds(){
-    if ( getCurrentBallY() > getCurrentPaddleY()){
+    if ( getCurrentBallY() > getCurrentPaddleY() + 5){
     return true;
     }    
     return false;
@@ -774,7 +770,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 62 "../../../../../Block223States.ump"
+  // line 59 "../../../../../Block223States.ump"
    private boolean hitLastBlockAndLastLevel(){
     Game game = this.getGame();
     int nrLevels = game.numberOfLevels();
@@ -795,7 +791,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 80 "../../../../../Block223States.ump"
+  // line 77 "../../../../../Block223States.ump"
    private boolean hitLastBlock(){
     int nrBlocks = this.numberOfBlocks();
     this.setBounce(null);
@@ -812,7 +808,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 94 "../../../../../Block223States.ump"
+  // line 91 "../../../../../Block223States.ump"
    private boolean hitBlock(){
     int nrBlocks = this.numberOfBlocks();
     this.setBounce(null);
@@ -832,7 +828,7 @@ public class PlayedGame implements Serializable
   /**
    * Haluk Calin - ball hit the wall or paddle
    */
-  // line 111 "../../../../../Block223States.ump"
+  // line 108 "../../../../../Block223States.ump"
    private boolean hitWall(){
     BouncePoint bp = calculateBouncePointWall();
     setBounce(bp);
@@ -844,7 +840,7 @@ public class PlayedGame implements Serializable
   /**
    * Antkin - doSetUp
    */
-  // line 125 "../../../../../Block223States.ump"
+  // line 119 "../../../../../Block223States.ump"
    private void doSetup(){
     resetCurrentBallX();
 	   	resetCurrentBallY();
@@ -894,7 +890,7 @@ public class PlayedGame implements Serializable
   /**
    * Haluk Calin - ball hit the wall or paddle
    */
-  // line 172 "../../../../../Block223States.ump"
+  // line 166 "../../../../../Block223States.ump"
    private void doHitPaddleOrWall(){
     bounceBall();
   }
@@ -903,7 +899,7 @@ public class PlayedGame implements Serializable
   /**
    * Melis Malki = ball out of bounds method
    */
-  // line 179 "../../../../../Block223States.ump"
+  // line 173 "../../../../../Block223States.ump"
    private void doOutOfBounds(){
     int lives = getLives();
      setLives (lives-1);
@@ -918,7 +914,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 191 "../../../../../Block223States.ump"
+  // line 185 "../../../../../Block223States.ump"
    private void doHitBlock(){
     int score = this.getScore();
     BouncePoint bounce = this.getBounce();
@@ -934,7 +930,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 204 "../../../../../Block223States.ump"
+  // line 198 "../../../../../Block223States.ump"
    private void doHitBlockNextLevel(){
     doHitBlock();
     int level = this.getCurrentLevel();
@@ -947,7 +943,7 @@ public class PlayedGame implements Serializable
   /**
    * Christina Riachi move Ball feature
    */
-  // line 213 "../../../../../Block223States.ump"
+  // line 207 "../../../../../Block223States.ump"
    private void doHitNothingAndNotOutOfBounds(){
     double x = this.getCurrentBallX();
     double y = this.getCurrentBallY();
@@ -961,7 +957,7 @@ public class PlayedGame implements Serializable
   /**
    * Melis Malki = ball out of bounds method
    */
-  // line 224 "../../../../../Block223States.ump"
+  // line 218 "../../../../../Block223States.ump"
    private void doGameOver(){
     Player p  = getPlayer();
     if ( p != null){
@@ -976,7 +972,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 236 "../../../../../Block223States.ump"
+  // line 230 "../../../../../Block223States.ump"
    private boolean isCloser(BouncePoint first, BouncePoint second){
     if(first == null) {
   		return false;
@@ -996,7 +992,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 253 "../../../../../Block223States.ump"
+  // line 247 "../../../../../Block223States.ump"
    private BouncePoint calculateBouncePointBlock(PlayedBlockAssignment block){
     double blockX = 25 * (block.getX() - 1) + 10; //top left corner x-coordinate of the block
   	double blockY = 22 * (block.getY() - 1) + 10; //top left corner y-coordinate of the block
@@ -1101,15 +1097,15 @@ public class PlayedGame implements Serializable
 		   return null;
 	   }
 	   return bp;
-   }
+  }
 
 
   /**
    * Haluk ball hits wall method
    */
-  // line 346 "../../../../../Block223States.ump"
-   private BouncePoint calculateBouncePointWall() {
-	   java.awt.geom.Rectangle2D A = new java.awt.geom.Rectangle2D.Double(0, 0, 5, 385);
+  // line 355 "../../../../../Block223States.ump"
+   private BouncePoint calculateBouncePointWall(){
+    java.awt.geom.Rectangle2D A = new java.awt.geom.Rectangle2D.Double(0, 0, 5, 385);
 	   java.awt.geom.Rectangle2D B = new java.awt.geom.Rectangle2D.Double(5, 0, 380, 5);
 	   java.awt.geom.Rectangle2D C = new java.awt.geom.Rectangle2D.Double(385, 0, 5, 385);
 	   java.awt.geom.Line2D movement = new java.awt.geom.Line2D.Double(this.getCurrentBallX(), this.getCurrentBallY(), this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY());
@@ -1158,15 +1154,15 @@ public class PlayedGame implements Serializable
 		   return null;
 	   }
 	   return bp;
-	 }
+  }
 
-  // line 394 "../../../../../Block223States.ump"
+  // line 408 "../../../../../Block223States.ump"
    private BouncePoint calculateBouncePointPaddle(){
-	java.awt.geom.Rectangle2D paddle = new java.awt.geom.Rectangle2D.Double(currentPaddleX, currentPaddleY, currentPaddleLength, 5);
+    java.awt.geom.Rectangle2D paddle = new java.awt.geom.Rectangle2D.Double(currentPaddleX, currentPaddleY, currentPaddleLength, 5);
 	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(currentBallX + ballDirectionX, currentBallY + ballDirectionY, 10, 10);
-    java.awt.geom.Rectangle2D A = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX(), this.getCurrentPaddleY() - 5, currentPaddleLength, 5);
-    java.awt.geom.Rectangle2D B = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX() - 5 , this.getCurrentPaddleY(), 5, 5);
-    java.awt.geom.Rectangle2D C = new java.awt.geom.Rectangle2D.Double(this.getCurrentPaddleX() + currentPaddleLength + 5, this.getCurrentPaddleY(), 5, 5);
+    java.awt.geom.Rectangle2D A = new java.awt.geom.Rectangle2D.Double(currentPaddleX, currentPaddleY - 5, currentPaddleLength, 5);
+    java.awt.geom.Rectangle2D B = new java.awt.geom.Rectangle2D.Double(currentPaddleX - 5 , currentPaddleY, 5, 5);
+    java.awt.geom.Rectangle2D C = new java.awt.geom.Rectangle2D.Double(currentPaddleX + currentPaddleLength, currentPaddleY, 5, 5);
     java.awt.geom.Rectangle2D E = new java.awt.geom.Rectangle2D.Double(currentPaddleX - 5, currentPaddleY - 5, 5, 5);
     java.awt.geom.Rectangle2D F = new java.awt.geom.Rectangle2D.Double(currentPaddleX + currentPaddleLength, currentPaddleY - 5, 5, 5);
     java.awt.geom.Line2D movement = new java.awt.geom.Line2D.Double(this.getCurrentBallX(), this.getCurrentBallY(), this.getCurrentBallX() + this.getBallDirectionX(), this.getCurrentBallY() + this.getBallDirectionY());
@@ -1175,12 +1171,17 @@ public class PlayedGame implements Serializable
 	double nextY = currentBallY + ballDirectionY;
     
     BouncePoint bp = null;
-    
-    if(!paddle.getBounds().intersects(ball.getBounds())) {
+    /*System.out.println();
+  	System.out.println(movement.getX2()+" "+movement.getY2());
+  	System.out.println("Paddle bounds are: "+paddle.getBounds());
+  	System.out.println("Ball bounds are: "+ball.getBounds());
+  	System.out.println(paddle.getBounds().intersects(ball.getBounds()));
+  	*/
+  	
+   /*if(!paddle.getBounds().intersects(ball.getBounds())) {
     	return null;
     }
-    
-	//A   
+   */
   	if(A.intersectsLine(movement)) {
   		BouncePoint tmp = new BouncePoint(currentBallX + (ballDirectionX * (currentPaddleY-5-currentBallY) / ballDirectionY), currentPaddleY - 5, BouncePoint.BounceDirection.FLIP_Y);
   		if(isCloser(tmp, bp)) {
@@ -1201,43 +1202,137 @@ public class PlayedGame implements Serializable
   			bp = tmp;
   		}
   	}
-  	//E
-  	if(E.intersectsLine(movement)) {
-  		if(ballDirectionX > 0) {
-  			BouncePoint tmp = new BouncePoint(currentBallX, currentBallY - 1 - ballDirectionX / 10, BouncePoint.BounceDirection.FLIP_X);
-  			if(isCloser(tmp, bp)) {
-  				bp = tmp;
-  			}
-  		} else {
-  			BouncePoint tmp = new BouncePoint(currentBallX - 1 - ballDirectionY / 10, currentBallY, BouncePoint.BounceDirection.FLIP_Y);
-  	  		if(isCloser(tmp, bp)) {
-  	  			bp = tmp;
-  	  		}
-  		}
-  	}
-  	//F
-  	if(F.intersectsLine(movement)) {
-  		if(ballDirectionX > 0) {
-  			BouncePoint tmp = new BouncePoint(currentBallX + 1 + ballDirectionY / 10, currentBallY, BouncePoint.BounceDirection.FLIP_Y);
-  			if(isCloser(tmp, bp)) {
-  				bp = tmp;
-  			}
-  		} else {
-  			BouncePoint tmp = new BouncePoint(currentBallX, currentBallY + 1 - ballDirectionX / 10, BouncePoint.BounceDirection.FLIP_X);
-  	  		if(isCloser(tmp, bp)) {
-  	  			bp = tmp;
-  	  		}
-  		}
-  	}
+  	// compute the euclidean distance between A and B
+    double LAB = java.lang.Math.sqrt((ballDirectionX * ballDirectionX)+(ballDirectionY * ballDirectionY));
+
+    // compute the direction vector D from A to B
+    double Dx = (ballDirectionX)/LAB;
+    double Dy = (ballDirectionY)/LAB;
+
+    // the equation of the line AB is x = Dx*t + Ax, y = Dy*t + Ay with 0 <= t <= LAB.
+
+    // compute the distance between the points A and E, where
+    // E is the point of AB closest the circle center (Cx, Cy)
+    //For corner E
+    double t = Dx*(currentPaddleX-currentBallX) + Dy*(currentPaddleY-currentBallY); 
+    //For corner F
+    double k = Dx*(currentPaddleX+currentPaddleLength-currentBallX) + Dy*(currentPaddleY-currentBallY);
+
+    // compute the coordinates of the point E
+    //for corner E
+    double Ex = t * Dx + currentBallX;
+    double Ey = t * Dy + currentBallY;
+    //for corner F
+    double Fx = k * Dx + currentBallX;
+    double Fy = k * Dy + currentBallY;
+
+    // compute the euclidean distance between E and C, for E
+    double LEC = java.lang.Math.sqrt(((Ex-currentPaddleX)*(Ex-currentPaddleX))+((Ey-currentPaddleY)*(Ey - currentPaddleY)));
+    //for F
+    double LFC = java.lang.Math.sqrt(((Fx-currentPaddleX-currentPaddleLength)*(Fx-currentPaddleX-currentPaddleLength)+(Fy-currentPaddleY)*(Fy-currentPaddleY)));
+
+    // test if the line intersects the circle
+    if(LEC < 5) {
+        // compute distance from t to circle intersection point
+        double dt = java.lang.Math.sqrt( 25 - (LEC*LEC));
+        // compute first intersection point
+        double Gx = (t-dt)*Dx + currentBallX;
+        double Gy = (t-dt)*Dy + currentBallY;
+        // compute second intersection point
+        double Hx = (t+dt)*Dx + currentBallX;
+        double Hy = (t+dt)*Dy + currentBallY;
+        if(ballDirectionX < 0) {
+        	BouncePoint tmp1 = new BouncePoint(Gx, Gy, BouncePoint.BounceDirection.FLIP_Y);
+        	BouncePoint tmp2 = new BouncePoint(Hx, Hy, BouncePoint.BounceDirection.FLIP_Y);
+        	if(isCloser(tmp1, bp)) {
+        		bp = tmp1;
+        	}
+        	else if(isCloser(tmp2, bp)) {
+        		bp = tmp2;
+        	}
+        } else {
+        	BouncePoint tmp1 = new BouncePoint(Gx, Gy, BouncePoint.BounceDirection.FLIP_X);
+        	BouncePoint tmp2 = new BouncePoint(Hx, Hy, BouncePoint.BounceDirection.FLIP_X);
+        	if(isCloser(tmp1, bp)) {
+        		bp =tmp1;
+        	}
+        	else if (isCloser(tmp2, bp)) {
+        		bp = tmp2;
+        	}
+        }
+    }
+
+    // else test if the line is tangent to circle
+    else if( LEC == 5 ) {
+        // tangent point to circle is E
+    	if(ballDirectionX < 0) {
+    		BouncePoint tmp = new BouncePoint(Ex, Ey, BouncePoint.BounceDirection.FLIP_Y);
+    		if(isCloser(tmp, bp)) {
+    			bp = tmp;
+    		}
+    	} else {
+    		BouncePoint tmp = new BouncePoint(Ex, Ey, BouncePoint.BounceDirection.FLIP_X);
+    		if(isCloser(tmp, bp)) {
+    			bp = tmp;
+    		}
+    	}
+    } 
+    
+    if(LFC < 5) {
+        // compute distance from t to circle intersection point
+        double dt = java.lang.Math.sqrt( 25 - (LFC*LFC));
+
+        // compute first intersection point
+        double Gx = (k-dt)*Dx + currentBallX;
+        double Gy = (k-dt)*Dy + currentBallY;
+        // compute second intersection point
+        double Hx = (k+dt)*Dx + currentBallX;
+        double Hy = (k+dt)*Dy + currentBallY;
+        if(ballDirectionX < 0) {
+        	BouncePoint tmp1 = new BouncePoint(Gx, Gy, BouncePoint.BounceDirection.FLIP_X);
+        	BouncePoint tmp2 = new BouncePoint(Hx, Hy, BouncePoint.BounceDirection.FLIP_X);
+        	if(isCloser(tmp1, bp)) {
+        		bp = tmp1;
+        	}
+        	else if(isCloser(tmp2, bp)) {
+        		bp = tmp2;
+        	}
+        } else {
+        	BouncePoint tmp1 = new BouncePoint(Gx, Gy, BouncePoint.BounceDirection.FLIP_Y);
+        	BouncePoint tmp2 = new BouncePoint(Hx, Hy, BouncePoint.BounceDirection.FLIP_Y);
+        	if(isCloser(tmp1, bp)) {
+        		bp =tmp1;
+        	}
+        	else if (isCloser(tmp2, bp)) {
+        		bp = tmp2;
+        	}
+        }
+    }
+
+    // else test if the line is tangent to circle
+    else if( LFC == 5 ) {
+        // tangent point to circle is E
+    	if(ballDirectionX < 0) {
+    		BouncePoint tmp = new BouncePoint(Fx, Fy, BouncePoint.BounceDirection.FLIP_X);
+    		if(isCloser(tmp, bp)) {
+    			bp = tmp;
+    		}
+    	} else {
+    		BouncePoint tmp = new BouncePoint(Fx, Fy, BouncePoint.BounceDirection.FLIP_Y);
+    		if(isCloser(tmp, bp)) {
+    			bp = tmp;
+    		}
+    	}
+    }
   	if(bp != null && nextX == bp.getX() && nextY == bp.getY()) {
 		   return null;
 	   }
   	return bp;
   }
 
-  // line 447 "../../../../../Block223States.ump"
-   private void bounceBall() {
-	   //FLIP_Y case
+  // line 581 "../../../../../Block223States.ump"
+   private void bounceBall(){
+    //FLIP_Y case
 	   	BouncePoint.BounceDirection bd = this.bounce.getDirection();
 	   	if(bd.equals(BouncePoint.BounceDirection.FLIP_Y)) {
 	   		double in = bounce.getY() - currentBallY; //incoming distance
@@ -1252,7 +1347,7 @@ public class PlayedGame implements Serializable
 	   		if(DirectionX == 0) {
 	   			ballDirectionX = 0.1 * java.lang.Math.abs(ballDirectionY);
 	   		} else {
-	   			ballDirectionX = DirectionX + (0.1 * java.lang.Math.abs(ballDirectionY));
+	   			ballDirectionX = DirectionX + (java.lang.Math.signum(DirectionX) * 0.1 * java.lang.Math.abs(ballDirectionY));
 	   		}
 	   		currentBallY = bounce.getY() + (out/DirectionY * ballDirectionY);
 	   		currentBallX = bounce.getX() + (out/DirectionY * ballDirectionX);
@@ -1271,7 +1366,7 @@ public class PlayedGame implements Serializable
 	   		if(DirectionY == 0) {
 	   			ballDirectionY = 0.1 * java.lang.Math.abs(ballDirectionX);
 	   		} else {
-	   			ballDirectionY = DirectionY + (0.1 * java.lang.Math.abs(ballDirectionX));
+	   			ballDirectionY = DirectionY + (java.lang.Math.signum(DirectionY) * 0.1 * java.lang.Math.abs(ballDirectionX));
 	   		}
 	   		currentBallX = bounce.getX() + (out/DirectionX * ballDirectionX);
 	   		currentBallY = bounce.getY() + (out/DirectionX * ballDirectionY);
@@ -1293,7 +1388,7 @@ public class PlayedGame implements Serializable
 	   		currentBallX = bounce.getX() + (remX/DirectionX * ballDirectionX);
 	   		currentBallY = bounce.getY() + (remY/DirectionY * ballDirectionY);
 	   	}
-   }
+  }
 
 
   public String toString()
