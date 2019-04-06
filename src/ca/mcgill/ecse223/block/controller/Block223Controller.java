@@ -589,8 +589,12 @@ public class Block223Controller {
 		}
 		// this used to be 2 if statements for the conditions but this is wrong; the sequence diagram says use an alt block 
 		if(currentGame.getPlayStatus() == PlayStatus.GameOver) {
+			endGame
 			Block223Application.setCurrentPlayableGame(null);
-			//ui.gameOver(); // do we rly need this sep refresh method for game over state? we can have one main UI refresh method which uses the boolean method below to decide what to do
+			// added based on gunter's latest email w/ hints: hint B
+			Block223 block223 = Block223Application.getBlock223();
+			// based on gunter hints in email 
+			Block223Persistence.save(block223);
 		} else if(currentGame.getPlayer() != null) {
 				currentGame.setBounce(null);
 				Block223 block223 = Block223Application.getBlock223();
@@ -599,9 +603,10 @@ public class Block223Controller {
 	}
 	
 	// Christina
-	public static boolean isGameOver() {
+	public static boolean isGamePausedOrOverOrReady() {
 		PlayedGame currentPlayedGame = Block223Application.getCurrentPlayableGame();
-		return currentPlayedGame.getPlayStatus() == PlayStatus.GameOver;
+		PlayStatus status = currentPlayedGame.getPlayStatus();
+		return status == PlayStatus.Paused || status == PlayStatus.GameOver || status == PlayStatus.Ready;
 	}
 	
 	/*
