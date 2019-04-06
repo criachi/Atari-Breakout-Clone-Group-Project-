@@ -210,11 +210,11 @@ public class Block223Controller {
 		String currentName = game.getName();
 		Block223 block223 = Block223Application.getBlock223();
 		if(block223.findGame(name) != null) {
-			//System.out.println(Block223Application.getCurrentGame().getName());
-			//System.out.println("fOUND GAME W/ SAME NAME");
-			//System.out.println(block223.findGame(name));
+			////System.out.println(Block223Application.getCurrentGame().getName());
+			////System.out.println("fOUND GAME W/ SAME NAME");
+			////System.out.println(block223.findGame(name));
 			if(block223.findGame(name) != game) {
-				//System.out.println("reached here");
+				////System.out.println("reached here");
 				throw new InvalidInputException("The name of a game must be unique.");
 			}
 		}
@@ -613,13 +613,13 @@ public class Block223Controller {
 	 * @Author - Anthony
 	 */
 	private static void updatePaddlePosition(String inputs) {
-		System.out.println("im here taking inputs");
+		//System.out.println("im here taking inputs");
 		int stringLength = inputs.length();
 		for(int i = 0; i < stringLength; i++) {
-			System.out.println("im in for loop");
+			//System.out.println("im in for loop");
 			Double currentPaddleX = Block223Application.getCurrentPlayableGame().getCurrentPaddleX();
 			if(inputs.charAt(i) == 'l') {
-				System.out.println("left was just clicked");
+				//System.out.println("left was just clicked");
 				currentPaddleX += PlayedGame.PADDLE_MOVE_LEFT;
 				if(currentPaddleX >= 0) {
 					Block223Application.getCurrentPlayableGame().setCurrentPaddleX(currentPaddleX);
