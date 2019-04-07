@@ -960,20 +960,23 @@ public class PlayedGame implements Serializable
    */
   // line 219 "../../../../../Block223States.ump"
    private void doGameOver(){
+    System.out.println("in do game over bitch");
     Player p  = getPlayer();
     if ( p != null){
     	Game game = getGame();
     	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p,game,block223);
     	game.setMostRecentEntry(hof);
-    	}
-    delete();
+    }
+    System.out.println("before deleting the game bitch");
+    this.delete();
+    System.out.println(this);
   }
 
 
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 231 "../../../../../Block223States.ump"
+  // line 234 "../../../../../Block223States.ump"
    private boolean isCloser(BouncePoint first, BouncePoint second){
     if(first == null) {
   		return false;
@@ -993,7 +996,7 @@ public class PlayedGame implements Serializable
   /**
    * Onur Cayci - ball hits block method
    */
-  // line 248 "../../../../../Block223States.ump"
+  // line 251 "../../../../../Block223States.ump"
    private BouncePoint calculateBouncePointBlock(PlayedBlockAssignment block){
     double blockX = block.getX(); //25 * (block.getX() - 1) + 10; //top left corner x-coordinate of the block
   	double blockY = block.getY(); //22 * (block.getY() - 1) + 10; //top left corner y-coordinate of the block
@@ -1328,7 +1331,7 @@ public class PlayedGame implements Serializable
   /**
    * Haluk ball hits wall method
    */
-  // line 580 "../../../../../Block223States.ump"
+  // line 583 "../../../../../Block223States.ump"
    private BouncePoint calculateBouncePointWall(){
     java.awt.geom.Rectangle2D A = new java.awt.geom.Rectangle2D.Double(0, 0, 5, 385);
 	   java.awt.geom.Rectangle2D B = new java.awt.geom.Rectangle2D.Double(5, 0, 380, 5);
@@ -1381,7 +1384,7 @@ public class PlayedGame implements Serializable
 	   return bp;
   }
 
-  // line 633 "../../../../../Block223States.ump"
+  // line 636 "../../../../../Block223States.ump"
    private BouncePoint calculateBouncePointPaddle(){
     java.awt.geom.Rectangle2D paddle = new java.awt.geom.Rectangle2D.Double(currentPaddleX, currentPaddleY, currentPaddleLength, 5);
 	java.awt.geom.Ellipse2D ball = new java.awt.geom.Ellipse2D.Double(currentBallX + ballDirectionX, currentBallY + ballDirectionY, 10, 10);
@@ -1550,7 +1553,7 @@ public class PlayedGame implements Serializable
   	return bp;
   }
 
-  // line 801 "../../../../../Block223States.ump"
+  // line 804 "../../../../../Block223States.ump"
    private void bounceBall(){
     //FLIP_Y case
 	   	BouncePoint.BounceDirection bd = this.bounce.getDirection();

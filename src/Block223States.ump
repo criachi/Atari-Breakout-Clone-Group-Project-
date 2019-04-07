@@ -216,13 +216,16 @@
 //Melis Malki = ball out of bounds method
 
   private void doGameOver(){
+  System.out.println("in do game over bitch");
     Player p  = getPlayer();
     if ( p != null){
     	Game game = getGame();
     	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p,game,block223);
     	game.setMostRecentEntry(hof);
     }
-    delete();
+    System.out.println("before deleting the game bitch");
+    this.delete();
+    System.out.println(this);
   }
   
   //Onur Cayci - ball hits block method

@@ -308,7 +308,13 @@ public class PlayModePage implements Block223PlayModeInterface {
 	
 	private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		frame.dispose();
-		if(Block223Application.getCurrentPlayableGame().getPlayer() == null) {
+		PlayedGame currentGame = Block223Application.getCurrentPlayableGame();
+		if(currentGame != null) {
+			if(Block223Application.getCurrentPlayableGame().getPlayer() == null) {
+				new AdminDashBoardPage();
+				return;
+			}
+		} else { 
 			new AdminDashBoardPage();
 			return;
 		}
@@ -336,10 +342,6 @@ public class PlayModePage implements Block223PlayModeInterface {
 		levelLbl.setText(levelStr);
 		
 	}
-	public void enableButtons() {
-		logOutBtn.setEnabled(true);
-		backBtn.setEnabled(true);
-	}
 	public void disableButtons() {
 		if(!(Block223Controller.isGameReady())) {
 			logOutBtn.setEnabled(false);
@@ -355,11 +357,13 @@ public class PlayModePage implements Block223PlayModeInterface {
 		System.out.println("executing endgame()");
 		testBtn.setVisible(false);
 		playBtn.setVisible(false);
-		if(nrOfLives == 1) {
+		logOutBtn.setEnabled(true);
+		backBtn.setEnabled(true);
+		if(nrOfLives == 0) {
 			YOULOSTLbl.setVisible(true);
-			int lives = ((PlayLevelLayout) playLevelLayout).getLives();
-			String livesStr = String.valueOf(lives);
-			livesLbl.setText(livesStr);
+			//int lives = ((PlayLevelLayout) playLevelLayout).getLives();
+			//String livesStr = String.valueOf(lives);
+			livesLbl.setText("0");
 		} else {
 			YOUWONlbl.setVisible(true);
 		}
@@ -367,9 +371,6 @@ public class PlayModePage implements Block223PlayModeInterface {
 	
 	private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		playBtn.setVisible(false);
-		//System.out.println("Is Visible?"+playBtn.isVisible());
-		
-		
 		// initiating a thread to start listening to keyboard inputs
 		gameListener = new Block223Listener();
 		Runnable r1 = new Runnable() {
@@ -393,7 +394,11 @@ public class PlayModePage implements Block223PlayModeInterface {
 			public void run() {
 				try {
 					Block223Controller.startGame(PlayModePage.this);
-					playBtn.setVisible(true);
+					if (Block223Controller.isGamePaused()) {
+						playBtn.setVisible(true);
+						backBtn.setEnabled(true);
+						logOutBtn.setEnabled(true);
+					}
 				} catch (InvalidInputException e) {
 				}
 			}
@@ -440,7 +445,11 @@ public class PlayModePage implements Block223PlayModeInterface {
 			public void run() {
 				try {
 					Block223Controller.testGame(PlayModePage.this);
-					playBtn.setVisible(true);
+					if (Block223Controller.isGamePaused()) {
+						playBtn.setVisible(true);
+						logOutBtn.setEnabled(true);
+						backBtn.setEnabled(true);
+					}
 				} catch (InvalidInputException e) {
 				}
 			}

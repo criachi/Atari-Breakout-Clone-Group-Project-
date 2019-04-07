@@ -593,16 +593,16 @@ public class Block223Controller {
 			//edngame
 			System.out.println("in end game");
 			System.out.println(Block223Application.getCurrentPlayableGame());
-			System.out.println(Block223Application.getCurrentPlayableGame().getPlayer());
-			ui.endGame(Block223Controller.getCurrentPlayableGame().getLives(), null);
+			System.out.println("playr is: " + Block223Application.getCurrentPlayableGame().getPlayer());
+			System.out.println("lives are: " + currentGame.getLives());
+			ui.endGame(currentGame.getLives(), null);
 			Block223Application.setCurrentPlayableGame(null);
-			System.out.println("normal shit");
 			// added based on gunter's latest email w/ hints: hint B
 			Block223 block223 = Block223Application.getBlock223();
 			// based on gunter hints in email 
 			Block223Persistence.save(block223);
 		} else if(currentGame.getPlayer() != null) {
-			((PlayModePage) ui).enableButtons();
+				//((PlayModePage) ui).enableButtons();
 				currentGame.setBounce(null);
 				Block223 block223 = Block223Application.getBlock223();
 				Block223Persistence.save(block223);
@@ -612,10 +612,23 @@ public class Block223Controller {
 	// Christina
 	public static boolean isGameReady() {
 		PlayedGame currentPlayedGame = Block223Application.getCurrentPlayableGame();
-		PlayStatus status = currentPlayedGame.getPlayStatus();
-		return status == PlayStatus.Ready;
+		//System.out.println("this is" + currentPlayedGame);
+		PlayStatus status = null;
+		if(currentPlayedGame != null) {
+			status = currentPlayedGame.getPlayStatus();
+			return status == PlayStatus.Ready;
+		}
+		return true;
 	}
 	
+	public static boolean isGamePaused() {
+		PlayedGame currentPlayedGame = Block223Application.getCurrentPlayableGame();
+		PlayStatus status = null;
+		if(currentPlayedGame != null) {
+		status = currentPlayedGame.getPlayStatus();
+		}
+		return status == PlayStatus.Paused;
+	}
 	/*
 	 * @Author - Anthony
 	 */
@@ -665,7 +678,6 @@ public class Block223Controller {
 			PlayedGame pgame = new PlayedGame(username, game, block223);
 			pgame.setPlayer(null);
 			Block223Application.setCurrentPlayableGame(pgame);
-			//ui.refresh();
 			startGame(ui);
 	}
 
