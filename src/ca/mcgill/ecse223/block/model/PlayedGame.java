@@ -19,7 +19,7 @@ public class PlayedGame implements Serializable
   /**
    * at design time, the initial wait time may be adjusted as seen fit
    */
-  public static final int INITIAL_WAIT_TIME = 50;
+  public static final int INITIAL_WAIT_TIME = 30;
   private static int nextId = 1;
   public static final int NR_LIVES = 3;
 

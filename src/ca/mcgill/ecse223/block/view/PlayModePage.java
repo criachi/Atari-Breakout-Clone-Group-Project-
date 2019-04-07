@@ -24,6 +24,7 @@ import ca.mcgill.ecse223.block.application.Block223Application;
 import ca.mcgill.ecse223.block.controller.Block223Controller;
 import ca.mcgill.ecse223.block.controller.InvalidInputException;
 import ca.mcgill.ecse223.block.controller.TOHallOfFameEntry;
+import ca.mcgill.ecse223.block.controller.TOUserMode.Mode;
 import ca.mcgill.ecse223.block.model.PlayedGame;
 
 import java.awt.event.ActionListener;
@@ -293,7 +294,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 		playLevelLayout.add(YOULOSTLbl);
 		frame.getContentPane().setLayout(groupLayout);
 		
-		if(Block223Application.getCurrentPlayableGame() == null) {
+		if(Block223Controller.getUserMode().getMode() == Mode.Design) {
 			hallOfFamePanel.setVisible(false);
 			lblHallOfFame.setVisible(false);
 			previousEntriesBtn.setVisible(false);
@@ -310,13 +311,16 @@ public class PlayModePage implements Block223PlayModeInterface {
 		PlayedGame currentGame = Block223Application.getCurrentPlayableGame();
 		if(currentGame != null) {
 			if(Block223Application.getCurrentPlayableGame().getPlayer() == null) {
-				
+				Block223Application.setCurrentPlayableGame(null);
 				new AdminDashBoardPage();
 				return;
 			}
 		} else { 
-			new AdminDashBoardPage();
-			return;
+			if(Block223Controller.getUserMode().getMode() == Mode.Design) {
+				Block223Application.setCurrentPlayableGame(null);
+				new AdminDashBoardPage();
+				return;
+			}
 		}
 		new PlayerDashBoardPage();
 	}
