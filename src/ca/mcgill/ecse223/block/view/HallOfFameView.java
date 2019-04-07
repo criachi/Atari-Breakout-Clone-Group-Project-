@@ -29,8 +29,10 @@ public class HallOfFameView extends JPanel {
 	
 	public void initialize() {
 		//ArrayList<JLabel> jLabels = new ArrayList<JLabel>(hof.numberOfEntries());
-		
+		System.out.println(end);
+		System.out.println(start);
 		for(int i=end; i<=start; i++) {
+			System.out.println("in for loop in initialize");
 			String number = String.valueOf(i+1);
 			JLabel hofEntry = null;
 			try {
