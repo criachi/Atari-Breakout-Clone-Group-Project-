@@ -562,6 +562,7 @@ public class Block223Controller {
 		currentGame.play();
 		String inputs = ui.takeInputs();
 		while(currentGame.getPlayStatus() == PlayStatus.Moving) {
+			System.out.println("in moving state");
 			inputs = ui.takeInputs();
 			
 			if(inputs != null) {updatePaddlePosition(inputs);}
@@ -618,8 +619,15 @@ public class Block223Controller {
 		if(currentPlayedGame != null) {
 			status = currentPlayedGame.getPlayStatus();
 			return status == PlayStatus.Ready;
+		} else if (currentPlayedGame == null && Block223Application.getCurrentGame() == null ) {
+			if(Block223Controller.getUserMode().getMode() == Mode.Design) {
+				return false;
+			}
+		} else if (currentPlayedGame == null && Block223Application.getCurrentGame() != null) {
+			return true;
+			
 		}
-		return true;
+		return false;
 	}
 	
 	public static boolean isGamePaused() {
