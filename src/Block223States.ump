@@ -221,7 +221,7 @@
     	Game game = getGame();
     	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p,game,block223);
     	game.setMostRecentEntry(hof);
-    	}
+    }
     delete();
   }
   

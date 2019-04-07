@@ -54,6 +54,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 	private JButton backBtn;
 	private JLabel YOUWONlbl;
 	private JLabel YOULOSTLbl;
+	private JLabel hofEntry1;
 
 	/**
 	 * Create the application.
@@ -87,6 +88,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 		lblScore.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
 		backBtn = new JButton("Back");
+		backBtn.setFocusable(false);
 		backBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				backBtnActionPerformed(evt);
@@ -100,10 +102,13 @@ public class PlayModePage implements Block223PlayModeInterface {
 		lblHallOfFame.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
 		previousEntriesBtn = new JButton("Previous Entries");
+		previousEntriesBtn.setFocusable(false);
 		
 		followingEntriesBtn = new JButton("Following Entries");
+		followingEntriesBtn.setFocusable(false);
 		
 		playBtn = new JButton("PLAY");
+		playBtn.setFocusable(false);
 		playBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				playBtnActionPerformed(evt);
@@ -112,6 +117,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 		playBtn.setFont(new Font("Tahoma", Font.PLAIN, 44));
 		
 		testBtn = new JButton("TEST");
+		testBtn.setFocusable(false);
 		testBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				testBtnActionPerformed(evt);
@@ -139,117 +145,130 @@ public class PlayModePage implements Block223PlayModeInterface {
 		dummyArea.setVisible(false);
 		
 		logOutBtn = new JButton("Log Out");
+		logOutBtn.setFocusable(false);
 		logOutBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				logOutBtnActionPerformed(evt);
 			}
 		});
+		
+		hofEntry1 = new JLabel("");
+		hofEntry1.setSize(new Dimension(10,10));
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(25)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(backBtn, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-									.addGap(18)
-									.addComponent(testBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-									.addGap(30)
-									.addComponent(playBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
-									.addGap(124))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-											.addGroup(groupLayout.createSequentialGroup()
-												.addComponent(lblCurrentLevel)
-												.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-													.addGroup(groupLayout.createSequentialGroup()
-														.addGap(245)
-														.addComponent(lblLives))
-													.addGroup(groupLayout.createSequentialGroup()
-														.addGap(18)
-														.addComponent(currentLevelLbl))
-													.addGroup(groupLayout.createSequentialGroup()
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(levelLbl))))
-											.addGroup(groupLayout.createSequentialGroup()
-												.addGap(15)
-												.addComponent(dummyArea, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(lblScore)))
-										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(errorMessage, GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
-											.addPreferredGap(ComponentPlacement.RELATED)))
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createSequentialGroup()
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(scoreLbl))
-										.addGroup(groupLayout.createSequentialGroup()
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(logOutBtn))
-										.addGroup(groupLayout.createSequentialGroup()
-											.addGap(18)
-											.addComponent(livesLbl)))
-									.addGap(59))))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(playLevelLayout, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(110)))
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
-							.addComponent(lblHallOfFame)
-							.addGap(102))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+									.addGroup(groupLayout.createSequentialGroup()
+										.addGap(25)
+										.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+											.addGroup(groupLayout.createSequentialGroup()
+												.addComponent(backBtn, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+												.addGap(18)
+												.addComponent(testBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
+												.addGap(30)
+												.addComponent(playBtn, GroupLayout.PREFERRED_SIZE, 164, GroupLayout.PREFERRED_SIZE)
+												.addGap(124))
+											.addGroup(groupLayout.createSequentialGroup()
+												.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+													.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+														.addGroup(groupLayout.createSequentialGroup()
+															.addComponent(lblCurrentLevel)
+															.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+																.addGroup(groupLayout.createSequentialGroup()
+																	.addGap(245)
+																	.addComponent(lblLives))
+																.addGroup(groupLayout.createSequentialGroup()
+																	.addGap(18)
+																	.addComponent(currentLevelLbl))
+																.addGroup(groupLayout.createSequentialGroup()
+																	.addPreferredGap(ComponentPlacement.RELATED)
+																	.addComponent(levelLbl))))
+														.addGroup(groupLayout.createSequentialGroup()
+															.addGap(15)
+															.addComponent(dummyArea, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+															.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+															.addComponent(lblScore)))
+													.addGroup(groupLayout.createSequentialGroup()
+														.addComponent(errorMessage, GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
+														.addPreferredGap(ComponentPlacement.RELATED)))
+												.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+													.addGroup(groupLayout.createSequentialGroup()
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(logOutBtn))
+													.addGroup(groupLayout.createSequentialGroup()
+														.addGap(18)
+														.addComponent(livesLbl))
+													.addGroup(groupLayout.createSequentialGroup()
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(scoreLbl)))
+												.addGap(59))))
+									.addGroup(groupLayout.createSequentialGroup()
+										.addContainerGap()
+										.addComponent(playLevelLayout, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGap(126)))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addContainerGap()
+									.addComponent(hofEntry1, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(27)
+									.addComponent(hallOfFamePanel, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(100)
+									.addComponent(lblHallOfFame))))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(27)
-							.addComponent(hallOfFamePanel, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(595, Short.MAX_VALUE)
-					.addComponent(previousEntriesBtn)
-					.addGap(26)
-					.addComponent(followingEntriesBtn)
+							.addContainerGap(591, Short.MAX_VALUE)
+							.addComponent(previousEntriesBtn)
+							.addGap(26)
+							.addComponent(followingEntriesBtn)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(errorMessage, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblCurrentLevel)
+								.addComponent(currentLevelLbl)
+								.addComponent(levelLbl)))
+						.addComponent(logOutBtn))
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(errorMessage, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblCurrentLevel)
-										.addComponent(currentLevelLbl)
-										.addComponent(levelLbl)))
-								.addComponent(logOutBtn))
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 										.addComponent(lblLives)
-										.addComponent(livesLbl))
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createSequentialGroup()
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(hallOfFamePanel, GroupLayout.PREFERRED_SIZE, 507, GroupLayout.PREFERRED_SIZE))
-										.addGroup(groupLayout.createSequentialGroup()
-											.addGap(8)
-											.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(lblScore)
-												.addComponent(scoreLbl))
-											.addGap(45)
-											.addComponent(playLevelLayout, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+										.addComponent(livesLbl)))
 								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(50)
-									.addComponent(dummyArea, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-						.addComponent(lblHallOfFame))
-					.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+									.addGap(1)
+									.addComponent(lblHallOfFame)))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(hallOfFamePanel, GroupLayout.PREFERRED_SIZE, 507, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(8)
+									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblScore)
+										.addComponent(scoreLbl))
+									.addGap(45)
+									.addComponent(playLevelLayout, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(hofEntry1, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(50)
+							.addComponent(dummyArea, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 							.addComponent(followingEntriesBtn)
@@ -296,7 +315,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 		new PlayerDashBoardPage();
 	}
 
-	
+	// IN END GAME METHOD, MAKE A METHOD TO MAKE THE PLAY BUTTON INVISIBLE
 	public void refresh() {
 		// we shld have a conditional: if the currentPlayableGame is set, then refresh blockassignments and ball and paddle and set them obv 
 		// if not, then just leave it empty (for test game) 
@@ -317,9 +336,12 @@ public class PlayModePage implements Block223PlayModeInterface {
 		levelLbl.setText(levelStr);
 		
 	}
-	
+	public void enableButtons() {
+		logOutBtn.setEnabled(true);
+		backBtn.setEnabled(true);
+	}
 	public void disableButtons() {
-		if(!(Block223Controller.isGamePausedOrOverOrReady())) {
+		if(!(Block223Controller.isGameReady())) {
 			logOutBtn.setEnabled(false);
 			backBtn.setEnabled(false);
 		}
@@ -330,14 +352,17 @@ public class PlayModePage implements Block223PlayModeInterface {
 		new WelcomeWindow();
 	}
 	public void endGame(int nrOfLives, TOHallOfFameEntry hof) {
-		if(nrOfLives == 0) {
-			
+		System.out.println("executing endgame()");
+		testBtn.setVisible(false);
+		playBtn.setVisible(false);
+		if(nrOfLives == 1) {
+			YOULOSTLbl.setVisible(true);
+			int lives = ((PlayLevelLayout) playLevelLayout).getLives();
+			String livesStr = String.valueOf(lives);
+			livesLbl.setText(livesStr);
+		} else {
+			YOUWONlbl.setVisible(true);
 		}
- 		
-	}
-	
-	public void deletePage() {
-		frame.dispose();
 	}
 	
 	private void playBtnActionPerformed(java.awt.event.ActionEvent evt) {
@@ -351,17 +376,14 @@ public class PlayModePage implements Block223PlayModeInterface {
 			@Override
 			public void run() {
 				// in the actual game, add keyListener to the game window
-				dummyArea.addKeyListener(gameListener);
+				frame.addKeyListener(gameListener);
 			}
 		};
 		Thread t1 = new Thread(r1);
-		System.out.println(t1.getState());
 		t1.start();
-		System.out.println(t1.getState());
 		// to be on the safe side use join to start executing thread t1 before executing the next thread
 		try {
 			t1.join();
-			System.out.println(t1.getState());
 		} catch (InterruptedException e1) {
 			
 		}
@@ -401,7 +423,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 			@Override
 			public void run() {
 				// in the actual game, add keyListener to the game window
-				dummyArea.addKeyListener(gameListener);
+				frame.addKeyListener(gameListener);
 			}
 		};
 		Thread t1 = new Thread(r1);

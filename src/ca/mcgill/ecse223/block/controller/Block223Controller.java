@@ -8,7 +8,7 @@ import ca.mcgill.ecse223.block.model.*;
 import ca.mcgill.ecse223.block.model.PlayedGame.PlayStatus;
 import ca.mcgill.ecse223.block.persistence.Block223Persistence;
 import ca.mcgill.ecse223.block.view.Block223PlayModeInterface;
-
+import ca.mcgill.ecse223.block.view.PlayModePage;
 
 public class Block223Controller {
 	// ****************************
@@ -558,6 +558,7 @@ public class Block223Controller {
 		}
 		
 		PlayedGame currentGame = Block223Application.getCurrentPlayableGame();
+		System.out.println(currentGame.getPlayer());
 		currentGame.play();
 		String inputs = ui.takeInputs();
 		while(currentGame.getPlayStatus() == PlayStatus.Moving) {
@@ -589,13 +590,19 @@ public class Block223Controller {
 		}
 		// this used to be 2 if statements for the conditions but this is wrong; the sequence diagram says use an alt block 
 		if(currentGame.getPlayStatus() == PlayStatus.GameOver) {
-			endGame
+			//edngame
+			System.out.println("in end game");
+			System.out.println(Block223Application.getCurrentPlayableGame());
+			System.out.println(Block223Application.getCurrentPlayableGame().getPlayer());
+			ui.endGame(Block223Controller.getCurrentPlayableGame().getLives(), null);
 			Block223Application.setCurrentPlayableGame(null);
+			System.out.println("normal shit");
 			// added based on gunter's latest email w/ hints: hint B
 			Block223 block223 = Block223Application.getBlock223();
 			// based on gunter hints in email 
 			Block223Persistence.save(block223);
 		} else if(currentGame.getPlayer() != null) {
+			((PlayModePage) ui).enableButtons();
 				currentGame.setBounce(null);
 				Block223 block223 = Block223Application.getBlock223();
 				Block223Persistence.save(block223);
@@ -603,10 +610,10 @@ public class Block223Controller {
 	}
 	
 	// Christina
-	public static boolean isGamePausedOrOverOrReady() {
+	public static boolean isGameReady() {
 		PlayedGame currentPlayedGame = Block223Application.getCurrentPlayableGame();
 		PlayStatus status = currentPlayedGame.getPlayStatus();
-		return status == PlayStatus.Paused || status == PlayStatus.GameOver || status == PlayStatus.Ready;
+		return status == PlayStatus.Ready;
 	}
 	
 	/*
@@ -895,7 +902,9 @@ public class Block223Controller {
 			start = game.numberOfHallOfFameEntries() - start;
 			end = game.numberOfHallOfFameEntries() - end;
 			for(int i=start; i>=end; i--) {
-				new TOHallOfFameEntry(i+1, game.getHallOfFameEntry(i).getPlayername(), game.getHallOfFameEntry(i).getScore(), result);
+				int z = 0;
+				new TOHallOfFameEntry(0, game.getHallOfFameEntry(i).getPlayername(), game.getHallOfFameEntry(i).getScore(), result);
+				z++;
 			}
 			return result;
 		}
@@ -922,7 +931,9 @@ public class Block223Controller {
 			}
 			
 			for(int i=start; i>=end; i--) {
-				new TOHallOfFameEntry(i+1,game.getHallOfFameEntry(i).getPlayername(), game.getHallOfFameEntry(i).getScore(), result);
+				int z = 0;
+				new TOHallOfFameEntry(z,game.getHallOfFameEntry(i).getPlayername(), game.getHallOfFameEntry(i).getScore(), result);
+				z++;
 			}
 			return result;
 		}
