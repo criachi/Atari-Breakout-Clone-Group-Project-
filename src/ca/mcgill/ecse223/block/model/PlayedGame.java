@@ -883,7 +883,7 @@ public class PlayedGame implements Serializable
    				}
 	   		}
    			
-   			new PlayedBlockAssignment(x, y, game.getRandomBlock(), this);
+   			new PlayedBlockAssignment(Game.WALL_PADDING + (Block.SIZE + Game.COLUMNS_PADDING)* (x - 1), Game.WALL_PADDING + (Block.SIZE + Game.ROW_PADDING) * (y - 1), game.getRandomBlock(), this);
 	   	}
   }
 
