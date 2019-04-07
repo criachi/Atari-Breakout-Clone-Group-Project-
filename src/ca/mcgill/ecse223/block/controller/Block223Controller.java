@@ -210,11 +210,11 @@ public class Block223Controller {
 		String currentName = game.getName();
 		Block223 block223 = Block223Application.getBlock223();
 		if(block223.findGame(name) != null) {
-			////System.out.println(Block223Application.getCurrentGame().getName());
-			////System.out.println("fOUND GAME W/ SAME NAME");
-			////System.out.println(block223.findGame(name));
+			//////System.out.println(Block223Application.getCurrentGame().getName());
+			//////System.out.println("fOUND GAME W/ SAME NAME");
+			//////System.out.println(block223.findGame(name));
 			if(block223.findGame(name) != game) {
-				////System.out.println("reached here");
+				//////System.out.println("reached here");
 				throw new InvalidInputException("The name of a game must be unique.");
 			}
 		}
@@ -558,7 +558,7 @@ public class Block223Controller {
 		}
 		
 		PlayedGame currentGame = Block223Application.getCurrentPlayableGame();
-		System.out.println(currentGame.getPlayer());
+		//System.out.println(currentGame.getPlayer());
 		currentGame.play();
 		String inputs = ui.takeInputs();
 		while(currentGame.getPlayStatus() == PlayStatus.Moving) {
@@ -591,10 +591,10 @@ public class Block223Controller {
 		// this used to be 2 if statements for the conditions but this is wrong; the sequence diagram says use an alt block 
 		if(currentGame.getPlayStatus() == PlayStatus.GameOver) {
 			//edngame
-			System.out.println("in end game");
-			System.out.println(Block223Application.getCurrentPlayableGame());
-			System.out.println("playr is: " + Block223Application.getCurrentPlayableGame().getPlayer());
-			System.out.println("lives are: " + currentGame.getLives());
+			//System.out.println("in end game");
+			//System.out.println(Block223Application.getCurrentPlayableGame());
+			//System.out.println("playr is: " + Block223Application.getCurrentPlayableGame().getPlayer());
+			//System.out.println("lives are: " + currentGame.getLives());
 			ui.endGame(currentGame.getLives(), null);
 			Block223Application.setCurrentPlayableGame(null);
 			// added based on gunter's latest email w/ hints: hint B
@@ -612,7 +612,7 @@ public class Block223Controller {
 	// Christina
 	public static boolean isGameReady() {
 		PlayedGame currentPlayedGame = Block223Application.getCurrentPlayableGame();
-		//System.out.println("this is" + currentPlayedGame);
+		////System.out.println("this is" + currentPlayedGame);
 		PlayStatus status = null;
 		if(currentPlayedGame != null) {
 			status = currentPlayedGame.getPlayStatus();
@@ -633,13 +633,14 @@ public class Block223Controller {
 	 * @Author - Anthony
 	 */
 	private static void updatePaddlePosition(String inputs) {
-		//System.out.println("im here taking inputs");
+		////System.out.println("im here taking inputs");
 		int stringLength = inputs.length();
 		for(int i = 0; i < stringLength; i++) {
-			//System.out.println("im in for loop");
+			////System.out.println("im in for loop");
 			Double currentPaddleX = Block223Application.getCurrentPlayableGame().getCurrentPaddleX();
+			Double currentPaddleLength = Block223Application.getCurrentPlayableGame().getCurrentPaddleLength();
 			if(inputs.charAt(i) == 'l') {
-				//System.out.println("left was just clicked");
+				////System.out.println("left was just clicked");
 				currentPaddleX += PlayedGame.PADDLE_MOVE_LEFT;
 				if(currentPaddleX >= 0) {
 					Block223Application.getCurrentPlayableGame().setCurrentPaddleX(currentPaddleX);
@@ -647,7 +648,7 @@ public class Block223Controller {
 			}
 			else if(inputs.charAt(i) == 'r') {
 				currentPaddleX += PlayedGame.PADDLE_MOVE_RIGHT;
-				if(currentPaddleX <= 370) {
+				if(currentPaddleX <= 390 - currentPaddleLength) {
 					Block223Application.getCurrentPlayableGame().setCurrentPaddleX(currentPaddleX);
 				}
 			}
@@ -679,6 +680,7 @@ public class Block223Controller {
 			pgame.setPlayer(null);
 			Block223Application.setCurrentPlayableGame(pgame);
 			startGame(ui);
+			
 	}
 
 	public static void publishGame () throws InvalidInputException {

@@ -19,7 +19,7 @@ public class PlayedGame implements Serializable
   /**
    * at design time, the initial wait time may be adjusted as seen fit
    */
-  public static final int INITIAL_WAIT_TIME = 30;
+  public static final int INITIAL_WAIT_TIME = 50;
   private static int nextId = 1;
   public static final int NR_LIVES = 3;
 
@@ -960,16 +960,16 @@ public class PlayedGame implements Serializable
    */
   // line 219 "../../../../../Block223States.ump"
    private void doGameOver(){
-    System.out.println("in do game over bitch");
+    //System.out.println("in do game over bitch");
     Player p  = getPlayer();
     if ( p != null){
     	Game game = getGame();
     	HallOfFameEntry hof = new HallOfFameEntry (score,playername,p,game,block223);
     	game.setMostRecentEntry(hof);
     }
-    System.out.println("before deleting the game bitch");
+    //System.out.println("before deleting the game bitch");
     this.delete();
-    System.out.println(this);
+    //System.out.println(this);
   }
 
 
@@ -1401,7 +1401,8 @@ public class PlayedGame implements Serializable
     BouncePoint bp = null;
   	
   	//Removed this method because it was not detecting intersections at time
-   /*if(!paddle.getBounds().intersects(ball.getBounds())) {
+   /*
+    if(!paddle.getBounds().intersects(ball.getBounds())) {
     	return null;
     }
    */
@@ -1469,18 +1470,30 @@ public class PlayedGame implements Serializable
         	BouncePoint tmp2 = new BouncePoint(Hx, Hy, BouncePoint.BounceDirection.FLIP_Y);
         	if(isCloser(tmp1, bp)) {
         		bp = tmp1;
+        		if(Math.sqrt(Math.pow(currentBallX - currentPaddleX, 2) + Math.pow(currentBallY - currentPaddleY, 2)) > 5) {
+        			bp = null;
+        		}
         	}
         	else if(isCloser(tmp2, bp)) {
         		bp = tmp2;
+        		if(Math.sqrt(Math.pow(currentBallX - currentPaddleX, 2) + Math.pow(currentBallY - currentPaddleY, 2)) > 5) {
+        			bp = null;
+        		}
         	}
         } else {
         	BouncePoint tmp1 = new BouncePoint(Gx, Gy, BouncePoint.BounceDirection.FLIP_X);
         	BouncePoint tmp2 = new BouncePoint(Hx, Hy, BouncePoint.BounceDirection.FLIP_X);
         	if(isCloser(tmp1, bp)) {
         		bp =tmp1;
+        		if(Math.sqrt(Math.pow(currentBallX - currentPaddleX, 2) + Math.pow(currentBallY - currentPaddleY, 2)) > 5) {
+        			bp = null;
+        		}
         	}
         	else if (isCloser(tmp2, bp)) {
         		bp = tmp2;
+        		if(Math.sqrt(Math.pow(currentBallX - currentPaddleX, 2) + Math.pow(currentBallY - currentPaddleY, 2)) > 5) {
+        			bp = null;
+        		}
         	}
         }
     }
@@ -1492,11 +1505,17 @@ public class PlayedGame implements Serializable
     		BouncePoint tmp = new BouncePoint(Ex, Ey, BouncePoint.BounceDirection.FLIP_Y);
     		if(isCloser(tmp, bp)) {
     			bp = tmp;
+    			if(Math.sqrt(Math.pow(currentBallX - currentPaddleX, 2) + Math.pow(currentBallY - currentPaddleY, 2)) > 5) {
+        			bp = null;
+        		}
     		}
     	} else {
     		BouncePoint tmp = new BouncePoint(Ex, Ey, BouncePoint.BounceDirection.FLIP_X);
     		if(isCloser(tmp, bp)) {
     			bp = tmp;
+    			if(Math.sqrt(Math.pow(currentBallX - currentPaddleX, 2) + Math.pow(currentBallY - currentPaddleY, 2)) > 5) {
+        			bp = null;
+        		}
     		}
     	}
     } 
@@ -1516,18 +1535,30 @@ public class PlayedGame implements Serializable
         	BouncePoint tmp2 = new BouncePoint(Hx, Hy, BouncePoint.BounceDirection.FLIP_X);
         	if(isCloser(tmp1, bp)) {
         		bp = tmp1;
+        		if(Math.sqrt(Math.pow(currentBallX - currentPaddleX - currentPaddleLength, 2) + Math.pow(currentBallY - currentPaddleY, 2)) > 5) {
+        			bp = null;
+        		}
         	}
         	else if(isCloser(tmp2, bp)) {
         		bp = tmp2;
+        		if(Math.sqrt(Math.pow(currentBallX - currentPaddleX - currentPaddleLength, 2) + Math.pow(currentBallY - currentPaddleY, 2)) > 5) {
+        			bp = null;
+        		}
         	}
         } else {
         	BouncePoint tmp1 = new BouncePoint(Gx, Gy, BouncePoint.BounceDirection.FLIP_Y);
         	BouncePoint tmp2 = new BouncePoint(Hx, Hy, BouncePoint.BounceDirection.FLIP_Y);
         	if(isCloser(tmp1, bp)) {
         		bp =tmp1;
+        		if(Math.sqrt(Math.pow(currentBallX - currentPaddleX - currentPaddleLength, 2) + Math.pow(currentBallY - currentPaddleY, 2)) > 5) {
+        			bp = null;
+        		}
         	}
         	else if (isCloser(tmp2, bp)) {
         		bp = tmp2;
+        		if(Math.sqrt(Math.pow(currentBallX - currentPaddleX - currentPaddleLength, 2) + Math.pow(currentBallY - currentPaddleY, 2)) > 5) {
+        			bp = null;
+        		}
         	}
         }
     }
@@ -1539,21 +1570,34 @@ public class PlayedGame implements Serializable
     		BouncePoint tmp = new BouncePoint(Fx, Fy, BouncePoint.BounceDirection.FLIP_X);
     		if(isCloser(tmp, bp)) {
     			bp = tmp;
+    			if(Math.sqrt(Math.pow(currentBallX - currentPaddleX - currentPaddleLength, 2) + Math.pow(currentBallY - currentPaddleY, 2)) > 5) {
+        			bp = null;
+        		}
     		}
     	} else {
     		BouncePoint tmp = new BouncePoint(Fx, Fy, BouncePoint.BounceDirection.FLIP_Y);
     		if(isCloser(tmp, bp)) {
     			bp = tmp;
+    			if(Math.sqrt(Math.pow(currentBallX - currentPaddleX - currentPaddleLength, 2) + Math.pow(currentBallY - currentPaddleY, 2)) > 5) {
+        			bp = null;
+        		}
     		}
     	}
     }
+    
+    
   	if(bp != null && nextX == bp.getX() && nextY == bp.getY()) {
 		   return null;
 	   }
+  	
+  	/*if(ballDirectionY < 0) {
+  		return null; 
+  	}*/
+  	
   	return bp;
   }
 
-  // line 804 "../../../../../Block223States.ump"
+  // line 848 "../../../../../Block223States.ump"
    private void bounceBall(){
     //FLIP_Y case
 	   	BouncePoint.BounceDirection bd = this.bounce.getDirection();

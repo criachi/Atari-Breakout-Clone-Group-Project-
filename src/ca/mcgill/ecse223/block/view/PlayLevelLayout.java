@@ -1,7 +1,8 @@
 package ca.mcgill.ecse223.block.view;
 
 import javax.swing.JLayeredPane;
-
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 import ca.mcgill.ecse223.block.controller.Block223Controller;
 import ca.mcgill.ecse223.block.controller.InvalidInputException;
@@ -40,6 +41,8 @@ public class PlayLevelLayout extends JLayeredPane {
 		}
 		if(currentPlayableGame != null) {
 			Graphics2D g2d = (Graphics2D) g.create();
+			Border thickBorder = new LineBorder(Color.BLACK, 1);
+			this.setBorder(thickBorder);
 			score = currentPlayableGame.getScore();
 			lives = currentPlayableGame.getLives();
 			level = currentPlayableGame.getCurrentLevel();

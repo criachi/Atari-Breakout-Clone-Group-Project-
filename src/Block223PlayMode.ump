@@ -9,7 +9,7 @@ class Game {
 }
 
 class PlayedGame {
-   const Integer INITIAL_WAIT_TIME = 30; // at design time, the initial wait time may be adjusted as seen fit
+   const Integer INITIAL_WAIT_TIME = 50; // at design time, the initial wait time may be adjusted as seen fit
    autounique id;
    const Integer NR_LIVES = 3;
    Integer score = 0;
