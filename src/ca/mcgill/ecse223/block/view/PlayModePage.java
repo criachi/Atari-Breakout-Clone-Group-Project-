@@ -520,6 +520,8 @@ public class PlayModePage implements Block223PlayModeInterface {
 						playBtn.setVisible(true);
 					}
 				} catch (InvalidInputException e) {
+					errorMessage.setText(e.getMessage());
+					return;
 				}
 			}
 		};
