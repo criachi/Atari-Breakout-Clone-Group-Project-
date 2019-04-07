@@ -915,7 +915,7 @@ public class Block223Controller {
 			end = game.numberOfHallOfFameEntries() - end;
 			for(int i=start; i>=end; i--) {
 				int z = 0;
-				new TOHallOfFameEntry(0, game.getHallOfFameEntry(i).getPlayername(), game.getHallOfFameEntry(i).getScore(), result);
+				new TOHallOfFameEntry(z, game.getHallOfFameEntry(i).getPlayername(), game.getHallOfFameEntry(i).getScore(), result);
 				z++;
 			}
 			return result;

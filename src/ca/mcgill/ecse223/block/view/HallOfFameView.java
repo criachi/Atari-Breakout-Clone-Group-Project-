@@ -5,23 +5,62 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ca.mcgill.ecse223.block.controller.Block223Controller;
+import ca.mcgill.ecse223.block.controller.InvalidInputException;
 import ca.mcgill.ecse223.block.controller.TOHallOfFame;
 
 public class HallOfFameView extends JPanel {
+	private TOHallOfFame hof;
+	private int end = 10;
+	private int start = 0;
 	
-	public HallOfFameView(TOHallOfFame hof) {
+	public HallOfFameView() {
 		super();
 		setSize(390,390);
-		initialize(hof);
+		try {
+			hof = Block223Controller.getHallOfFame(start, end);
+			} catch (InvalidInputException e) {
+				
+			} catch (Exception e) {
+				
+			}
+		initialize();
 	}
 	
-	public void initialize(TOHallOfFame hof) {
+	public void initialize() {
 		//ArrayList<JLabel> jLabels = new ArrayList<JLabel>(hof.numberOfEntries());
-		for(int i=0; i==hof.numberOfEntries()-1; i++) {
+		
+		for(int i=end; i<=start; i++) {
 			String number = String.valueOf(i+1);
-			JLabel hofEntry = new JLabel(number + hof.getEntries().get(i).getPlayername() + hof.getEntries().get(i).getScore());
+			JLabel hofEntry = null;
+			try {
+			hofEntry = new JLabel(number +  " " + hof.getEntries().get(i).getPlayername() + " " + hof.getEntries().get(i).getScore());
+			} catch (IndexOutOfBoundsException e) {
+				System.out.println("size of hall of fame entries: " + hof.numberOfEntries());
+				System.out.println("index out of bounds exception; index i is now: " + i);
+				break;
+			}
 			hofEntry.setLocation(5,30+i*20);
 			add(hofEntry);
 		}
+		start = end;
+		end = start;
 	}
+	
+	public void setEnd(int end) {
+		this.end = end;
+	}
+	
+	public void setStart(int start) {
+		this.start = start;
+	}
+	
+	public int getStart() {
+		return start;
+	}
+	
+	public int getEnd() {
+		return end; 
+	}
+	
 }
