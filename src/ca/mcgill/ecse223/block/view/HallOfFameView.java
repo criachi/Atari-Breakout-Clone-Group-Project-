@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import ca.mcgill.ecse223.block.controller.Block223Controller;
 import ca.mcgill.ecse223.block.controller.InvalidInputException;
 import ca.mcgill.ecse223.block.controller.TOHallOfFame;
+import ca.mcgill.ecse223.block.controller.TOUserMode.Mode;
 
 public class HallOfFameView extends JPanel {
 	private TOHallOfFame hof;
@@ -28,7 +29,9 @@ public class HallOfFameView extends JPanel {
 			} catch (Exception e) {
 				
 			}
-		initialize();
+		if(Block223Controller.getUserMode().getMode() != Mode.Design) {
+			initialize();
+		}
 	}
 	
 	public int getNumOfEntries() {
