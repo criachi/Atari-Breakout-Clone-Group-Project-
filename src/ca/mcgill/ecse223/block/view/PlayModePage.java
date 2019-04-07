@@ -51,12 +51,16 @@ public class PlayModePage implements Block223PlayModeInterface {
 	private JLabel lblCurrentLevel;
 	private JLabel lblLives;
 	private JPanel hallOfFamePanel;
+	private JPanel newHallOfFamePanel;
+	private int hallOfFameStartEntry = 1;
+	private int hallOfFameEndEntry = 10;
 	private JLabel lblHallOfFame;
 	private JLabel lblScore;
 	private JButton backBtn;
 	private JLabel YOUWONlbl;
 	private JLabel YOULOSTLbl;
 	private JLabel hofEntry1;
+	private GroupLayout groupLayout;
 
 	/**
 	 * Create the application.
@@ -97,7 +101,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 			}
 		});
 		
-		hallOfFamePanel = new JPanel();
+		hallOfFamePanel = new HallOfFameView(hallOfFameStartEntry, hallOfFameEndEntry);
 		hallOfFamePanel.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), new LineBorder(new Color(0, 255, 0), 8)));
 		
 		lblHallOfFame = new JLabel("Hall of Fame");
@@ -105,9 +109,20 @@ public class PlayModePage implements Block223PlayModeInterface {
 		
 		previousEntriesBtn = new JButton("Previous Entries");
 		previousEntriesBtn.setFocusable(false);
+		previousEntriesBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				previousEntriesBtnActionPerformed(evt);
+			}
+		});
+		
 		
 		followingEntriesBtn = new JButton("Following Entries");
 		followingEntriesBtn.setFocusable(false);
+		followingEntriesBtn.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				followingEntriesBtnActionPerformed(evt);
+			}
+		});
 		
 		playBtn = new JButton("PLAY");
 		playBtn.setFocusable(false);
@@ -154,7 +169,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 		
 		hofEntry1 = new JLabel("");
 		hofEntry1.setSize(new Dimension(10,10));
-		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+		groupLayout = new GroupLayout(frame.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
@@ -304,6 +319,8 @@ public class PlayModePage implements Block223PlayModeInterface {
 		else {
 			testBtn.setVisible(false);
 		}
+		
+		refreshHallOfFame();
 	}
 	
 	private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {
@@ -325,28 +342,49 @@ public class PlayModePage implements Block223PlayModeInterface {
 		new PlayerDashBoardPage();
 	}
 
-	public void previousEntriesBtnActionPerformed(java.awt.event.ActionEvent evt) {
-		((HallOfFameView) hallOfFamePanel).setStart(((HallOfFameView) hallOfFamePanel).getStart() - 10);
-		((HallOfFameView) hallOfFamePanel).setEnd(((HallOfFameView) hallOfFamePanel).getEnd() - 10);
-		System.out.println("in prevEntries action performed");
-		System.out.println(((HallOfFameView)hallOfFamePanel).getStart());
-		System.out.println(((HallOfFameView)hallOfFamePanel).getEnd());
-		hallOfFamePanel = new HallOfFameView();
+	public void previousEntriesBtnActionPerformed(java.awt.event.ActionEvent evt) {		
+		if(hallOfFameStartEntry != 1) {
+			hallOfFameStartEntry -= 10;
+			hallOfFameEndEntry -= 10;
+			
+			
+			newHallOfFamePanel = new HallOfFameView(hallOfFameStartEntry, hallOfFameEndEntry);
+			
+			groupLayout.replace(hallOfFamePanel, newHallOfFamePanel);
+			hallOfFamePanel = new HallOfFameView(hallOfFameStartEntry, hallOfFameEndEntry);
+			groupLayout.replace(newHallOfFamePanel, hallOfFamePanel);
+			
+			hallOfFamePanel.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), new LineBorder(new Color(0, 255, 0), 8)));
+		}
+		
+		
 	}
 	
 	public void followingEntriesBtnActionPerformed(java.awt.event.ActionEvent evt) {
-		((HallOfFameView) hallOfFamePanel).setStart(((HallOfFameView) hallOfFamePanel).getStart() + 10);
-		((HallOfFameView) hallOfFamePanel).setEnd(((HallOfFameView) hallOfFamePanel).getEnd() + 10);
-		System.out.println("in nextEntries action performed");
-		System.out.println(((HallOfFameView)hallOfFamePanel).getStart());
-		System.out.println(((HallOfFameView)hallOfFamePanel).getEnd());
-		hallOfFamePanel = new HallOfFameView();
+		int totalEntries = ((HallOfFameView)hallOfFamePanel).getNumOfEntries();
+		
+		//System.out.println("Total number of entries is "+totalEntries);
+		
+		if(hallOfFameEndEntry <= totalEntries) {
+			hallOfFameStartEntry += 10;
+			hallOfFameEndEntry += 10;
+			
+			
+			newHallOfFamePanel = new HallOfFameView(hallOfFameStartEntry, hallOfFameEndEntry);
+			
+			groupLayout.replace(hallOfFamePanel, newHallOfFamePanel);
+			hallOfFamePanel = new HallOfFameView(hallOfFameStartEntry, hallOfFameEndEntry);
+			groupLayout.replace(newHallOfFamePanel, hallOfFamePanel);
+			
+			hallOfFamePanel.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED, null, null), new LineBorder(new Color(0, 255, 0), 8)));
+		}
+		
+		
+		
+		
 	}
 	public void refreshHallOfFame() {
-		System.out.println("in refresh Hall Of Fame");
-		((HallOfFameView) hallOfFamePanel).setStart(0);
-		((HallOfFameView) hallOfFamePanel).setEnd(10);
-		hallOfFamePanel = new HallOfFameView();
+		
 	}
 	public void refresh() {
 		//System.out.println("refreshing UI");
