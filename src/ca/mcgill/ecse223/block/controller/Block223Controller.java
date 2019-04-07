@@ -525,8 +525,6 @@ public class Block223Controller {
 			Player currentPlayer = (Player) Block223Application.getCurrentUserRole();
 			PlayedGame pGame = block223.findPlayableGame(id);
 			if(currentPlayer != pGame.getPlayer()) {
-				System.out.println("CurrentPlayer is: "+currentPlayer);
-				System.out.println("pGame Player is: "+pGame.getPlayer() + " "+pGame.getGame().getName());
 				throw new InvalidInputException("Only the player that started a game can continue the game.");
 			}
 			Block223Application.setCurrentPlayableGame(pGame);
@@ -564,7 +562,7 @@ public class Block223Controller {
 		currentGame.play();
 		String inputs = ui.takeInputs();
 		while(currentGame.getPlayStatus() == PlayStatus.Moving) {
-			System.out.println("in moving state");
+			//System.out.println("in moving state");
 			inputs = ui.takeInputs();
 			
 			if(inputs != null) {updatePaddlePosition(inputs);}
