@@ -525,6 +525,8 @@ public class Block223Controller {
 			Player currentPlayer = (Player) Block223Application.getCurrentUserRole();
 			PlayedGame pGame = block223.findPlayableGame(id);
 			if(currentPlayer != pGame.getPlayer()) {
+				System.out.println("CurrentPlayer is: "+currentPlayer);
+				System.out.println("pGame Player is: "+pGame.getPlayer() + " "+pGame.getGame().getName());
 				throw new InvalidInputException("Only the player that started a game can continue the game.");
 			}
 			Block223Application.setCurrentPlayableGame(pGame);
@@ -590,11 +592,7 @@ public class Block223Controller {
 		}
 		// this used to be 2 if statements for the conditions but this is wrong; the sequence diagram says use an alt block 
 		if(currentGame.getPlayStatus() == PlayStatus.GameOver) {
-			//edngame
-			//System.out.println("in end game");
-			//System.out.println(Block223Application.getCurrentPlayableGame());
-			//System.out.println("playr is: " + Block223Application.getCurrentPlayableGame().getPlayer());
-			//System.out.println("lives are: " + currentGame.getLives());
+			
 			ui.endGame(currentGame.getLives(), null);
 			Block223Application.setCurrentPlayableGame(null);
 			// added based on gunter's latest email w/ hints: hint B
@@ -603,7 +601,7 @@ public class Block223Controller {
 			Block223Persistence.save(block223);
 		} else if(currentGame.getPlayer() != null) {
 				//((PlayModePage) ui).enableButtons();
-				System.out.println("im saving in test mode omg!! no!!");
+				//System.out.println("im saving in test mode omg!! no!!");
 				currentGame.setBounce(null);
 				Block223 block223 = Block223Application.getBlock223();
 				Block223Persistence.save(block223);
@@ -856,6 +854,7 @@ public class Block223Controller {
 		}
 		
 		for(PlayedGame playedGame : player.getPlayedGames()) {
+			//System.out.println(playedGame.getPlayStatus());
 			TOPlayableGame to = new TOPlayableGame(playedGame.getGame().getName(), playedGame.getId(), playedGame.getCurrentLevel());
 			result.add(to);
 		}

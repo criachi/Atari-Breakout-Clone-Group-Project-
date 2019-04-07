@@ -147,10 +147,10 @@ public class PlayerDashBoardPage {
 		try {
 			for(TOPlayableGame playableGame : Block223Controller.getPlayableGames()) {
 				if(playableGame.getNumber() != -1 && playableGame.getCurrentLevel() != 0) {
-					resumableGames.put(index, playableGame);
+					//System.out.println("Game "+playableGame.getName()+" added at index "+index+" with an id of "+playableGame.getNumber());
+					resumableGames.put(index++, playableGame);
 					continueGamesComboBox.addItem(playableGame.getName() + " " + playableGame.getNumber());
 				}
-				index++;
 			}
 		} catch (InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
@@ -212,6 +212,7 @@ public class PlayerDashBoardPage {
 		}
 		
 		try {
+			//System.out.println("Attempting to continue "+resumableGames.get(selectedPlayedGameIndex-1).getName()+" from index "+(selectedPlayedGameIndex-1)+" with id "+resumableGames.get(selectedPlayedGameIndex-1).getNumber());
 			Block223Controller.selectPlayableGame(null, (resumableGames.get(selectedPlayedGameIndex-1)).getNumber());
 		} catch(InvalidInputException e) {
 			errorMessage.setText(e.getMessage());
