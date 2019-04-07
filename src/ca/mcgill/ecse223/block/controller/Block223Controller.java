@@ -603,6 +603,7 @@ public class Block223Controller {
 			Block223Persistence.save(block223);
 		} else if(currentGame.getPlayer() != null) {
 				//((PlayModePage) ui).enableButtons();
+				System.out.println("im saving in test mode omg!! no!!");
 				currentGame.setBounce(null);
 				Block223 block223 = Block223Application.getBlock223();
 				Block223Persistence.save(block223);

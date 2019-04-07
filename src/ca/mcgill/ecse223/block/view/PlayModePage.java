@@ -125,8 +125,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 			}
 		});
 		testBtn.setFont(new Font("Tahoma", Font.PLAIN, 44));
-		//System.out.println(Block223Application.getCurrentPlayableGame());
-		
+	
 		errorMessage = new JLabel("");
 		errorMessage.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
@@ -304,7 +303,6 @@ public class PlayModePage implements Block223PlayModeInterface {
 		else {
 			testBtn.setVisible(false);
 		}
-		//System.out.println("Setup complete.");
 	}
 	
 	private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {
@@ -323,10 +321,30 @@ public class PlayModePage implements Block223PlayModeInterface {
 		new PlayerDashBoardPage();
 	}
 
-	// IN END GAME METHOD, MAKE A METHOD TO MAKE THE PLAY BUTTON INVISIBLE
+	public void previousEntriesBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		((HallOfFameView) hallOfFamePanel).setStart(((HallOfFameView) hallOfFamePanel).getStart() - 10);
+		((HallOfFameView) hallOfFamePanel).setEnd(((HallOfFameView) hallOfFamePanel).getEnd() - 10);
+		System.out.println("in prevEntries action performed");
+		System.out.println(((HallOfFameView)hallOfFamePanel).getStart());
+		System.out.println(((HallOfFameView)hallOfFamePanel).getEnd());
+		hallOfFamePanel = new HallOfFameView();
+	}
+	
+	public void followingEntriesBtnActionPerformed(java.awt.event.ActionEvent evt) {
+		((HallOfFameView) hallOfFamePanel).setStart(((HallOfFameView) hallOfFamePanel).getStart() + 10);
+		((HallOfFameView) hallOfFamePanel).setEnd(((HallOfFameView) hallOfFamePanel).getEnd() + 10);
+		System.out.println("in nextEntries action performed");
+		System.out.println(((HallOfFameView)hallOfFamePanel).getStart());
+		System.out.println(((HallOfFameView)hallOfFamePanel).getEnd());
+		hallOfFamePanel = new HallOfFameView();
+	}
+	public void refreshHallOfFame() {
+		System.out.println("in refresh Hall Of Fame");
+		((HallOfFameView) hallOfFamePanel).setStart(0);
+		((HallOfFameView) hallOfFamePanel).setEnd(10);
+		hallOfFamePanel = new HallOfFameView();
+	}
 	public void refresh() {
-		// we shld have a conditional: if the currentPlayableGame is set, then refresh blockassignments and ball and paddle and set them obv 
-		// if not, then just leave it empty (for test game) 
 		//System.out.println("refreshing UI");
 		disableButtons();
 		playLevelLayout.repaint();
@@ -408,8 +426,6 @@ public class PlayModePage implements Block223PlayModeInterface {
 		
 		Thread t2 = new Thread(r2);
 		t2.start();
-		//System.out.println("thread 2" + t1.getState());
-		//System.out.println("thread 2 was started bitch");
 	}
 	
 	
