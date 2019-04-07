@@ -335,6 +335,8 @@ public class PlayModePage implements Block223PlayModeInterface {
 		} else { 
 			if(Block223Controller.getUserMode().getMode() == Mode.Design) {
 				Block223Application.setCurrentPlayableGame(null);
+				// carefule w/ this
+				Block223Application.setCurrentGame(null);
 				new AdminDashBoardPage();
 				return;
 			}
@@ -387,7 +389,7 @@ public class PlayModePage implements Block223PlayModeInterface {
 		
 	}
 	public void refresh() {
-		//System.out.println("refreshing UI");
+		System.out.println("refreshing UI");
 		disableButtons();
 		playLevelLayout.repaint();
 		// Update lives label
@@ -461,6 +463,9 @@ public class PlayModePage implements Block223PlayModeInterface {
 						backBtn.setEnabled(true);
 						logOutBtn.setEnabled(true);
 					}
+					if(Block223Controller.isGameReady()) {
+						playBtn.setVisible(true);
+					}
 				} catch (InvalidInputException e) {
 				}
 			}
@@ -509,6 +514,10 @@ public class PlayModePage implements Block223PlayModeInterface {
 						playBtn.setVisible(true);
 						logOutBtn.setEnabled(true);
 						backBtn.setEnabled(true);
+					}
+					if(Block223Controller.isGameReady()) {
+						System.out.println("im in here");
+						playBtn.setVisible(true);
 					}
 				} catch (InvalidInputException e) {
 				}
